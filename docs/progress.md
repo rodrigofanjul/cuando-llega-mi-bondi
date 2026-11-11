@@ -8,16 +8,16 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T0.2 Línea base de pruebas | DONE | `docs/testing-results.md` |
 | T0.3 Matriz y plan | DONE | `docs/feature-matrix.md`, `docs/implementation-plan.md` |
 | T1.1 Normalización de arribos | DONE | `features/arrivals/lib/normalize.ts` · 27 tests |
-| T1.2 Vectores compartidos | DONE (TS) / IN_PROGRESS (Kotlin, Swift) | `shared/contracts/arrival-vectors.json`; tests nativos escritos, sin ejecutar |
+| T1.2 Vectores compartidos | DONE | TS (vitest), Kotlin (JUnit, local + CI) y Swift (XCTest en CI) ejecutan el mismo JSON |
 | T1.3 Frescura | DONE | `freshness.ts` · 7 tests |
-| T1.4 Capacitor 8.5.3 | IN_PROGRESS | Android compila y genera APK debug localmente (no instalado aún); iOS en verificación por CI |
-| T1.5 CI | IN_PROGRESS | `.github/workflows/ci.yml`; no ejecutado (requiere push autorizado) |
+| T1.4 Capacitor 8.5.3 | DONE (build) | Android: APK debug local y en CI; iOS: compila en CI (Xcode 16.4). Falta ejecución en emulador/simulador |
+| T1.5 CI | DONE | corre en el fork; rojo sólo por fallos preexistentes (B7, lint) |
 | T2.1 WidgetConfig v1 | DONE | `features/widgets/lib/config.ts` |
 | T2.2 Multilínea | DONE | `rows.ts`, no mezcla paradas físicas |
 | T2.3 Widget inteligente | DONE | franjas, cruce de medianoche, TZ AR |
-| T2.4 Plugin BondiWidget | IN_PROGRESS | TS DONE (3 tests); Kotlin/Swift escritos sin compilar |
-| T2.5 Widget Android (Glance + WorkManager) | IN_PROGRESS | compila y 13 tests JVM OK; falta probar en emulador |
-| T2.6 Widget iOS (WidgetKit + App Intents) | IN_PROGRESS | código + `add_widget_target.rb`; sin compilar |
+| T2.4 Plugin BondiWidget | IN_PROGRESS | TS testeado; Kotlin y Swift compilan; falta prueba integrada en dispositivo |
+| T2.5 Widget Android (Glance + WorkManager) | IN_PROGRESS | compila, tests OK en local y CI; falta probar en emulador |
+| T2.6 Widget iOS (WidgetKit + App Intents) | IN_PROGRESS | compila en CI; falta probar en simulador (requiere macOS) |
 | T2.7 Pantalla `/widgets` | DONE | verificada en navegador; e2e automatizado pendiente (T2.7b) |
 | T2.4b Snapshots compartidos app→widget | DONE (TS) | `shareArrivals.ts`, hook en `useArribos`; no comparte STALE ni fixtures |
 | T3.1 Motor de alertas | DONE | `features/alerts/lib/engine.ts` · 11 tests |

@@ -74,3 +74,17 @@ preexistente en `shared/infra/supabase.ts`). Para desarrollo local se usó una U
 | Migración SQL contra Postgres real (PGlite 0.3.7, fuera del repo) | **12/12 chequeos OK**: inserts válidos, rechazo por constraints (origin, ETA, vacío), unicidad de llegadas, retención mínima, purga, RLS activado, sin políticas públicas. |
 | Ingesta | Apagada por defecto en cliente y servidor; verificado por test que no guarda sin el flag. |
 | `tsc` / `eslint .` | OK / 2 errores preexistentes (se agregaron `android/`, `ios/`, `mobile/` a los ignores para no lintear artefactos de build). |
+
+## 2026-11-11 — CI en el fork (run 43034928151, commit 957fb17)
+
+| Job | Resultado |
+| --- | --------- |
+| iOS · BondiWidgetCore (`swift test`, macOS 15) | **OK** — vectores compartidos y lógica de widgets en Swift. |
+| iOS · build simulador sin firma (Xcode 16.4) | **OK** — app + extensión WidgetKit compilan. No se ejecutó en simulador ni dispositivo. |
+| Android · unit tests + APK debug | **OK** — 13 tests JVM + `assembleDebug`. |
+| Web · typecheck / tests nuevos / build | **OK** (build con variables de marcador de Supabase, B9). |
+| Web · suite completa | Falla sólo por los 10 tests preexistentes de `shared/api/client.test.ts` (B7): 34/35 archivos. |
+| Web · lint | Falla sólo por los 2 errores preexistentes. |
+
+Correcciones que hicieron falta para llegar acá: import de Glance (Kotlin), bit +x de `gradlew`, ternario con tipos
+distintos y sombra de `accessibilityLabel` (Swift).

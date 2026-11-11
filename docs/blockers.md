@@ -3,7 +3,7 @@
 | ID | Bloqueo | Afecta | Qué se hizo mientras tanto | Qué lo destraba |
 | -- | ------- | ------ | -------------------------- | --------------- |
 | B1 | Alcance documentado de la autorización de datos (uso comercial, recolección histórica, republicación) | §6.1 ingesta en producción, §14, §16 cobros, datos abiertos | El responsable confirma autorización de acceso (2026-11-11). Pipeline histórico implementado contra fixtures; ingesta deshabilitada por flag. | Documento escrito con alcance: retención, volumen, uso comercial. |
-| B2 | Sin JDK/Android SDK ni macOS local | Compilar/instalar Android e iOS localmente | Proyectos y workflows de CI generados. | Push de la rama a GitHub (requiere aprobación) o instalar JDK 21 + Android SDK localmente. |
+| B2 | Sin macOS local (Android ya resuelto: JDK 21 + SDK instalados) | Ejecutar la app iOS en simulador/dispositivo | iOS compila en CI (fork rodrigofanjul). | Mac propia o runner con simulador para pruebas de UI. |
 | B3 | Infraestructura push (FCM `google-services.json`, APNs key, VAPID privada) | Alertas exactas con app cerrada, Live Activities | Motor de alertas + ejecución local con app activa. | Credenciales en secretos de CI/servidor. |
 | B4 | Cuentas de tiendas, certificados y firma | TestFlight, Play internal track | Configuración de firma por variables de entorno. | Apple Developer + Play Console + aprobación explícita de publicación. |
 | B5 | Clave de proveedor LLM y presupuesto | Asistente conversacional real | Proveedor mock + herramientas tipadas. | Clave en secreto de servidor + tope de gasto. |

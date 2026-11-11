@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useReviewsUser } from "@features/reviews/hooks/useReviewsUser";
 import { SignInModal } from "@features/reviews/components/SignInModal";
 import { signOut, deleteAccount } from "@features/account/api/account";
+import { LocalDataSection } from "@shared/privacy/LocalDataSection";
 import { PageShell } from "@shared/layout/PageShell";
 import { PageHeader } from "@shared/layout/PageHeader";
 import { BottomNav } from "@shared/layout/BottomNav";
@@ -95,6 +96,7 @@ export function PerfilClient() {
                         </div>
                     )}
                 </div>
+                <LocalDataSection />
             </PageShell>
 
             <Modal open={confirmOpen} onClose={() => (deleting ? undefined : setConfirmOpen(false))}>

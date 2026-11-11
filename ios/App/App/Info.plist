@@ -64,6 +64,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Usamos tu ubicación sólo cuando la pedís, para mostrarte paradas cercanas y calcular cuánto tardás en llegar a la parada. No se guarda.</string>
 	<key>BondiAppGroup</key>
 	<string>$(BONDI_APP_GROUP)</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>

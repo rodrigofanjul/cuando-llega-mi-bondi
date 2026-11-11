@@ -39,6 +39,8 @@ app_group = project.main_group.find_subpath('App', false) or abort('Grupo App no
 %w[BondiWidgetPlugin.swift BondiBridgeViewController.swift].each do |f|
   app.add_file_references([file_ref(app_group, f)])
 end
+# Manifiesto de privacidad (UserDefaults en App Group → 1C8F.1) como recurso del bundle.
+app.add_resources([file_ref(app_group, 'PrivacyInfo.xcprivacy')])
 app.add_file_references(core_refs)
 app.add_system_framework('WidgetKit')
 app.build_configurations.each do |c|
@@ -55,6 +57,7 @@ widget_group.set_source_tree('<group>')
 widget_group.set_path(WIDGET_NAME)
 widget.add_file_references([file_ref(widget_group, 'BondiWidget.swift')])
 file_ref(widget_group, 'Info.plist')
+widget.add_resources([file_ref(widget_group, 'PrivacyInfo.xcprivacy')])
 file_ref(widget_group, "#{WIDGET_NAME}.entitlements")
 widget.add_file_references(core_refs)
 %w[WidgetKit SwiftUI AppIntents].each { |fw| widget.add_system_framework(fw) }

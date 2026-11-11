@@ -38,3 +38,9 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T7.2 Reportes colaborativos + ocupación | DONE (sin backend configurado) | lógica, API, migración y UI verificados; falta job de reputación y panel de moderación |
 | T7.1 Asistente conversacional | DONE (simulado) / BLOCKED (Claude real, B5) | herramientas tipadas, proveedor intercambiable, fundamentación, límites; Claude implementado con SDK oficial y testeado con cliente falso |
 | Fase 9 Offline-first | TODO | Dependencias arquitectónicas fijadas (D10) |
+| T8.1 Seguridad | DONE (parcial) | Next 16.3.1 → 16.4.1 (RCE críticas); pendientes zod/mercadopago, CSP, tiles (docs/security-review.md) |
+| T8.2 Privacidad y borrado | DONE | borrado local en Perfil; inventario de datos; borradores Apple/Google; PrivacyInfo iOS; permisos de ubicación |
+| T8.3 Costos | DONE (estimación) | docs/costs.md con supuestos; medir con /api/metrics |
+| T8.4 Freemium preparado | DONE | entitlements apagados, existentes siempre gratis, PurchaseProvider no-op |
+| T8.5 Observabilidad | DONE (básica) | métricas por ruta, tokens del asistente, logs JSON sin datos personales, /api/metrics con token |
+| T8.6 Preparación de tiendas | DOCUMENTADO | docs/store-readiness.md; publicar requiere autorización |

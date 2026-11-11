@@ -113,3 +113,10 @@ Configuración fija: esfuerzo `low`, `max_tokens` 2048, máximo 3 rondas de herr
 ## Vercel
 
 En producción, definí las `NEXT_PUBLIC_*` en el panel de Vercel. El catálogo estático viaja en el deploy (`data/static/`); el backend en vivo debe ser accesible desde el navegador del usuario (CORS en el servidor externo).
+
+## Observabilidad y monetización
+
+| Variable | Uso |
+| -------- | --- |
+| `METRICS_TOKEN` | Habilita `GET /api/metrics` (Bearer). Sin ella la ruta responde 404. |
+| `NEXT_PUBLIC_MONETIZATION_ENABLED` | `true` activa planes (sin cobros: no hay proveedor de compras). Default: todo habilitado. |

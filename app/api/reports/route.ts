@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+
+import { withMetrics } from "@/lib/server/metrics";
 import { z } from "zod";
 
 import {
@@ -24,7 +26,7 @@ const readLimiter = new RateLimiter(120, 60_000);
 
 const getSchema = z.object({ lineCode: z.string().trim().min(1).max(40), stopId: z.string().trim().max(40).optional() });
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
     if (!reportsConfigured()) return NextResponse.json({ error: "reports_unavailable" }, { status: 503 });
     const now = Date.now();
     if (!perIp.take(clientKey(req.headers), now)) {
@@ -66,7 +68,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ accepted: true, status: moderation.status }, { status: 201 });
 }
 
-export async function GET(req: NextRequest) {
+async function handleGET(req: NextRequest) {
     if (!reportsConfigured()) return NextResponse.json({ error: "reports_unavailable" }, { status: 503 });
     const now = Date.now();
     if (!readLimiter.take(clientKey(req.headers), now)) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
@@ -89,3 +91,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "storage_unavailable" }, { status: 503 });
     }
 }
+
+export const POST = withMetrics("/api/reports POST", handlePOST);
+
+export const GET = withMetrics("/api/reports GET", handleGET);

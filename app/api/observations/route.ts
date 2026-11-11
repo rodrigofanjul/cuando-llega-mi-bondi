@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { withMetrics } from "@/lib/server/metrics";
+
 import { observationBatchSchema, toDbRow } from "@features/observations/lib/observations";
 import { createAdminClient } from "@/lib/server/supabaseAdmin";
 import { RateLimiter, clientKey } from "@/lib/server/rateLimit";
@@ -22,7 +24,7 @@ function ingestEnabled(): boolean {
     return process.env.OBSERVATIONS_INGEST_ENABLED?.trim().toLowerCase() === "true";
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
     if (!limiter.take(clientKey(req.headers), Date.now())) {
         return NextResponse.json({ error: "rate_limited" }, { status: 429, headers: { "Retry-After": "60" } });
     }
@@ -65,3 +67,5 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ accepted: true, stored: rows.length }, { status: 202 });
 }
+
+export const POST = withMetrics("/api/observations POST", handlePOST);

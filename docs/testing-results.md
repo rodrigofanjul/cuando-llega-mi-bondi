@@ -171,3 +171,15 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | Navegador `/asistente` | Ejemplo con favorito → respuesta con leyenda «Asistente simulado (reglas, sin IA) · datos de la app». |
 | **No probado** | Claude real (requiere `ANTHROPIC_API_KEY` y genera costo: pendiente de tu aprobación). «Cómo llego» en vivo (geocodifica con Nominatim, servicio externo); cubierto por tests con ejecutores falsos. |
 | Nota de entorno | `curl` desde Git Bash en Windows no envía UTF-8 («línea» llega roto): usar Node `fetch` para probar. |
+
+## 2026-11-11 — Ciclo 10 (producción)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `npm audit --omit=dev` antes | 4 vulnerabilidades: **Next.js crítica** (RCE sin autenticación, varios advisories hasta 16.4.0), zod alta, mercadopago/uuid moderadas. |
+| Después de Next 16.4.1 | Next sin advisories; quedan zod (alta) y uuid vía mercadopago (moderada) → B12. |
+| `next build` (16.4.1) | OK. Se detectó y corrigió `/api/metrics` prerenderizada como estática (Cache Components) con `await connection()`. |
+| Android `assembleDebug` con permisos de ubicación | OK. |
+| iOS `PrivacyInfo.xcprivacy` e `Info.plist` | plist válidos (plistlib); compilación iOS: CI. |
+| Tests nuevos | borrado local 1, entitlements 4, métricas 2, `/api/metrics` 2. Suite: 46/47 archivos, **407/417** (mismos 10 preexistentes). |
+| No hecho | Migración zod 4 / mercadopago 3, CSP, reemplazo de mosaicos, publicación en tiendas. |

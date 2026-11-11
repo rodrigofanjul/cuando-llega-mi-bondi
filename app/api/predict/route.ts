@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+
+import { withMetrics } from "@/lib/server/metrics";
 import { z } from "zod";
 
 import { predict } from "@features/prediction/lib/model";
@@ -22,7 +24,7 @@ const querySchema = z.object({
     deviation: z.coerce.number().int().min(-600).max(600).optional(),
 });
 
-export async function GET(req: NextRequest) {
+async function handleGET(req: NextRequest) {
     if (!limiter.take(clientKey(req.headers), Date.now())) {
         return NextResponse.json({ error: "rate_limited" }, { status: 429, headers: { "Retry-After": "60" } });
     }
@@ -38,3 +40,5 @@ export async function GET(req: NextRequest) {
     );
     return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
 }
+
+export const GET = withMetrics("/api/predict GET", handleGET);

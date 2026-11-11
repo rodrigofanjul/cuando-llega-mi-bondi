@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+
+import { increment, logEvent, withMetrics } from "@/lib/server/metrics";
 import { z } from "zod";
 
 import { AnthropicProvider } from "@features/assistant/lib/anthropicProvider";
@@ -52,7 +54,7 @@ function withinDailyBudget(now: number): boolean {
     return true;
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
     const now = Date.now();
     if (!perIp.take(clientKey(req.headers), now)) {
         return NextResponse.json({ error: "rate_limited", answer: "Hiciste muchas preguntas seguidas. Probá en un rato." }, { status: 429 });
@@ -73,10 +75,18 @@ export async function POST(req: NextRequest) {
     try {
         const result = await answer(provider, parsed.data.message, parsed.data.context, createAssistantExecutors(req.nextUrl.origin));
         // Métrica de consumo sin contenido de la conversación.
-        if (result.usage) console.info(`[assistant] ${provider.name} in=${result.usage.inputTokens} out=${result.usage.outputTokens} tools=${result.toolsUsed.length}`);
+        increment(`assistant.${provider.name}.queries`);
+        if (!result.grounded) increment("assistant.ungrounded_replaced");
+        if (result.usage) {
+            increment(`assistant.${provider.name}.tokens_in`, result.usage.inputTokens);
+            increment(`assistant.${provider.name}.tokens_out`, result.usage.outputTokens);
+            logEvent("assistant.answer", { provider: provider.name, tokensIn: result.usage.inputTokens, tokensOut: result.usage.outputTokens, tools: result.toolsUsed.length });
+        }
         return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
     } catch {
         console.error(`[assistant] ${provider.name} failed`);
         return NextResponse.json({ error: "assistant_unavailable", answer: "El asistente no está disponible ahora." }, { status: 503 });
     }
 }
+
+export const POST = withMetrics("/api/assistant POST", handlePOST);

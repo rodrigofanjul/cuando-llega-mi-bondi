@@ -30,7 +30,7 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
       - name: Tests de módulos nuevos (widgets, alertas, salida, normalización)
-        run: npx vitest run features/arrivals/lib features/widgets features/alerts features/departure features/observations shared/time lib/server/rateLimit.test.ts app/api/observations --reporter=default --reporter=junit --outputFile.junit=reports/vitest-new.xml
+        run: npx vitest run features/arrivals/lib features/widgets features/alerts features/departure features/observations features/anomalies shared/time lib/server/rateLimit.test.ts app/api/observations --reporter=default --reporter=junit --outputFile.junit=reports/vitest-new.xml
       - name: Suite completa (incluye fallos preexistentes de shared/api/client.test.ts, ver docs/blockers.md B7)
         run: npx vitest run --reporter=default --reporter=junit --outputFile.junit=reports/vitest-all.xml
       - name: Build web

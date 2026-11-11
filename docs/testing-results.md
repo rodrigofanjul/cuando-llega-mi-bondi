@@ -104,3 +104,15 @@ Sin tráfico a la Municipalidad: `/api/mgp` → `MGP_UPSTREAM` = mock local (ver
 | Límite de consumo | OK: dentro de 90 s del último dato, ↻ no vuelve a consultar. |
 | Lector de pantalla | OK tras corrección: «Línea 531, cualquier sentido, parada Luro y Salta, llega en 1 minuto, el siguiente en 6 minutos» (antes decía «1 minutos»; «0 min» ahora es «< 1 min»). |
 | No probado | Configuración por instancia (pantalla de elección con varias configs), tamaños grandes, Doze/WorkManager diferido, dispositivo físico. |
+
+## 2026-11-11 — Ciclo 5 (detección de demoras y anomalías)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `vitest run` (completo) | 35/36 archivos, **278/288**. Mismos 10 fallos preexistentes (B7). +10 tests de `features/anomalies`. |
+| `tsc` / `eslint .` | OK / 2 errores preexistentes. |
+| CI run 43038892780 | iOS (`swift test` + `xcodebuild`) y Android OK con los cambios de textos del widget. |
+| Navegador con upstream MOCK (`/consultar?linea=93&parada=P2303`) | Aviso «DEMORA ESTIMADA · Demora estimada de 6 min según el desvío horario informado» (unidad MOCK con desvío +06:00). |
+| «¿Cuándo salgo?» con datos (pendiente desde el ciclo 3) | **Verificado**: «El colectivo llega en aproximadamente 10 min. Tardás 5 min caminando. Te recomendamos salir en 1 min.» |
+| Errores de consola | Sólo de entorno: Supabase de marcador, endpoint no implementado por el mock (banderas → 502), 404 PWA preexistente. |
+| Pendiente | Validar umbrales (5–6 min) con histórico real; Isolation Forest cuando haya datos (B1). |

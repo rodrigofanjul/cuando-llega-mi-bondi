@@ -28,7 +28,8 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T4.2b Inferencia de llegadas | DONE | `inferArrivals.ts` con método y confianza |
 | T4.3 Dashboard | TODO | sin datos reales todavía |
 | T5.x ML | TODO | |
-| T6.1 Cuándo salir | DONE | lógica + UI en el panel de arribos (`DepartureAdvisor`); ubicación sólo a pedido, no se guarda |
-| T6.2–T6.4 | TODO | |
+| T6.1 Cuándo salir | DONE | lógica + UI verificada en navegador con datos MOCK; ubicación sólo a pedido, no se guarda |
+| T6.2 Detección de anomalías | DONE (reglas) | `features/anomalies` (10 tests) + aviso en arribos verificado con mock; umbrales a calibrar con histórico |
+| T6.3–T6.4 | TODO | |
 | T7.x | TODO / BLOCKED (B5) | |
 | Fase 9 Offline-first | TODO | Dependencias arquitectónicas fijadas (D10) |

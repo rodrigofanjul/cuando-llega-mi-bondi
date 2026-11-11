@@ -120,3 +120,12 @@ En producción, definí las `NEXT_PUBLIC_*` en el panel de Vercel. El catálogo 
 | -------- | --- |
 | `METRICS_TOKEN` | Habilita `GET /api/metrics` (Bearer). Sin ella la ruta responde 404. |
 | `NEXT_PUBLIC_MONETIZATION_ENABLED` | `true` activa planes (sin cobros: no hay proveedor de compras). Default: todo habilitado. |
+
+## Motor offline
+
+| Variable | Uso |
+| -------- | --- |
+| `OFFLINE_PROFILES_PATH` | Artefacto de perfiles (`python -m bondi_ml.offline_eval`). Sin ella, el modo offline usa sólo la frecuencia publicada. |
+| `OFFLINE_ALLOW_SYNTHETIC` | `true` sólo fuera de producción, para pruebas con perfiles sintéticos. |
+
+Frecuencias publicadas: `node scripts/build-frequency-baseline.mjs` (genera `public/offline/frequencies-v1.json` desde `public/gtfs`).

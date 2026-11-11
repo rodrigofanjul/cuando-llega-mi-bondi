@@ -22,6 +22,7 @@ import { AdSenseRail } from "@shared/ads/AdSenseUnit";
 import { DepartureAdvisor } from "@features/departure/components/DepartureAdvisor";
 import { AnomalyNotice } from "@features/anomalies/components/AnomalyNotice";
 import { CommunityReports } from "@features/reports/components/CommunityReports";
+import { OfflineEstimateNotice } from "@features/offline/components/OfflineEstimateNotice";
 
 const ADSENSE_SLOT_ARRIVALS = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARRIVALS?.trim();
 
@@ -215,6 +216,18 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                 <p className="-mt-1.5 mb-2.5 font-mono text-[10px] text-muted-foreground">
                     Actualización automática cada 25 s
                 </p>
+            ) : null}
+
+            {isConsulting && codLinea ? (
+                <div className="mb-3">
+                    <OfflineEstimateNotice
+                        stopId={paradaId}
+                        lineCode={codLinea}
+                        lineLabel={(lineaLabel ?? "").trim().match(/^\d+/)?.[0] ?? codLinea}
+                        liveFailed={errorInfo?.kind === "network"}
+                        now={nowTick}
+                    />
+                </div>
             ) : null}
 
             {view === "loading" ? (

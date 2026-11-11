@@ -183,3 +183,15 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | iOS `PrivacyInfo.xcprivacy` e `Info.plist` | plist válidos (plistlib); compilación iOS: CI. |
 | Tests nuevos | borrado local 1, entitlements 4, métricas 2, `/api/metrics` 2. Suite: 46/47 archivos, **407/417** (mismos 10 preexistentes). |
 | No hecho | Migración zod 4 / mercadopago 3, CSP, reemplazo de mosaicos, publicación en tiendas. |
+
+## 2026-11-11 — Ciclo 11 (Fase 9: motor offline, versión estadística)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `pytest` (ml/) | **17/17** (incluye 6 de perfiles: tipos de día con feriados, checksum, pico < valle, soporte mínimo, mejora sobre frecuencia, corrida completa). |
+| Evaluación offline (datos SINTÉTICOS, 21 días de perfil → 7 de prueba) | MAE 3,7–4,5 min vs frecuencia 6,2–7,8; cobertura del rango [0, p90] 92–98 % vs 70–82 %. A 72 h, 93 consultas sin soporte (domingos con < 5 días de historia) → «datos insuficientes», sin inventar. Perfil ≈ 4 KB por par. |
+| Paridad Python ↔ TS | checksum canónico idéntico; **18/18** estimaciones idénticas (incluye sin soporte, madrugada, feriado). Se corrigieron dos fuentes de divergencia: redondeo bancario de Python y serialización `8.0` vs `8`. |
+| TS (`features/offline`, `/api/offline/profiles`) | 29 + 3 tests: estados ONLINE / OFFLINE CON MODELO / OFFLINE SIN DATOS, aceptación con checksum, conservación de la versión anterior, subconjunto por favoritos. |
+| Navegador (perfil sintético servido sólo con `OFFLINE_ALLOW_SYNTHETIC`, red cortada con Playwright) | Sincroniza perfil + frecuencias de 24 líneas. Con red: sin aviso. Sin red: «Estimación histórica — sin seguimiento GPS… ~6 min (entre 0 y 17 min). Basado en 23 días… Última sincronización». Línea sin perfil: «no hay datos suficientes… Frecuencia publicada aproximada: cada 10 min. Fuente: GTFS publicado por Bondi MDP (no oficial)». Al volver la red, desaparece. |
+| Suite / build | 48/49 archivos, **439/449** (mismos 10 preexistentes); `next build` OK. |
+| No hecho | Widgets offline (contrato v2 en Kotlin/Swift), batería y tiempo de inferencia en dispositivo, perfiles con datos reales (B1), ML offline (sólo si supera la estadística). |

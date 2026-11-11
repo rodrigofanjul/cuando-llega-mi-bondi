@@ -22,6 +22,7 @@ import { withViewTransition } from "@shared/pwa/viewTransition";
 import { useUIStore, NAMING_CLOSED } from "@shared/ui/store/useUIStore";
 import { toast } from "@shared/ui/store/useToastStore";
 import { AlertRunner } from "@features/alerts/components/AlertRunner";
+import { OfflineSync } from "@features/offline/components/OfflineSync";
 
 export function MainLayoutClient({ children }: { children: ReactNode }) {
   return (
@@ -30,6 +31,7 @@ export function MainLayoutClient({ children }: { children: ReactNode }) {
         {children}
       </MainLayoutContent>
       <AlertRunner />
+      <OfflineSync />
     </SearchFlowProvider>
   );
 }

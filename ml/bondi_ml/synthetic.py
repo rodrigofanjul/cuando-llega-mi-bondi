@@ -90,3 +90,31 @@ def generate(days: int = 28, start: str = "2026-09-01", seed: int = 7, trips_per
                         }
                     )
     return pd.DataFrame(obs_rows), pd.DataFrame(arr_rows)
+
+
+def _base_headway(hour: int, weekday: int) -> float:
+    """Frecuencia SINTÉTICA por franja (min): pico, valle, noche; fin de semana más espaciado."""
+    if hour < 6 or hour >= 23:
+        h = 30.0
+    elif 7 <= hour < 9 or 17 <= hour < 19:
+        h = 8.0
+    else:
+        h = 14.0
+    return h * (1.6 if weekday >= 5 else 1.0)
+
+
+def generate_arrivals(days: int = 28, start: str = "2026-09-01", seed: int = 11, stops=("A-S1", "A-S2"), lines=("A", "B")) -> pd.DataFrame:
+    """Llegadas SINTÉTICAS con intervalos realistas por franja, para el motor offline."""
+    rng = np.random.default_rng(seed)
+    base = pd.Timestamp(start, tz=AR_TZ)
+    rows: list[dict] = []
+    for line in lines:
+        for stop in stops:
+            for day in range(days):
+                t = base + pd.Timedelta(days=day, hours=5, minutes=int(rng.integers(0, 20)))
+                end = base + pd.Timedelta(days=day, hours=23, minutes=59)
+                while t < end:
+                    rows.append({"stop_id": stop, "line_code": line, "vehicle_id": f"{line}-{len(rows) % 30}", "arrived_at": int(t.timestamp() * 1000), "confidence": "high", "data_source": DATA_SOURCE})
+                    h = _base_headway(t.hour, t.weekday()) * rng.uniform(0.7, 1.3)
+                    t += pd.Timedelta(minutes=float(h))
+    return pd.DataFrame(rows)

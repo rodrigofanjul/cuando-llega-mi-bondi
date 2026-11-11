@@ -34,6 +34,8 @@ jobs:
       - name: Suite completa (incluye fallos preexistentes de shared/api/client.test.ts, ver docs/blockers.md B7)
         run: npx vitest run --reporter=default --reporter=junit --outputFile.junit=reports/vitest-all.xml
       - name: Build web
+        # Corre aunque la suite completa falle por los tests preexistentes (B7).
+        if: ${{ !cancelled() }}
         run: bun run build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
@@ -128,6 +130,14 @@ jobs:
       - name: xcodebuild (compila; no ejecuta tests de UI)
         run: |
           set -o pipefail
-          xcodebuild -project ios/App/App.xcodeproj -scheme App \
+          LOG="$RUNNER_TEMP/xcodebuild.log"
+          if ! xcodebuild -project ios/App/App.xcodeproj -scheme App \
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
-            -configuration Debug CODE_SIGNING_ALLOWED=NO build | tail -80
+            -configuration Debug CODE_SIGNING_ALLOWED=NO build > "$LOG" 2>&1; then
+            echo "::group::Errores de compilación"
+            grep -E "error:" "$LOG" | sort -u | head -80
+            echo "::endgroup::"
+            tail -40 "$LOG"
+            exit 1
+          fi
+          tail -20 "$LOG"

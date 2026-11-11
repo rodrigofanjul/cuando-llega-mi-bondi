@@ -169,6 +169,36 @@ private func accessibilityLabel(_ row: WidgetRow) -> String {
     }
 }
 
+struct ArrivalRowView: View {
+    let row: WidgetRow
+    let compact: Bool
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(row.target.lineLabel).font(.headline)
+            VStack(alignment: .leading, spacing: 0) {
+                Text(row.target.destination.isEmpty ? row.target.stopLabel : row.target.destination)
+                    .font(.caption)
+                    .lineLimit(1)
+                if !compact {
+                    Text(row.target.stopLabel).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                }
+            }
+            Spacer(minLength: 4)
+            VStack(alignment: .trailing, spacing: 0) {
+                Text(minutesLabel(row))
+                    .font(.headline)
+                    .foregroundStyle(row.state == .ok ? Color.accentColor : Color.secondary)
+                if !compact, row.state == .ok, let second = row.secondMinutes {
+                    Text("luego \(second) min").font(.caption2).foregroundStyle(.secondary)
+                }
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel(row))
+    }
+}
+
 struct BondiWidgetView: View {
     @Environment(\.widgetFamily) private var family
     let entry: BondiEntry
@@ -199,25 +229,8 @@ struct BondiWidgetView: View {
             if view.rows.isEmpty {
                 Text("Sin recorrido para este horario").font(.caption2).foregroundStyle(.secondary)
             }
-            ForEach(Array(view.rows.prefix(rowLimit).enumerated()), id: \.offset) { _, row in
-                HStack(alignment: .firstTextBaseline) {
-                    Text(row.target.lineLabel).font(.headline)
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text(row.target.destination.isEmpty ? row.target.stopLabel : row.target.destination).font(.caption).lineLimit(1)
-                        if family != .systemSmall {
-                            Text(row.target.stopLabel).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
-                        }
-                    }
-                    Spacer(minLength: 4)
-                    VStack(alignment: .trailing, spacing: 0) {
-                        Text(minutesLabel(row)).font(.headline).foregroundStyle(row.state == .ok ? Color.accentColor : .secondary)
-                        if family != .systemSmall, row.state == .ok, let second = row.secondMinutes {
-                            Text("luego \(second) min").font(.caption2).foregroundStyle(.secondary)
-                        }
-                    }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(accessibilityLabel(row))
+            ForEach(Array(view.rows.prefix(rowLimit).enumerated()), id: \.offset) { item in
+                ArrivalRowView(row: item.element, compact: family == .systemSmall)
             }
             Spacer(minLength: 0)
             footer(view)

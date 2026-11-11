@@ -9,6 +9,9 @@ import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.LocalSize
+import androidx.glance.currentState
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -57,8 +60,29 @@ class BondiWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val appWidgetId = GlanceAppWidgetManager(context).getAppWidgetId(id)
-        val state = withContext(Dispatchers.IO) { loadState(context, appWidgetId) }
-        provideContent { GlanceTheme { WidgetContent(state) } }
+        // Precalentar el almacenamiento fuera del hilo principal.
+        withContext(Dispatchers.IO) { WidgetStorage(context).store() }
+        provideContent {
+            // Leer la versión del estado de Glance fuerza la recomposición cuando
+            // refreshAll() la cambia; los datos se recargan en cada composición
+            // (si se cargaran antes de provideContent quedarían congelados).
+            @Suppress("UNUSED_VARIABLE")
+            val version = currentState(DATA_VERSION) ?: 0L
+            GlanceTheme { WidgetContent(loadState(context, appWidgetId)) }
+        }
+    }
+
+    companion object {
+        private val DATA_VERSION = longPreferencesKey("bondi_data_version")
+
+        /** Marca datos nuevos y redibuja todas las instancias. */
+        suspend fun refreshAll(context: Context) {
+            val stamp = System.currentTimeMillis()
+            for (id in GlanceAppWidgetManager(context).getGlanceIds(BondiWidget::class.java)) {
+                updateAppWidgetState(context, id) { prefs -> prefs[DATA_VERSION] = stamp }
+                BondiWidget().update(context, id)
+            }
+        }
     }
 
     private fun loadState(context: Context, appWidgetId: Int): WidgetUiState {
@@ -106,8 +130,19 @@ internal fun formatClock(epochMs: Long): String {
     return "%02d:%02d".format(minute / 60, minute % 60)
 }
 
+/** «menos de un minuto», «1 minuto», «N minutos» para lectores de pantalla. */
+internal fun spokenMinutes(m: Int): String = when (m) {
+    0 -> "menos de un minuto"
+    1 -> "1 minuto"
+    else -> "$m minutos"
+}
+
 internal fun minutesLabel(row: WidgetRow): String = when (row.state) {
-    RowState.OK -> if (row.nextArriving) "Llegando" else "${row.nextMinutes} min"
+    RowState.OK -> when {
+        row.nextArriving -> "Llegando"
+        row.nextMinutes == 0 -> "< 1 min"
+        else -> "${row.nextMinutes} min"
+    }
     RowState.NO_SERVICE -> "Sin arribos"
     RowState.MISSING -> "Sin datos"
     RowState.STALE -> "Vencido"
@@ -118,8 +153,8 @@ internal fun accessibilityLabel(row: WidgetRow): String {
     val base = "Línea ${row.target.lineLabel}, ${row.target.destination.ifEmpty { "cualquier sentido" }}, parada ${row.target.stopLabel}"
     return when (row.state) {
         RowState.OK -> {
-            val next = if (row.nextArriving) "llegando" else "llega en ${row.nextMinutes} minutos"
-            val second = row.secondMinutes?.let { ", el siguiente en $it minutos" }.orEmpty()
+            val next = if (row.nextArriving) "llegando" else "llega en ${spokenMinutes(row.nextMinutes ?: 0)}"
+            val second = row.secondMinutes?.let { ", el siguiente en ${spokenMinutes(it)}" }.orEmpty()
             "$base, $next$second"
         }
         RowState.STALE -> "$base, dato vencido"

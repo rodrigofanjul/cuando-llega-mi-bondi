@@ -41,4 +41,16 @@ swift test --package-path ios/BondiWidgetCore
 
 ## Qué no está verificado todavía
 
-Ver `docs/testing-results.md`. El código nativo no se compiló en este entorno; los jobs `android`, `ios-core` e `ios-build` de CI lo van a verificar.
+Android: compila localmente y en CI, y el widget se verificó en emulador (ver `docs/testing-results.md`). iOS: compila en CI (`ios-core`, `ios-build`) pero no se ejecutó en simulador ni dispositivo.
+
+## Probar en emulador Android sin tocar datos reales
+
+1. Mock del upstream (datos sintéticos «MOCK», descuentan minutos en tiempo real):
+   `node scripts/mock-mgp-upstream.mjs` (puerto 3200).
+2. Next apuntando al mock (la ruta `/api/mgp` existente no cambia; sólo variables de entorno):
+   `MGP_DIRECT_DISABLED=true MGP_UPSTREAM=http://127.0.0.1:3200 NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=dev next dev -p 3100`
+3. Emulador + túnel: `adb reverse tcp:3100 tcp:3100` (Next 16 bloquea recursos de dev desde otros orígenes, por eso
+   `localhost` y no `10.0.2.2`).
+4. `CAP_SERVER_URL=http://localhost:3100 npx cap sync android` → `gradlew assembleDebug` → `adb install -r`.
+   El build debug incluye `src/debug/res/xml/network_security_config.xml`, que permite HTTP sólo a localhost/10.0.2.2.
+5. En la app: Favoritos → Widgets → crear. En el launcher: mantener presionado → Widgets → «Bondi MDP».

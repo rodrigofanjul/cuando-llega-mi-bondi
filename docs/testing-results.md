@@ -88,3 +88,19 @@ preexistente en `shared/infra/supabase.ts`). Para desarrollo local se usó una U
 
 Correcciones que hicieron falta para llegar acá: import de Glance (Kotlin), bit +x de `gradlew`, ternario con tipos
 distintos y sombra de `accessibilityLabel` (Swift).
+
+## 2026-11-11 — Android en emulador (API 36, x86_64, WHPX) con upstream MOCK
+
+Sin tráfico a la Municipalidad: `/api/mgp` → `MGP_UPSTREAM` = mock local (verificado en el log del mock).
+
+| Paso | Resultado |
+| ---- | --------- |
+| App nativa arranca y carga la web en la WebView | OK (`Capacitor.isNativePlatform() === true`, plugin `BondiWidget` disponible). |
+| `/widgets` dentro de la app → plugin → `SharedPreferences` | OK: `store_v1` con contrato v1 y `apiBase` del mismo endpoint de la web. |
+| Widget en el launcher | Aparece como «Bondi MDP · Próximo bondi» con descripción; se agrega y muestra estado inicial «Sin datos / Esperando primera actualización». |
+| Actualización con WorkManager | OK: el mock recibe `P11003/531` y `P2/573`; el widget muestra «531 · Luro y Salta · 1 min · Actualizado 11:23». |
+| **Bug encontrado y corregido** | El widget no se redibujaba tras actualizar (datos leídos antes de `provideContent`). Ahora usa estado de Glance versionado (`refreshAll`). |
+| Sin conexión (túnel cortado, ↻) | OK: conserva el último dato, descuenta minutos localmente y muestra «11:23 · Sin conexión». |
+| Límite de consumo | OK: dentro de 90 s del último dato, ↻ no vuelve a consultar. |
+| Lector de pantalla | OK tras corrección: «Línea 531, cualquier sentido, parada Luro y Salta, llega en 1 minuto, el siguiente en 6 minutos» (antes decía «1 minutos»; «0 min» ahora es «< 1 min»). |
+| No probado | Configuración por instancia (pantalla de elección con varias configs), tamaños grandes, Doze/WorkManager diferido, dispositivo físico. |

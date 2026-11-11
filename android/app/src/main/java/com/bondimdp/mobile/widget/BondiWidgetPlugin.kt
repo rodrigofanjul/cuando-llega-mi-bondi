@@ -1,6 +1,5 @@
 package com.bondimdp.mobile.widget
 
-import androidx.glance.appwidget.updateAll
 import com.bondimdp.mobile.widget.core.WidgetJson
 import com.bondimdp.mobile.widget.data.WidgetStorage
 import com.getcapacitor.Plugin
@@ -34,7 +33,7 @@ class BondiWidgetPlugin : Plugin() {
     @PluginMethod
     fun reloadWidgets(call: PluginCall) {
         scope.launch {
-            BondiWidget().updateAll(context)
+            BondiWidget.refreshAll(context)
             call.resolve()
         }
     }

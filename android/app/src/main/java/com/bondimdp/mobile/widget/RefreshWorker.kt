@@ -1,7 +1,6 @@
 package com.bondimdp.mobile.widget
 
 import android.content.Context
-import androidx.glance.appwidget.updateAll
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -51,7 +50,7 @@ class RefreshWorker(context: Context, params: WorkerParameters) : CoroutineWorke
                     storage.mergeSnapshots(results)
                 }
             }
-            BondiWidget().updateAll(context)
+            BondiWidget.refreshAll(context)
         }
 
         private suspend fun hasActiveWidgets(context: Context): Boolean =

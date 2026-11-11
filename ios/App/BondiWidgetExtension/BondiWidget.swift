@@ -145,9 +145,21 @@ private func clock(_ ms: Int64) -> String {
     return String(format: "%02d:%02d", t.minute / 60, t.minute % 60)
 }
 
+/// «menos de un minuto», «1 minuto», «N minutos» para VoiceOver.
+private func spokenMinutes(_ m: Int) -> String {
+    switch m {
+    case 0: return "menos de un minuto"
+    case 1: return "1 minuto"
+    default: return "\(m) minutos"
+    }
+}
+
 private func minutesLabel(_ row: WidgetRow) -> String {
     switch row.state {
-    case .ok: return row.nextArriving ? "Llegando" : "\(row.nextMinutes ?? 0) min"
+    case .ok:
+        if row.nextArriving { return "Llegando" }
+        let minutes = row.nextMinutes ?? 0
+        return minutes == 0 ? "< 1 min" : "\(minutes) min"
     case .noService: return "Sin arribos"
     case .missing: return "Sin datos"
     case .stale: return "Vencido"
@@ -159,8 +171,8 @@ private func rowAccessibilityLabel(_ row: WidgetRow) -> String {
     let base = "Línea \(row.target.lineLabel), \(row.target.destination.isEmpty ? "cualquier sentido" : row.target.destination), parada \(row.target.stopLabel)"
     switch row.state {
     case .ok:
-        let next = row.nextArriving ? "llegando" : "llega en \(row.nextMinutes ?? 0) minutos"
-        let second = row.secondMinutes.map { ", el siguiente en \($0) minutos" } ?? ""
+        let next = row.nextArriving ? "llegando" : "llega en \(spokenMinutes(row.nextMinutes ?? 0))"
+        let second = row.secondMinutes.map { ", el siguiente en \(spokenMinutes($0))" } ?? ""
         return "\(base), \(next)\(second)"
     case .stale: return "\(base), dato vencido"
     case .missing: return "\(base), sin datos todavía"

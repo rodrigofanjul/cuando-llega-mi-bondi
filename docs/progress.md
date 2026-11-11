@@ -15,8 +15,8 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T2.1 WidgetConfig v1 | DONE | `features/widgets/lib/config.ts` |
 | T2.2 Multilínea | DONE | `rows.ts`, no mezcla paradas físicas |
 | T2.3 Widget inteligente | DONE | franjas, cruce de medianoche, TZ AR |
-| T2.4 Plugin BondiWidget | IN_PROGRESS | TS testeado; Kotlin y Swift compilan; falta prueba integrada en dispositivo |
-| T2.5 Widget Android (Glance + WorkManager) | IN_PROGRESS | compila, tests OK en local y CI; falta probar en emulador |
+| T2.4 Plugin BondiWidget | DONE (Android) | web→plugin→SharedPreferences verificado en emulador; iOS sólo compila |
+| T2.5 Widget Android (Glance + WorkManager) | DONE | verificado en emulador API 36 con mock: datos, actualización, sin conexión, accesibilidad |
 | T2.6 Widget iOS (WidgetKit + App Intents) | IN_PROGRESS | compila en CI; falta probar en simulador (requiere macOS) |
 | T2.7 Pantalla `/widgets` | DONE | verificada en navegador; e2e automatizado pendiente (T2.7b) |
 | T2.4b Snapshots compartidos app→widget | DONE (TS) | `shareArrivals.ts`, hook en `useArribos`; no comparte STALE ni fixtures |

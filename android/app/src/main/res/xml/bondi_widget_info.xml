@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  updatePeriodMillis="0": las actualizaciones las maneja WorkManager (mínimo
+  15 min, no garantizado) y la app al abrirse. El sistema no permite menos.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="110dp"
+    android:minHeight="50dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="50dp"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/glance_default_loading_layout"
+    android:configure="com.bondimdp.mobile.widget.WidgetConfigureActivity"
+    android:widgetFeatures="reconfigurable|configuration_optional"
+    android:description="@string/widget_description"
+    android:widgetCategory="home_screen" />

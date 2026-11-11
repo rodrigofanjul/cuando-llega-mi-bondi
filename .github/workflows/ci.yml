@@ -1,0 +1,133 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, feature/**]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: Web · typecheck, tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.18
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Tests de módulos nuevos (widgets, alertas, salida, normalización)
+        run: npx vitest run features/arrivals/lib features/widgets features/alerts features/departure shared/time --reporter=default --reporter=junit --outputFile.junit=reports/vitest-new.xml
+      - name: Suite completa (incluye fallos preexistentes de shared/api/client.test.ts, ver docs/blockers.md B7)
+        run: npx vitest run --reporter=default --reporter=junit --outputFile.junit=reports/vitest-all.xml
+      - name: Build web
+        run: bun run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vitest-reports
+          path: reports/
+
+  lint:
+    name: Web · lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.18
+      - run: bun install --frozen-lockfile
+      - name: ESLint (2 errores preexistentes react-hooks/set-state-in-effect, ver docs/testing-results.md)
+        run: npx eslint .
+
+  android:
+    name: Android · unit tests + APK debug
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HAS_KEYSTORE: ${{ secrets.BONDI_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.18
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - run: bun install --frozen-lockfile
+      - name: Capacitor sync
+        run: npx cap sync android
+      - name: Unit tests JVM (vectores compartidos + lógica de widgets)
+        working-directory: android
+        run: ./gradlew --no-daemon testDebugUnitTest
+      - name: Assemble debug APK
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+      - name: Release AAB (sólo si hay secretos de firma)
+        if: ${{ env.HAS_KEYSTORE == 'true' }}
+        env:
+          BONDI_KEYSTORE_PASSWORD: ${{ secrets.BONDI_KEYSTORE_PASSWORD }}
+          BONDI_KEY_ALIAS: ${{ secrets.BONDI_KEY_ALIAS }}
+          BONDI_KEY_PASSWORD: ${{ secrets.BONDI_KEY_PASSWORD }}
+        working-directory: android
+        run: |
+          echo "${{ secrets.BONDI_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          BONDI_KEYSTORE_PATH="$RUNNER_TEMP/release.keystore" ./gradlew --no-daemon bundleRelease
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-artifacts
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/bundle/release/*.aab
+            android/app/build/test-results/
+          if-no-files-found: warn
+
+  ios-core:
+    name: iOS · BondiWidgetCore (swift test)
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path ios/BondiWidgetCore
+
+  ios-build:
+    name: iOS · build simulador (sin firma)
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.18
+      - run: bun install --frozen-lockfile
+      - name: Capacitor sync
+        run: npx cap sync ios
+      - name: Agregar extensión WidgetKit
+        run: |
+          gem install xcodeproj --no-document
+          ruby ios/scripts/add_widget_target.rb
+      - name: xcodebuild (compila; no ejecuta tests de UI)
+        run: |
+          set -o pipefail
+          xcodebuild -project ios/App/App.xcodeproj -scheme App \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug CODE_SIGNING_ALLOWED=NO build | tail -80

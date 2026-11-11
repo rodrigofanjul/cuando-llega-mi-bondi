@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bondi MDP</string>
+    <string name="title_activity_main">Bondi MDP</string>
+    <string name="package_name">com.bondimdp.app.dev</string>
+    <string name="custom_url_scheme">com.bondimdp.app.dev</string>
+    <string name="widget_label">Próximo bondi</string>
+    <string name="widget_description">Próximos arribos de tus líneas y paradas, con la hora de la última actualización.</string>
+    <string name="widget_configure_title">Elegí qué mostrar</string>
+</resources>

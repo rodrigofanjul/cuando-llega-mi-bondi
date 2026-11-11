@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Bondi MDP · Sin conexión</title>
+    <style>
+        :root { color-scheme: light dark; --bg: #f8fafc; --fg: #0f172a; --muted: #475569; --accent: #0077cc; }
+        @media (prefers-color-scheme: dark) { :root { --bg: #0b1220; --fg: #e2e8f0; --muted: #94a3b8; --accent: #38a8ff; } }
+        body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg);
+               font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 16px; box-sizing: border-box; }
+        main { max-width: 360px; text-align: center; }
+        h1 { font-size: 1.25rem; margin: 0 0 .5rem; }
+        p { color: var(--muted); margin: 0 0 1.25rem; }
+        button { font: inherit; font-weight: 600; color: #fff; background: var(--accent); border: 0; border-radius: 12px;
+                 padding: .75rem 1.5rem; min-height: 44px; cursor: pointer; }
+        button:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+    </style>
+</head>
+<body>
+    <main role="main" aria-live="polite">
+        <h1>No hay conexión</h1>
+        <p>No pudimos cargar Bondi MDP. Tus widgets siguen mostrando el último dato guardado con su hora de actualización.</p>
+        <button type="button" onclick="location.reload()">Reintentar</button>
+    </main>
+</body>
+</html>

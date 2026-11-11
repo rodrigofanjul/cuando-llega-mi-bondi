@@ -1,0 +1,33 @@
+{
+  "$comment": "Vectores de prueba compartidos por el normalizador TS (features/arrivals/lib/normalize.ts), Kotlin (android widget) y Swift (WidgetKit). Si cambia el formato de la API, actualizar acá y los tres tests fallan juntos. Formatos 'Arribando..' y 'N min. aprox.' observados en el código existente; el resto son casos defensivos.",
+  "version": 1,
+  "eta": [
+    { "raw": "Arribando..", "minutes": 0, "status": "arriving" },
+    { "raw": "Llegando", "minutes": 0, "status": "arriving" },
+    { "raw": "ARRIBANDO", "minutes": 0, "status": "arriving" },
+    { "raw": "1 min. aprox.", "minutes": 1, "status": "minutes" },
+    { "raw": "12 min. aprox.", "minutes": 12, "status": "minutes" },
+    { "raw": " 43 min. aprox. ", "minutes": 43, "status": "minutes" },
+    { "raw": "1 h 5 min", "minutes": 65, "status": "minutes" },
+    { "raw": "2 hs", "minutes": 120, "status": "minutes" },
+    { "raw": "", "minutes": null, "status": "unknown" },
+    { "raw": "Sin datos", "minutes": null, "status": "unknown" },
+    { "raw": "-3 min", "minutes": null, "status": "unknown" }
+  ],
+  "deviation": [
+    { "raw": "00:00", "minutes": 0 },
+    { "raw": "+00:00", "minutes": 0 },
+    { "raw": "+05:00", "minutes": 5 },
+    { "raw": "-03:00", "minutes": -3 },
+    { "raw": "+01:10:00", "minutes": 70 },
+    { "raw": "", "minutes": null },
+    { "raw": "abc", "minutes": null }
+  ],
+  "gpsTimestamp": [
+    { "raw": "2026-11-11T11:45:12.000Z", "epochMs": 1794397512000 },
+    { "raw": "2026-11-11 08:45:12", "epochMs": 1794397512000 },
+    { "raw": "2026-11-11T08:45", "epochMs": 1794397500000 },
+    { "raw": "", "epochMs": null },
+    { "raw": "ayer", "epochMs": null }
+  ]
+}

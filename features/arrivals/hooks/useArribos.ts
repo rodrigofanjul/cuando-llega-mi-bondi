@@ -6,6 +6,8 @@ import type { Arribo } from "@features/arrivals/types";
 import { DEV_FIXTURE_ARRIBOS } from "@features/arrivals/lib/devFixture";
 import { getWidgetBridge, useWidgetConfigsStore } from "@features/widgets/store/useWidgetConfigsStore";
 import { shareArrivalsWithWidgets } from "@features/widgets/native/shareArrivals";
+import { reportObservations } from "@features/observations/client/reporter";
+import { normalizeArribo } from "@features/arrivals/lib/normalize";
 import { swrFetcherWithMeta, type MgpResult, type SwrActionKey } from "@shared/api/client";
 import {
     MgpBusinessError,
@@ -126,6 +128,21 @@ export function useArribos({
             lastUpdate.getTime(),
         ).catch(() => {
             // Un fallo del widget nunca afecta la consulta de arribos.
+        });
+        // Histórico (apagado por defecto, ver features/observations/client/reporter.ts).
+        const fetchedAt = lastUpdate.getTime();
+        const arribosReales = data.data?.arribos ?? [];
+        void reportObservations(
+            {
+                stopId: paradaId,
+                lineCode: codLinea,
+                fetchedAt,
+                error: null,
+                arrivals: arribosReales.map((a) => normalizeArribo(a, { stopId: paradaId, lineCode: codLinea, fetchedAt })),
+            },
+            "user_query",
+        ).catch(() => {
+            // Nunca afecta la consulta de arribos.
         });
     }, [lastUpdate, data, isStale, paradaId, codLinea]);
     // En dev, si la consulta real ya resolvió sin traer nada (fuera de

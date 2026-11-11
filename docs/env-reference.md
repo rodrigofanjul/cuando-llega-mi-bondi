@@ -64,6 +64,24 @@ Estas variables documentan el **stack completo** (proxy/oracle/crypto en el back
 
 Configuralas en el servicio que las consuma (backend self-hosted), no esperes efecto solo por tenerlas en `.env.local` del front.
 
+## Históricos de arribos (apagados por defecto)
+
+| Variable | Dónde | Default | Uso |
+| -------- | ----- | ------- | --- |
+| `NEXT_PUBLIC_OBSERVATIONS_ENABLED` | Cliente (build) | sin definir = apagado | `true` envía observaciones muestreadas (1/min por parada+línea) de consultas que la app ya hizo a `/api/observations`. |
+| `OBSERVATIONS_INGEST_ENABLED` | Servidor | sin definir = apagado | `true` guarda en `arrival_observations` (Supabase, service role). Si no, el endpoint valida y responde 202 sin guardar. |
+| `NEXT_PUBLIC_APP_VERSION` | Cliente (build) | — | Versión que acompaña cada lote de observaciones. |
+
+Activar **sólo** con la autorización escrita de uso de datos (`docs/blockers.md` B1). Requiere aplicar
+`supabase/migrations/20261111120000_arrival_observations.sql` y programar `purge_arrival_history(90)`.
+
+## Capacitor (builds móviles)
+
+| Variable | Default | Uso |
+| -------- | ------- | --- |
+| `CAP_SERVER_URL` | `https://bondimdp.com.ar` | Sitio que carga la WebView. En emulador Android contra `next dev`: `http://10.0.2.2:3000`. |
+| `CAP_APP_ID` | `com.bondimdp.app.dev` | Identificador de la app (ver B6 antes de usar `com.bondimdp.app`). |
+
 ## Vercel
 
 En producción, definí las `NEXT_PUBLIC_*` en el panel de Vercel. El catálogo estático viaja en el deploy (`data/static/`); el backend en vivo debe ser accesible desde el navegador del usuario (CORS en el servidor externo).

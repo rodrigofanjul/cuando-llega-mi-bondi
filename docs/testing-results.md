@@ -55,3 +55,22 @@ preexistente en `shared/infra/supabase.ts`). Para desarrollo local se usó una U
 | Bug encontrado y corregido | Clics rápidos en los días se pisaban (cada clic usaba el estado del render anterior). Editores de alertas y widgets pasaron a actualizaciones funcionales; re-verificado en navegador. |
 | «¿Cuándo salgo?» | Verificado con tests unitarios. **No** se probó en navegador: requiere arribos reales y no se generó tráfico al proveedor durante las pruebas. |
 | Notificaciones reales | No verificadas: requieren conceder permiso en un dispositivo/navegador y arribos reales en franja. |
+
+## 2026-11-11 — Destrabe de compilación nativa
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| Toolchain local | Temurin JDK 21.0.13 (winget) + Android SDK (cmdline-tools, platform 36, build-tools 36.0.0) en `C:\Android\sdk`. |
+| Android `testDebugUnitTest` (local) | **13/13 OK** (ArrivalParserTest 4, WidgetRowsTest 9) — vectores compartidos con TS pasan en Kotlin. Hizo falta 1 corrección (import de `actionStartActivity`). |
+| Android `assembleDebug` (local) | **OK** — `app-debug.apk` 7,2 MB. No se instaló en emulador/dispositivo todavía. |
+| Fork | `rodrigofanjul/cuando-llega-mi-bondi` (público, fork del original). Push al repo de la organización deshabilitado en el remoto `upstream`. |
+| CI run 43032100679 | `ios-core` (**swift test**) **OK**. Fallos: lint y suite completa (preexistentes, esperados), Android (gradlew sin +x), iOS build (`BondiWidget.swift`). Corregidos en el commit siguiente. |
+
+## 2026-11-11 — Ciclo 4 (históricos)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `vitest run` (completo) | 34/35 archivos, **268/278**. Mismos 10 fallos preexistentes (B7). +19 tests: observaciones/inferencia 10, rate limit 3, endpoint 4, reporter 2. |
+| Migración SQL contra Postgres real (PGlite 0.3.7, fuera del repo) | **12/12 chequeos OK**: inserts válidos, rechazo por constraints (origin, ETA, vacío), unicidad de llegadas, retención mínima, purga, RLS activado, sin políticas públicas. |
+| Ingesta | Apagada por defecto en cliente y servidor; verificado por test que no guarda sin el flag. |
+| `tsc` / `eslint .` | OK / 2 errores preexistentes (se agregaron `android/`, `ios/`, `mobile/` a los ignores para no lintear artefactos de build). |

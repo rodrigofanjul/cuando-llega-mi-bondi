@@ -150,3 +150,14 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | Tests | `habits.test.ts` 5 (retención, tope, franja ±60 min, tipo de día, mayoría estricta, cruce de medianoche, favoritos borrados). Suite: 39/40 archivos, **366/376** (mismos 10 preexistentes). |
 | Navegador (`/favoritos`) | Apagada por defecto: sin sugerencia, con explicación visible. Activada con 4 consultas sembradas: «Sugerencia para esta hora · Casa · Lo consultaste 4 veces los días hábiles a esta hora en los últimos 60 días.» Desactivar → sugerencia oculta y `events: []`. |
 | eslint | Se agregó `ml/**` a los ignores (el venv trae JS de scikit-learn). |
+
+## 2026-11-11 — Ciclo 8 (reportes colaborativos + ocupación experimental)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| Lógica (`features/reports`) | 11 tests: validación, moderación (enlace/correo/teléfono/lenguaje → pendiente), agrupación sólo con ≥ 2 personas, antispam por dispositivo, caducidad, reputación (prior neutro, cotas), ocupación por recencia con procedencia, corroboración. |
+| API (`/api/reports`) | 5 tests: 503 sin configuración, alta con caducidad y moderación, 400 inválidos, límite por dispositivo aunque cambie la IP, GET sólo agregados y sin hashes. |
+| Migración en Postgres real (PGlite) | **14/14**: constraints de tipo/ocupación/hash/texto/fechas, reputación consistente, purga, RLS sin políticas públicas. |
+| Navegador | Sin configuración: el bloque no aparece y los arribos siguen. Con respuestas **simuladas** (intercepción Playwright): «COMUNIDAD · NO CONFIRMADO», ocupación con procedencia, agregado de demora; el formulario envía `{type, lineCode, stopId, occupancy, text, deviceId}` y muestra el aviso. |
+| Suite | 41/42 archivos, **382/392** (mismos 10 preexistentes). |
+| Pendiente | Proceso que actualice `reporter_reputation` (hoy todos pesan 1); panel de moderación para revisar `pending`; NLP para clasificar texto (no aporta todavía). |

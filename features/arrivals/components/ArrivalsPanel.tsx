@@ -21,6 +21,7 @@ import { LiveSharingBanner } from "./LiveSharingBanner";
 import { AdSenseRail } from "@shared/ads/AdSenseUnit";
 import { DepartureAdvisor } from "@features/departure/components/DepartureAdvisor";
 import { AnomalyNotice } from "@features/anomalies/components/AnomalyNotice";
+import { CommunityReports } from "@features/reports/components/CommunityReports";
 
 const ADSENSE_SLOT_ARRIVALS = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARRIVALS?.trim();
 
@@ -253,6 +254,7 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                             stale={isStale}
                         />
                     ) : null}
+                    {isConsulting && codLinea ? <CommunityReports lineCode={codLinea} stopId={paradaId} /> : null}
                     {hasArribos ? (
                         <DepartureAdvisor
                             arribos={displayArribos}

@@ -75,6 +75,22 @@ Configuralas en el servicio que las consuma (backend self-hosted), no esperes ef
 Activar **sólo** con la autorización escrita de uso de datos (`docs/blockers.md` B1). Requiere aplicar
 `supabase/migrations/20261111120000_arrival_observations.sql` y programar `purge_arrival_history(90)`.
 
+## Reportes colaborativos (apagados sin configuración)
+
+| Variable | Dónde | Uso |
+| -------- | ----- | --- |
+| `REPORTS_SALT` | Servidor (secreto) | Sal para `reporter_hash = SHA-256(deviceId + sal)`. Sin ella `/api/reports` responde 503 y la UI oculta la función. Rotarla desvincula la reputación previa. |
+| `SUPABASE_SECRET_KEY` + `SUPABASE_URL` | Servidor | Escritura/lectura con service role (RLS sin políticas públicas). |
+
+Requiere `supabase/migrations/20261111150000_community_reports.sql` y programar `purge_community_reports(30)`.
+
+## Predicción (ML)
+
+| Variable | Uso |
+| -------- | --- |
+| `PREDICTION_MODEL_PATH` | Artefacto de `ml/` (sólo se usa si es real y publicable). Sin ella → ETA oficial. |
+| `PREDICTION_ALLOW_SYNTHETIC` | `true` sólo fuera de producción, para pruebas. |
+
 ## Capacitor (builds móviles)
 
 | Variable | Default | Uso |

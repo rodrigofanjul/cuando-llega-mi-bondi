@@ -1,0 +1,57 @@
+# Resultados de pruebas
+
+Entorno: Windows 11, Node 24.15, npm 11.17, sin JDK/Android SDK, sin macOS.
+
+> **Cómo correr vitest en Windows:** desde PowerShell en `E:\...` (unidad en mayúscula). Desde Git Bash (`/e/...`)
+> vitest carga el runner dos veces y **todos** los archivos fallan con
+> `Cannot read properties of undefined (reading 'config')`. No es un bug del código.
+
+## 2026-11-11 — Línea base (antes de cambios)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `vitest run` | 17/18 archivos, **141/151** tests. 10 fallos en `shared/api/client.test.ts` (failover; preexistente, B7). |
+| `tsc --noEmit` | OK |
+| `eslint .` | 2 errores preexistentes `react-hooks/set-state-in-effect` |
+
+## 2026-11-11 — Ciclo 1
+
+| Chequeo | Resultado | Evidencia |
+| ------- | --------- | --------- |
+| `vitest run` (completo) | 24/25 archivos, **224/234**. Los 10 fallos son los mismos preexistentes. | +83 tests nuevos, 0 regresiones |
+| Tests nuevos | normalize 27 · freshness 7 · argentina 6 · widgets 16 · bridge 3 · advisor 13 · alerts 11 | `features/**/lib/*.test.ts`, `shared/time` |
+| `tsc --noEmit` | OK | |
+| `eslint` sobre módulos nuevos | OK (0 problemas) | `eslint .` sigue con los 2 errores preexistentes |
+| `npx cap add android/ios`, `npx cap sync` | OK | |
+| Android `testDebugUnitTest` / `assembleDebug` | **NO EJECUTADO** (sin JDK/SDK local). Definido en `.github/workflows/ci.yml` job `android`. | Pendiente de ejecución en CI (B2) |
+| iOS `swift test` BondiWidgetCore | **NO EJECUTADO** (sin toolchain Swift local). Job `ios-core`. | Pendiente (B2) |
+| iOS `xcodebuild` | **NO EJECUTADO**. Job `ios-build` compila para simulador sin firma; no ejecuta tests de UI. | Pendiente (B2) |
+| E2E Playwright | No implementado todavía (pantalla `/widgets` pendiente, T2.7). | |
+
+Advertencia: el código Kotlin y Swift **no fue compilado** en este ciclo. Hasta que CI corra, su estado es
+"escrito y revisado", no "verificado".
+
+## 2026-11-11 — Ciclo 2 (pantalla /widgets + snapshots compartidos)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `vitest run` (completo) | 27/28 archivos, **237/247**. Los 10 fallos siguen siendo los preexistentes (B7). +13 tests nuevos: draft 8, store 2, shareArrivals 3. |
+| `tsc --noEmit` / eslint (features, app/(main)) | OK / OK |
+| Verificación manual en navegador (Playwright MCP, `next dev`) | `/widgets` carga sin errores de consola propios; validación muestra «Poné un nombre al widget.»; se creó un widget multilínea con 2 favoritos; `bondi:widget-configs` guarda contrato v1 válido; persiste tras recargar; layout correcto a 390 px. |
+| Bug encontrado y corregido en la verificación | `registerPlugin("BondiWidget")` se llamaba en cada render → «already registered». Ahora se registra una sola vez por módulo. |
+| E2E automatizado (Playwright test runner) | **Pendiente**: la verificación de este ciclo fue manual. Requiere agregar `@playwright/test` (decisión de dependencia) — T2.7b. |
+
+Nota de entorno: sin `NEXT_PUBLIC_SUPABASE_URL`, todo el layout `(main)` falla al cargar (`supabaseUrl is required`,
+preexistente en `shared/infra/supabase.ts`). Para desarrollo local se usó una URL de marcador `http://127.0.0.1:54321` (B9).
+
+## 2026-11-11 — Ciclo 3 (ejecutor de alertas + /alertas + «¿Cuándo salgo?»)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `vitest run` (completo) | 30/31 archivos, **249/259**. Mismos 10 fallos preexistentes (B7). +12 tests: runner 5, draft de alertas 3, fromArrivals 4. |
+| `tsc --noEmit` | OK |
+| `eslint .` | 2 errores (los mismos preexistentes); 0 en código nuevo. |
+| Navegador (`/alertas`) | Pantalla carga; banner de permiso con botón explícito; se creó y guardó una regla válida (`bondi:alerts`). **0 requests a `/mgp/`** durante la prueba (regla fuera de franja activa). Datos de prueba borrados al final. |
+| Bug encontrado y corregido | Clics rápidos en los días se pisaban (cada clic usaba el estado del render anterior). Editores de alertas y widgets pasaron a actualizaciones funcionales; re-verificado en navegador. |
+| «¿Cuándo salgo?» | Verificado con tests unitarios. **No** se probó en navegador: requiere arribos reales y no se generó tráfico al proveedor durante las pruebas. |
+| Notificaciones reales | No verificadas: requieren conceder permiso en un dispositivo/navegador y arribos reales en franja. |

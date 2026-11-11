@@ -1,0 +1,50 @@
+# Registro de decisiones técnicas (ADR breve)
+
+## D1 — No modificar la conexión de datos (2026-11-11)
+Decisión del responsable del proyecto. `shared/api/client.ts`, `app/api/mgp/*`, `lib/server/mgpDirect.ts`
+y `probe-v670.yml` quedan intactos. Todo lo nuevo consume arribos por el cliente existente o por el mismo endpoint HTTP.
+
+## D2 — Monolito modular sobre Next.js existente
+Alternativas: backend Node separado (Hono en `server/`), microservicios. Rechazadas: duplican deploy, CORS y auth
+sin un requisito que lo exija. Se reevalúa si la ingesta histórica (§6.1) necesita un proceso de larga duración.
+
+## D3 — Capacitor en modo `server.url`
+Alternativas: (a) `output: "export"` empaquetado — rompe route handlers, Cache Components y el planner del servidor;
+(b) reescritura React Native — viola "no reescribir componentes funcionales"; (c) TWA — sin puente nativo para widgets.
+Costo aceptado: la app requiere red para la UI (los widgets no: tienen caché propia). Mitigación: `errorPath` local offline.
+
+## D4 — Lógica de dominio nueva como funciones puras
+`features/<dominio>/lib/*.ts` sin React ni `fetch`. Permite tests deterministas (reloj inyectado) y usar el mismo
+contrato como especificación de los widgets nativos.
+
+## D5 — Contrato web↔nativo por JSON versionado + vectores compartidos
+`shared/contracts/arrival-vectors.json` se ejecuta desde vitest y desde los tests JVM/XCTest. Un cambio de formato
+de la API rompe los tres a la vez en vez de divergir silenciosamente.
+
+## D6 — Hora local fija `America/Argentina/Buenos_Aires`
+Recurrencias de alertas y widget inteligente se evalúan en esa zona, no en la del dispositivo, porque el servicio es local.
+
+## D7 — Sin Redis/Postgres nuevos en esta etapa
+La caché compartida ya existe en el proxy/CDN (`X-Cache`). Para históricos se usa Supabase (ya en el stack).
+
+## D8 — Versiones fijadas con antigüedad mínima
+Capacitor 8.5.3 (2026-10-07) en lugar de 8.6.0 (2026-10-28): se prefiere una versión con semanas de uso.
+
+## D10 — Preparar ahora la compatibilidad con el motor offline (Fase 9)
+Fase 9 se implementa al final, pero tres decisiones se fijan ya porque cambiarlas después rompería el contrato
+en tres plataformas: (1) observaciones crudas + calendario separado; (2) contrato de widgets v2 con `source` y
+estados offline, leyendo v1 de forma retrocompatible; (3) perfiles como artefacto versionado con checksum y
+versión anterior conservada. Primero estadística (cuantiles por franja); ML sólo con mejora medida.
+
+## D9 — Ejecutar vitest con ruta de unidad en mayúscula en Windows
+Con `/e/...` (Git Bash) vitest carga dos instancias del runner. Documentado en `docs/testing-results.md`.
+
+## D11 — Ejecutor de alertas local y limitado (2026-11-11)
+Corre sólo con la app abierta y visible, cada 60 s, sólo para pares (parada, línea) de reglas activas en ese
+horario y con tope de 8 consultas por ciclo. Datos STALE no disparan alertas. Si el sistema no deja mostrar la
+notificación (sin permiso), no se marca como enviada. La UI informa que con la app cerrada no hay garantía
+(alertas exactas en segundo plano = push servidor, B3).
+
+## D12 — Ubicación para «¿Cuándo salgo?»
+Se pide sólo al tocar «Usar mi ubicación», con precisión baja. Se guarda únicamente el resultado (minutos de
+caminata por parada) en LocalStorage; nunca coordenadas del usuario.

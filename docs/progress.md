@@ -34,6 +34,6 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T6.1 Cuándo salir | DONE | lógica + UI verificada en navegador con datos MOCK; ubicación sólo a pedido, no se guarda |
 | T6.2 Detección de anomalías | DONE (reglas) | `features/anomalies` (10 tests) + aviso en arribos verificado con mock; umbrales a calibrar con histórico |
 | T6.3 Planificador avanzado | DONE | preferencias (rápido, menos caminata, menos transbordos, líneas preferidas) + salir ahora/a las/llegar antes de; verificado en navegador |
-| T6.4 Personalización local | TODO | |
+| T6.4 Personalización local | DONE | opt-in, sólo en el dispositivo, sin ubicación, explicada y borrable; verificada en navegador |
 | T7.x | TODO / BLOCKED (B5) | |
 | Fase 9 Offline-first | TODO | Dependencias arquitectónicas fijadas (D10) |

@@ -141,3 +141,12 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | Tests | `preferences.test.ts` 11 + `argentina.test.ts` (+1); planner/costModel existentes siguen OK (33/33 en trip-planner). |
 | Navegador (`/como-llego`, catálogo estático, sin servicios externos: lugares recientes sembrados) | «5 opciones de viaje», cada una con «Salí 12:09 · llegás ~12:36». «Menos caminata» sube la opción de 307 m del 5.º al 3.er lugar. «Llegar antes de las 12:30» → «Ninguna opción llega antes de las 12:30. Probá con otro horario.» «Llegar antes de las 13:00» → ordenadas por salida más tardía (12:33, 12:32, …). 0 errores de consola. |
 | No hecho | Primera espera con arribo en vivo en la UI (la función existe y está testeada; no se conectó para no sumar consultas automáticas). |
+
+## 2026-11-11 — Ciclo 7b (personalización local)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| CI run 43045837158 (planner) | ML (con `check_fixture`), Android, iOS (`swift test` + build) y build web **OK**; rojo sólo por B7 y lint preexistentes. |
+| Tests | `habits.test.ts` 5 (retención, tope, franja ±60 min, tipo de día, mayoría estricta, cruce de medianoche, favoritos borrados). Suite: 39/40 archivos, **366/376** (mismos 10 preexistentes). |
+| Navegador (`/favoritos`) | Apagada por defecto: sin sugerencia, con explicación visible. Activada con 4 consultas sembradas: «Sugerencia para esta hora · Casa · Lo consultaste 4 veces los días hábiles a esta hora en los últimos 60 días.» Desactivar → sugerencia oculta y `events: []`. |
+| eslint | Se agregó `ml/**` a los ignores (el venv trae JS de scikit-learn). |

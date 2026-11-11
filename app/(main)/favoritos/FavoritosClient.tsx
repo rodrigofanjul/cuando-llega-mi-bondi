@@ -2,6 +2,8 @@
 
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
+import { HabitSuggestion, PersonalizationSettings } from "@features/personalization/components/Personalization";
+import { useHabitsStore } from "@features/personalization/store/useHabitsStore";
 import { useRouter } from "next/navigation";
 import { useFavoritos } from "@features/favorites/hooks/useFavoritos";
 import { useHistorial } from "@features/history/hooks/useHistorial";
@@ -58,6 +60,8 @@ export function FavoritosClient() {
       const line = resolveFavoritoLinea(fav, descripcionToCode);
       if (!line) return; // Can't resolve – do nothing
 
+      // Personalización local opt-in (no registra nada si está desactivada).
+      useHabitsStore.getState().record(fav.id, Date.now());
       resetToParada(fav.identificadorParada, line, {
         consulting: true,
       });
@@ -111,6 +115,7 @@ export function FavoritosClient() {
               PARADAS GUARDADAS
             </div>
           </div>
+          <HabitSuggestion favoritos={favoritos} onConsult={fetchFavArribos} />
           <FavoritesList
             favoritos={favoritos}
             onView={fetchFavArribos}
@@ -131,6 +136,7 @@ export function FavoritosClient() {
           />
         </div>
       </div>
+      <PersonalizationSettings />
     </PageShell>
   );
 }

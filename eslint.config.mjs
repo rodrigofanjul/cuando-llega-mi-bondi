@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     "android/**",
     "ios/**",
     "mobile/**",
+    // Pipeline Python (incluye el venv local con JS de terceros).
+    "ml/**",
   ]),
 ]);
 

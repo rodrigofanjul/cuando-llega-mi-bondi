@@ -48,3 +48,16 @@ notificación (sin permiso), no se marca como enviada. La UI informa que con la 
 ## D12 — Ubicación para «¿Cuándo salgo?»
 Se pide sólo al tocar «Usar mi ubicación», con precisión baja. Se guarda únicamente el resultado (minutos de
 caminata por parada) en LocalStorage; nunca coordenadas del usuario.
+
+## D13 — Inferencia de ML en TypeScript sin dependencias (2026-11-11)
+El artefacto exporta árboles LightGBM compactos y un evaluador TS (≈40 líneas) los recorre. Evita ONNX/servicio Python
+en producción. Paridad verificada con casos incluidos en el artefacto; en CI la verificación es semántica porque
+LightGBM genera umbrales levemente distintos entre plataformas.
+
+## D14 — Planificador: capa de preferencias sobre RAPTOR
+No se modifica el algoritmo existente: se reordena/filtra su salida (preferencias y horarios). La primera espera con
+arribo en vivo está implementada como función pura pero no conectada a la UI, para no sumar consultas automáticas.
+
+## D15 — Personalización local opt-in
+Sólo `favId` + minuto, en LocalStorage, 60 días, máx. 200 eventos. Apagada por defecto; desactivar borra. Mayoría
+estricta en la franja para sugerir (evita sugerencias arbitrarias en empates).

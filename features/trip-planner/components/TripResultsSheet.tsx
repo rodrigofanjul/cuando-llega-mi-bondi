@@ -1,7 +1,9 @@
 "use client";
 
 import { Sheet } from "react-modal-sheet";
+import type { ReactNode } from "react";
 import type { Itinerary } from "@features/trip-planner/types";
+import type { ScheduledItinerary } from "@features/trip-planner/lib/preferences";
 import { TripResultsHeader, TripResultsList } from "./TripResultsList";
 
 /*
@@ -16,6 +18,9 @@ type TripResultsSheetProps = {
     onNewTrip: () => void;
     originLabel?: string;
     destLabel?: string;
+    schedules?: ScheduledItinerary[];
+    options?: ReactNode;
+    emptyMessage?: string | null;
 };
 
 export function TripResultsSheet({
@@ -25,10 +30,13 @@ export function TripResultsSheet({
     onNewTrip,
     originLabel,
     destLabel,
+    schedules,
+    options,
+    emptyMessage,
 }: TripResultsSheetProps) {
     return (
         <Sheet
-            isOpen={itineraries.length > 0}
+            isOpen={itineraries.length > 0 || Boolean(emptyMessage)}
             onClose={() => undefined}
             snapPoints={[0, 0.22, 0.5, 1]}
             initialSnap={1}
@@ -52,6 +60,9 @@ export function TripResultsSheet({
                         onSelect={onSelect}
                         originLabel={originLabel}
                         destLabel={destLabel}
+                        schedules={schedules}
+                        options={options}
+                        emptyMessage={emptyMessage}
                     />
                 </Sheet.Content>
             </Sheet.Container>

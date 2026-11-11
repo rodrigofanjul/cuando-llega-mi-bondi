@@ -127,3 +127,17 @@ Sin tráfico a la Municipalidad: `/api/mgp` → `MGP_UPSTREAM` = mock local (ver
 | `/api/predict` | Sin modelo → ETA oficial; sintético rechazado en producción y sin flag; artefacto ilegible → fallback; validación de parámetros. |
 | `vitest` completo | 37/38 archivos, **349/359**: mismos 10 fallos preexistentes (B7); +71 tests de predicción. |
 | No hecho | Entrenamiento con datos reales (B1), monitoreo de precisión en producción, XGBoost (descartado por ahora). |
+
+## 2026-11-11 — CI run 43044881572 (ciclo 6)
+
+`ml` pytest **OK en Linux** (incluye paridad de árboles). Falló la comparación bit a bit del fixture: LightGBM genera
+umbrales levemente distintos entre Windows y Linux. Se reemplazó por `bondi_ml.check_fixture` (esquema, variables
+y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Android y `swift test` OK.
+
+## 2026-11-11 — Ciclo 7a (planificador: preferencias y horarios)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| Tests | `preferences.test.ts` 11 + `argentina.test.ts` (+1); planner/costModel existentes siguen OK (33/33 en trip-planner). |
+| Navegador (`/como-llego`, catálogo estático, sin servicios externos: lugares recientes sembrados) | «5 opciones de viaje», cada una con «Salí 12:09 · llegás ~12:36». «Menos caminata» sube la opción de 307 m del 5.º al 3.er lugar. «Llegar antes de las 12:30» → «Ninguna opción llega antes de las 12:30. Probá con otro horario.» «Llegar antes de las 13:00» → ordenadas por salida más tardía (12:33, 12:32, …). 0 errores de consola. |
+| No hecho | Primera espera con arribo en vivo en la UI (la función existe y está testeada; no se conectó para no sumar consultas automáticas). |

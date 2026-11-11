@@ -23,6 +23,21 @@ export function arLocalParts(epochMs: number): LocalParts {
     };
 }
 
+/** `HH:MM` en hora de Mar del Plata. */
+export function formatArClock(epochMs: number): string {
+    const { minuteOfDay } = arLocalParts(epochMs);
+    return `${String(Math.floor(minuteOfDay / 60)).padStart(2, "0")}:${String(minuteOfDay % 60).padStart(2, "0")}`;
+}
+
+/** Epoch de `"HH:MM"` (hora local AR) en el mismo día local que `now`; `null` si es inválido. */
+export function arTimeToday(now: number, hhmm: string): number | null {
+    const target = parseHhMm(hhmm);
+    if (target === null) return null;
+    const { minuteOfDay } = arLocalParts(now);
+    const startOfMinute = now - (now % 60_000);
+    return startOfMinute + (target - minuteOfDay) * 60_000;
+}
+
 /** `"HH:MM"` → minutos desde medianoche; `null` si es inválido. */
 export function parseHhMm(value: string): number | null {
     const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value);

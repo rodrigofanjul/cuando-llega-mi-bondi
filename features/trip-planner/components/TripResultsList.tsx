@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import type { Itinerary, RouteLegRide, RouteLegWalk } from "@features/trip-planner/types";
 import { estimateLegMins } from "@features/trip-planner/lib/costModel";
 import { RIDE_COLORS } from "@features/trip-planner/lib/rideColors";
 import { cn } from "@shared/utils";
+import { formatArClock } from "@shared/time/argentina";
+import type { ScheduledItinerary } from "@features/trip-planner/lib/preferences";
 
 /*
  * Contenido de resultados del planificador, compartido entre el bottom-sheet
@@ -176,6 +178,12 @@ export type TripResultsListProps = {
     onSelect: (idx: number) => void;
     originLabel?: string;
     destLabel?: string;
+    /** Horarios alineados con `itineraries` (preferencias/horario de «Cómo llego»). */
+    schedules?: ScheduledItinerary[];
+    /** Controles de preferencia y horario (arriba de la lista). */
+    options?: ReactNode;
+    /** Mensaje cuando el filtro de horario deja la lista vacía. */
+    emptyMessage?: string | null;
 };
 
 /** Aviso 221 + cards de itinerarios (con timeline expandible) + caption. */
@@ -185,6 +193,9 @@ export function TripResultsList({
     onSelect,
     originLabel,
     destLabel,
+    schedules,
+    options,
+    emptyMessage,
 }: TripResultsListProps) {
     const uses221Selected = useMemo(() => {
         const it = itineraries[selectedIdx];
@@ -194,6 +205,12 @@ export function TripResultsList({
 
     return (
         <>
+            {options}
+            {emptyMessage ? (
+                <p role="status" className="mb-3 rounded-xl border border-border px-3 py-2 text-[13px] text-muted-foreground">
+                    {emptyMessage}
+                </p>
+            ) : null}
             {uses221Selected ? (
                 <p className="mb-3 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 px-3 py-2 text-[11px] text-emerald-800 dark:text-emerald-300">
                     Esta opción incluye la línea interurbana <strong className="font-bold">221 Costa Azul</strong>.
@@ -279,9 +296,15 @@ export function TripResultsList({
                                         {totalMins}
                                         <span className="ml-0.5 text-xs font-bold text-muted-foreground">min</span>
                                     </p>
-                                    <p className="mt-1 text-[11px] font-medium text-muted-foreground">
-                                        Llegás ~{formatArrivalTime(totalMins)}
-                                    </p>
+                                    {schedules?.[idx] ? (
+                                        <p className="mt-1 text-[11px] font-medium text-muted-foreground">
+                                            Salí {formatArClock(schedules[idx].departAt)} · llegás ~{formatArClock(schedules[idx].arriveAt)}
+                                        </p>
+                                    ) : (
+                                        <p className="mt-1 text-[11px] font-medium text-muted-foreground">
+                                            Llegás ~{formatArrivalTime(totalMins)}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Expand Right Chevron */}

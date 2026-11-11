@@ -2,7 +2,10 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { DEFAULT_TRIP_OPTIONS, TripOptions, type TripOptionsValue } from "@features/trip-planner/components/TripOptions";
+import { arrangeTrips, type TimeMode } from "@features/trip-planner/lib/preferences";
+import { arTimeToday, formatArClock } from "@shared/time/argentina";
 import type { PickingMode } from "@features/trip-planner/components/ComoLlegoMap";
 import { Button } from "@shared/ui/Button";
 import { Modal } from "@shared/ui/Modal";
@@ -82,6 +85,11 @@ const IconClock = () => (
     </svg>
 );
 
+/** Reloj fuera del render (regla de pureza del React Compiler). */
+function currentTime() {
+    return Date.now();
+}
+
 export function ComoLlegoClient() {
     const [origin, setOrigin] = useState<SearchField>(emptyField);
     const [dest, setDest] = useState<SearchField>(emptyField);
@@ -92,6 +100,13 @@ export function ComoLlegoClient() {
     const [itineraries, setItineraries] = useState<Itinerary[]>([]);
     const [mapViews, setMapViews] = useState<ItineraryMapView[]>([]);
     const [selectedIdx, setSelectedIdx] = useState(0);
+    const [tripOptions, setTripOptions] = useState<TripOptionsValue>(DEFAULT_TRIP_OPTIONS);
+    // Reloj para horarios (salí/llegás); se actualiza cada 30 s.
+    const [clock, setClock] = useState(currentTime);
+    useEffect(() => {
+        const id = setInterval(() => setClock(currentTime()), 30_000);
+        return () => clearInterval(id);
+    }, []);
     const [pickingMode, setPickingMode] = useState<PickingMode>("none");
     const [longPressMenu, setLongPressMenu] = useState<{ lat: number; lng: number } | null>(null);
     const [tripKey, setTripKey] = useState(0);
@@ -378,7 +393,30 @@ export function ComoLlegoClient() {
         plan();
     }, [origin.coords, dest.coords, planning, plan]);
 
-    const activeMapView = mapViews[selectedIdx] ?? null;
+    // Preferencias y horario: re-ordenan/filtran los itinerarios ya calculados
+    // (lista y mapa usan el mismo orden para que el índice seleccionado coincida).
+    const timeMode: TimeMode = useMemo(() => {
+        const at = tripOptions.time ? arTimeToday(clock, tripOptions.time) : null;
+        if (tripOptions.when === "now" || at === null) return { type: "now" };
+        return { type: tripOptions.when, at };
+    }, [tripOptions.when, tripOptions.time, clock]);
+    const arranged = useMemo(
+        () => arrangeTrips(itineraries, { preference: tripOptions.preference }, timeMode, clock),
+        [itineraries, tripOptions.preference, timeMode, clock],
+    );
+    const displayItineraries = arranged.order.map((i) => itineraries[i]);
+    const displayMapViews = arranged.order.map((i) => mapViews[i]);
+    const emptyMessage =
+        itineraries.length > 0 && displayItineraries.length === 0 && timeMode.type === "arrive_by"
+            ? `Ninguna opción llega antes de las ${formatArClock(timeMode.at)}. Probá con otro horario.`
+            : null;
+    const onTripOptionsChange = (v: TripOptionsValue) => {
+        setTripOptions(v);
+        setSelectedIdx(0);
+    };
+    const tripOptionsControl = itineraries.length > 0 ? <TripOptions value={tripOptions} onChange={onTripOptionsChange} /> : null;
+
+    const activeMapView = displayMapViews[selectedIdx] ?? null;
 
     const field = activeField === "origin" ? origin : activeField === "dest" ? dest : null;
     const showQuickPanel =
@@ -715,18 +753,21 @@ export function ComoLlegoClient() {
                     <div className="pointer-events-auto hidden min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-background/95 shadow-xl backdrop-blur-md lg:flex">
                         <div className="shrink-0 border-b border-border px-4 pb-1 pt-3">
                             <TripResultsHeader
-                                count={itineraries.length}
+                                count={displayItineraries.length}
                                 onNewTrip={resetTrip}
                             />
                         </div>
                         <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-3">
                             <TripResultsList
                                 key={tripKey}
-                                itineraries={itineraries}
+                                itineraries={displayItineraries}
                                 selectedIdx={selectedIdx}
                                 onSelect={setSelectedIdx}
                                 originLabel={origin.text}
                                 destLabel={dest.text}
+                                schedules={arranged.schedules}
+                                options={tripOptionsControl}
+                                emptyMessage={emptyMessage}
                             />
                         </div>
                     </div>
@@ -745,12 +786,15 @@ export function ComoLlegoClient() {
             {sheetWanted && !isDesktop ? (
                 <TripResultsSheet
                     key={tripKey}
-                    itineraries={itineraries}
+                    itineraries={displayItineraries}
                     selectedIdx={selectedIdx}
                     onSelect={setSelectedIdx}
                     onNewTrip={resetTrip}
                     originLabel={origin.text}
                     destLabel={dest.text}
+                    schedules={arranged.schedules}
+                    options={tripOptionsControl}
+                    emptyMessage={emptyMessage}
                 />
             ) : null}
 

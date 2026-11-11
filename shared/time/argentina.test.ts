@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arLocalParts, inWindow, parseHhMm, windowLength } from "./argentina";
+import { arLocalParts, arTimeToday, formatArClock, inWindow, parseHhMm, windowLength } from "./argentina";
 
 describe("arLocalParts", () => {
     it("convierte a hora local UTC−3", () => {
@@ -18,6 +18,16 @@ describe("arLocalParts", () => {
         expect(p.weekday).toBe(3);
         expect(p.date).toBe("2026-11-11");
         expect(p.minuteOfDay).toBe(23 * 60 + 30);
+    });
+});
+
+describe("formatArClock / arTimeToday", () => {
+    it("formatea en hora local y convierte HH:MM del mismo día", () => {
+        const now = Date.parse("2026-11-11T11:45:30Z"); // 08:45:30 MDP
+        expect(formatArClock(now)).toBe("08:45");
+        expect(arTimeToday(now, "09:30")).toBe(Date.parse("2026-11-11T12:30:00Z"));
+        expect(arTimeToday(now, "07:00")).toBe(Date.parse("2026-11-11T10:00:00Z"));
+        expect(arTimeToday(now, "25:00")).toBeNull();
     });
 });
 

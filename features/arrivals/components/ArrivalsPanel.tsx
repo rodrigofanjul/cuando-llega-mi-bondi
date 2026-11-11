@@ -19,6 +19,7 @@ import { ArrivalsEmpty } from "./ArrivalsEmpty";
 import { ArrivalsLoading } from "./ArrivalsLoading";
 import { LiveSharingBanner } from "./LiveSharingBanner";
 import { AdSenseRail } from "@shared/ads/AdSenseUnit";
+import { DepartureAdvisor } from "@features/departure/components/DepartureAdvisor";
 
 const ADSENSE_SLOT_ARRIVALS = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARRIVALS?.trim();
 
@@ -242,6 +243,16 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                             ubicaciones compartidas en tiempo real en el mapa.
                         </div>
                     )}
+                    {hasArribos ? (
+                        <DepartureAdvisor
+                            arribos={displayArribos}
+                            paradaId={paradaId}
+                            codLinea={codLinea}
+                            lastUpdate={lastUpdate}
+                            stale={isStale}
+                            now={nowTick}
+                        />
+                    ) : null}
                 </div>
             )}
 

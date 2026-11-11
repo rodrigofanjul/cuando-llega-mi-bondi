@@ -21,6 +21,7 @@ import { FavoriteNameModal } from "@features/favorites/components/FavoriteNameMo
 import { withViewTransition } from "@shared/pwa/viewTransition";
 import { useUIStore, NAMING_CLOSED } from "@shared/ui/store/useUIStore";
 import { toast } from "@shared/ui/store/useToastStore";
+import { AlertRunner } from "@features/alerts/components/AlertRunner";
 
 export function MainLayoutClient({ children }: { children: ReactNode }) {
   return (
@@ -28,6 +29,7 @@ export function MainLayoutClient({ children }: { children: ReactNode }) {
       <MainLayoutContent>
         {children}
       </MainLayoutContent>
+      <AlertRunner />
     </SearchFlowProvider>
   );
 }

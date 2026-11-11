@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useFavoritos } from "@features/favorites/hooks/useFavoritos";
 import { useHistorial } from "@features/history/hooks/useHistorial";
@@ -84,6 +85,22 @@ export function FavoritosClient() {
         className="mb-6"
         title="Favoritos"
         subtitle="Paradas guardadas y consultas recientes"
+        actions={
+          <>
+            <Link
+              href="/alertas"
+              className="inline-flex min-h-9 items-center rounded-xl bg-foreground/[0.07] px-3 text-xs font-semibold text-foreground hover:bg-foreground/[0.12]"
+            >
+              Alertas
+            </Link>
+            <Link
+              href="/widgets"
+              className="inline-flex min-h-9 items-center rounded-xl bg-foreground/[0.07] px-3 text-xs font-semibold text-foreground hover:bg-foreground/[0.12]"
+            >
+              Widgets
+            </Link>
+          </>
+        }
       />
       {/* Desktop: favoritos (1/3) e historial (2/3, en dos columnas) */}
       <div className="lg:grid lg:grid-cols-3 lg:items-start lg:gap-8">

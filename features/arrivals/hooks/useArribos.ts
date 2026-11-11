@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR, { type SWRConfiguration } from "swr";
 import type { Arribo } from "@features/arrivals/types";
 import { DEV_FIXTURE_ARRIBOS } from "@features/arrivals/lib/devFixture";
+import { getWidgetBridge, useWidgetConfigsStore } from "@features/widgets/store/useWidgetConfigsStore";
+import { shareArrivalsWithWidgets } from "@features/widgets/native/shareArrivals";
 import { swrFetcherWithMeta, type MgpResult, type SwrActionKey } from "@shared/api/client";
 import {
     MgpBusinessError,
@@ -109,6 +111,23 @@ export function useArribos({
     );
 
     const realArribos = (data?.data?.arribos as Arribo[] | undefined) ?? [];
+    const isStale = data?.meta?.cache === "STALE";
+
+    // Widgets nativos: reutilizan esta consulta en vez de hacer otra. No se
+    // comparten datos STALE (su antigüedad real es desconocida) ni fixtures.
+    useEffect(() => {
+        if (!lastUpdate || !data || isStale) return;
+        void shareArrivalsWithWidgets(
+            getWidgetBridge(),
+            useWidgetConfigsStore.getState().configs,
+            paradaId,
+            codLinea,
+            data.data?.arribos ?? [],
+            lastUpdate.getTime(),
+        ).catch(() => {
+            // Un fallo del widget nunca afecta la consulta de arribos.
+        });
+    }, [lastUpdate, data, isStale, paradaId, codLinea]);
     // En dev, si la consulta real ya resolvió sin traer nada (fuera de
     // horario de servicio, API caída), mostramos arribos ficticios para
     // poder probar visualmente ArriboCard sin depender del horario real.
@@ -124,6 +143,6 @@ export function useArribos({
         lastUpdate,
         errorInfo,
         retryAt,
-        isStale: data?.meta?.cache === "STALE",
+        isStale,
     };
 }

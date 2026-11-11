@@ -1,0 +1,6 @@
+# Pipeline offline de ML (ver ml/README.md). Versiones fijadas con antigüedad mínima.
+numpy==2.5.4
+pandas==3.0.6
+scikit-learn==1.9.1
+lightgbm==4.7.0
+pytest==9.1.1

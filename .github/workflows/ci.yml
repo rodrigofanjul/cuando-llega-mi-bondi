@@ -30,7 +30,7 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
       - name: Tests de módulos nuevos (widgets, alertas, salida, normalización)
-        run: npx vitest run features/arrivals/lib features/widgets features/alerts features/departure features/observations features/anomalies shared/time lib/server/rateLimit.test.ts app/api/observations --reporter=default --reporter=junit --outputFile.junit=reports/vitest-new.xml
+        run: npx vitest run features/arrivals/lib features/widgets features/alerts features/departure features/observations features/anomalies features/prediction shared/time lib/server/rateLimit.test.ts app/api/observations app/api/predict --reporter=default --reporter=junit --outputFile.junit=reports/vitest-new.xml
       - name: Suite completa (incluye fallos preexistentes de shared/api/client.test.ts, ver docs/blockers.md B7)
         run: npx vitest run --reporter=default --reporter=junit --outputFile.junit=reports/vitest-all.xml
       - name: Build web
@@ -106,6 +106,31 @@ jobs:
             android/app/build/outputs/bundle/release/*.aab
             android/app/build/test-results/
           if-no-files-found: warn
+
+  ml:
+    name: ML · pytest + paridad del fixture
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - name: El fixture TS se regenera idéntico (salvo created_at)
+        run: |
+          python -m bondi_ml.make_fixture /tmp/fixture.json
+          python - <<'PY'
+          import json
+          a = json.load(open("/tmp/fixture.json")); b = json.load(open("../features/prediction/lib/__fixtures__/model-synthetic.json"))
+          for d in (a, b): d.pop("created_at")
+          assert a == b, "fixture desactualizado: regenerar con bondi_ml.make_fixture"
+          print("fixture OK")
+          PY
 
   ios-core:
     name: iOS · BondiWidgetCore (swift test)

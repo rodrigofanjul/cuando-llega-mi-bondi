@@ -116,3 +116,14 @@ Sin tráfico a la Municipalidad: `/api/mgp` → `MGP_UPSTREAM` = mock local (ver
 | «¿Cuándo salgo?» con datos (pendiente desde el ciclo 3) | **Verificado**: «El colectivo llega en aproximadamente 10 min. Tardás 5 min caminando. Te recomendamos salir en 1 min.» |
 | Errores de consola | Sólo de entorno: Supabase de marcador, endpoint no implementado por el mock (banderas → 502), 404 PWA preexistente. |
 | Pendiente | Validar umbrales (5–6 min) con histórico real; Isolation Forest cuando haya datos (B1). |
+
+## 2026-11-11 — Ciclo 6 (ML offline + inferencia)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| `pytest` (ml/) | **11/11 OK**: calendario, rotulado sintético, limpieza/duplicados, exclusión de llegadas `low`, emparejamiento con la primera llegada posterior, split cronológico sin solapamiento, modelos > baseline con sesgo conocido, cobertura de intervalos, exportación == LightGBM (1e-9), reglas de la puerta, corrida completa nunca publica sintéticos. |
+| Corrida de referencia (datos SINTÉTICOS) | Municipal MAE 1,69 / ±2 min 75,5 % · Tabla de sesgo 1,48 / 77,5 % · **LightGBM 1,39 / 76,1 %** · cobertura 90 % → 89,5 %. Puerta: **NO PUBLICABLE (datos no reales)**. |
+| Paridad Python ↔ TS | **30/30 casos**: variables y predicción idénticas (tolerancia 1e-9). |
+| `/api/predict` | Sin modelo → ETA oficial; sintético rechazado en producción y sin flag; artefacto ilegible → fallback; validación de parámetros. |
+| `vitest` completo | 37/38 archivos, **349/359**: mismos 10 fallos preexistentes (B7); +71 tests de predicción. |
+| No hecho | Entrenamiento con datos reales (B1), monitoreo de precisión en producción, XGBoost (descartado por ahora). |

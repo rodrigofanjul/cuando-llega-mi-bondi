@@ -16,7 +16,11 @@ enum SharedStore {
 
     static var defaults: UserDefaults? { UserDefaults(suiteName: appGroup) }
 
+    static let offlineKey = "offline_v1"
+
     static func store() -> WidgetStore? { WidgetJson.parseStore(defaults?.data(forKey: storeKey)) }
+
+    static func offline() -> OfflineTable? { OfflineTable.parse(defaults?.data(forKey: offlineKey)) }
 
     static func snapshots() -> [String: QuerySnapshot] {
         Dictionary(WidgetJson.parseSnapshots(defaults?.data(forKey: snapshotsKey)).map { ($0.key, $0) }, uniquingKeysWith: { a, b in a.fetchedAt >= b.fetchedAt ? a : b })
@@ -136,7 +140,7 @@ struct BondiProvider: AppIntentTimelineProvider {
     private func entry(at date: Date, configId: String?) -> BondiEntry {
         guard let store = SharedStore.store(), let config = pick(store, configId) else { return BondiEntry(date: date, view: nil) }
         let now = Int64(date.timeIntervalSince1970 * 1000)
-        return BondiEntry(date: date, view: WidgetRows.resolve(config, index: SharedStore.snapshots(), now: now))
+        return BondiEntry(date: date, view: WidgetRows.resolve(config, index: SharedStore.snapshots(), now: now, offline: SharedStore.offline()))
     }
 }
 
@@ -164,6 +168,8 @@ private func minutesLabel(_ row: WidgetRow) -> String {
     case .missing: return "Sin datos"
     case .stale: return "Vencido"
     case .error: return "—"
+    // «≈»: nunca se confunde con un arribo en vivo.
+    case .offlineEstimate: return "≈\(row.offline?.medianMin ?? 0) min"
     }
 }
 
@@ -178,6 +184,10 @@ private func rowAccessibilityLabel(_ row: WidgetRow) -> String {
     case .missing: return "\(base), sin datos todavía"
     case .noService: return "\(base), sin arribos informados"
     case .error: return "\(base), \(row.note ?? "error")"
+    case .offlineEstimate:
+        let median = spokenMinutes(row.offline?.medianMin ?? 0)
+        let high = spokenMinutes(row.offline?.highMin ?? 0)
+        return "\(base), sin datos en vivo. Estimación histórica: alrededor de \(median), hasta \(high)"
     }
 }
 
@@ -201,7 +211,9 @@ struct ArrivalRowView: View {
                 Text(minutesLabel(row))
                     .font(.headline)
                     .foregroundStyle(row.state == .ok ? Color.accentColor : Color.secondary)
-                if !compact, row.state == .ok, let second = row.secondMinutes {
+                if !compact, row.state == .offlineEstimate {
+                    Text("histórico · hasta \(row.offline?.highMin ?? 0)").font(.caption2).foregroundStyle(.secondary)
+                } else if !compact, row.state == .ok, let second = row.secondMinutes {
                     Text("luego \(second) min").font(.caption2).foregroundStyle(.secondary)
                 }
             }
@@ -251,7 +263,9 @@ struct BondiWidgetView: View {
 
     private func footer(_ view: WidgetView) -> some View {
         let text: String
-        if let updated = view.oldestUpdate {
+        if view.rows.contains(where: { $0.state == .offlineEstimate }) {
+            text = "Sin datos en vivo · estimación histórica"
+        } else if let updated = view.oldestUpdate {
             if view.rows.contains(where: { $0.state == .stale }) {
                 text = "Dato de las \(clock(updated)) · abrí la app"
             } else if let note = view.rows.compactMap(\.note).first {

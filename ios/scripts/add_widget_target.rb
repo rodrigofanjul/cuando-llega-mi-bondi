@@ -15,7 +15,7 @@ APP_GROUP = "group.#{BUNDLE_ID}"
 TEAM_ID = ENV['BONDI_IOS_TEAM_ID']
 WIDGET_NAME = 'BondiWidgetExtension'
 CORE_DIR = '../BondiWidgetCore/Sources/BondiWidgetCore' # relativo a ios/App
-CORE_FILES = %w[ArrivalParser.swift WidgetModels.swift WidgetRows.swift].freeze
+CORE_FILES = %w[ArrivalParser.swift WidgetModels.swift WidgetRows.swift OfflineTable.swift].freeze
 
 project = Xcodeproj::Project.open(PROJECT_PATH)
 app = project.targets.find { |t| t.name == 'App' } or abort('No se encontró el target App')

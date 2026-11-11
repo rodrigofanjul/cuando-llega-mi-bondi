@@ -6,7 +6,8 @@ import { resolveFavoritoLinea } from "@features/favorites/resolveFavoritoLinea";
 import { useFavoritesStore } from "@features/favorites/store/useFavoritesStore";
 import { useOfflineStore } from "@features/offline/store/useOfflineStore";
 import { requiredQueries } from "@features/widgets/lib/config";
-import { useWidgetConfigsStore } from "@features/widgets/store/useWidgetConfigsStore";
+import { getWidgetBridge, useWidgetConfigsStore } from "@features/widgets/store/useWidgetConfigsStore";
+import { shareOfflineWithWidgets } from "@features/offline/native/shareOffline";
 
 const SYNC_EVERY_MS = 12 * 60 * 60_000;
 
@@ -14,7 +15,29 @@ const SYNC_EVERY_MS = 12 * 60 * 60_000;
  * Con conexión, actualiza perfiles offline (sólo pares de favoritos y widgets) y la
  * frecuencia publicada. Como máximo cada 12 h. Si algo falla, se conserva lo anterior.
  */
+function shareWithWidgets() {
+    const { current, syncedAt } = useOfflineStore.getState();
+    void shareOfflineWithWidgets(getWidgetBridge(), current, useWidgetConfigsStore.getState().configs, syncedAt, Date.now()).catch(() => {
+        // Sin widgets nativos o shell viejo: la app sigue igual.
+    });
+}
+
 export function OfflineSync() {
+    // Los widgets reciben la tabla offline al cambiar el perfil o sus pares (sólo en el shell nativo).
+    useEffect(() => {
+        shareWithWidgets();
+        const offUnsub = useOfflineStore.subscribe((s, prev) => {
+            if (s.current !== prev.current) shareWithWidgets();
+        });
+        const widgetsUnsub = useWidgetConfigsStore.subscribe((s, prev) => {
+            if (s.configs !== prev.configs) shareWithWidgets();
+        });
+        return () => {
+            offUnsub();
+            widgetsUnsub();
+        };
+    }, []);
+
     useEffect(() => {
         const run = async () => {
             if (!navigator.onLine) return;

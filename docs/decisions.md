@@ -69,3 +69,13 @@ oficial, modelo `claude-opus-5-5`, esfuerzo `low` (chat, costo), `tool_choice` a
 servidor ante rechazos (`fallbacks: "default"`). Sin clave, un proveedor simulado por reglas cubre las intenciones
 frecuentes sin costo. No se guardan conversaciones; al modelo sólo van favoritos y, si el usuario la comparte, la
 ubicación redondeada a ~100 m.
+
+## D17 — Widgets offline: tabla precalculada en la web, búsqueda trivial en nativo (2026-11-11)
+En vez de portar el motor estadístico a Kotlin y Swift (tres implementaciones de calendario, feriados y redondeos), la
+web arma desde el perfil ya validado una tabla `offline_v1`: tipo de día resuelto para los próximos 14 días (por día
+local desde 1970, sin formateo de fechas en nativo) y por franja `[franja, mediana, máximo, días]`. El widget sólo busca
+franja exacta → anterior → siguiente, igual que el motor web. Pasado el horizonte no estima (perfil viejo). El contrato
+v1 de configuraciones y snapshots no cambia: un shell nativo viejo ignora la tabla y la web tolera que el método falte.
+La estimación sólo se muestra si no hay dato en vivo usable (sin dato, vencido o error sin arribos), con «≈», el texto
+«histórico» y el pie «Sin datos en vivo · estimación histórica». Un dato en vivo reciente, aunque diga «sin arribos»,
+siempre gana. Paridad: `shared/contracts/offline-vectors.json` en vitest, JUnit y XCTest.

@@ -195,3 +195,15 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | Navegador (perfil sintético servido sólo con `OFFLINE_ALLOW_SYNTHETIC`, red cortada con Playwright) | Sincroniza perfil + frecuencias de 24 líneas. Con red: sin aviso. Sin red: «Estimación histórica — sin seguimiento GPS… ~6 min (entre 0 y 17 min). Basado en 23 días… Última sincronización». Línea sin perfil: «no hay datos suficientes… Frecuencia publicada aproximada: cada 10 min. Fuente: GTFS publicado por Bondi MDP (no oficial)». Al volver la red, desaparece. |
 | Suite / build | 48/49 archivos, **439/449** (mismos 10 preexistentes); `next build` OK. |
 | No hecho | Widgets offline (contrato v2 en Kotlin/Swift), batería y tiempo de inferencia en dispositivo, perfiles con datos reales (B1), ML offline (sólo si supera la estadística). |
+
+## 2026-11-11 — Ciclo 12 (Fase 9: widgets offline)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| TS `features/offline` (tabla + envío al widget) | 5 + 4 tests: la tabla responde igual que `estimateOffline` cada 5 min durante 14 días (>3.500 comparaciones), nada fuera del horizonte ni antes de la sincronización, feriado inamovible (8/12) como domingo, reenvío sólo si cambian perfil/pares/día, tabla vacía sin perfil, reintento si el shell falla. |
+| Vectores compartidos `shared/contracts/offline-vectors.json` | 129 casos (días −1 a 14, 8 horarios, par sin perfil). vitest verifica que el archivo esté al día. |
+| Android JUnit | **18/18** (5 nuevos: vectores, versión desconocida/JSON roto, dato en vivo gana, estimación sólo sin dato usable, nada fuera del horizonte). `assembleDebug` OK. |
+| Emulador API 36 (upstream MOCK, perfil SINTÉTICO servido con `OFFLINE_ALLOW_SYNTHETIC`) | Favorito → `/widgets` crea el widget → la app sincroniza el perfil y envía `offline_v1` al plugin (verificado en `SharedPreferences`). Túnel cortado + ↻: el widget muestra **«A · ≈7 min»** y «Sin datos en vivo · estimación histórica»; coincide con el motor (franja 82, mediana 7, máx. 17, 17 días). TalkBack: «…sin datos en vivo. Estimación histórica: alrededor de 7 minutos, hasta 17 minutos». Con conexión, pasado el límite de 90 s, ↻ consulta (el mock recibe `A-S1/A`) y vuelve el dato en vivo: «< 1 min · Actualizado 20:36». |
+| iOS | `OfflineTable.swift` + 5 XCTest con los mismos vectores; corren en CI (`swift test`, `xcodebuild`). No ejecutado en simulador. |
+| Suite / typecheck | 50/51 archivos, **448/458** (mismos 10 preexistentes, B7); `tsc` OK; eslint de los archivos tocados OK. |
+| No hecho | Batería y tiempo de inferencia en dispositivo físico; widget iOS en simulador; perfiles con datos reales (B1). |

@@ -1,6 +1,7 @@
 package com.bondimdp.mobile.widget.data
 
 import android.content.Context
+import com.bondimdp.mobile.widget.core.OfflineTable
 import com.bondimdp.mobile.widget.core.QuerySnapshot
 import com.bondimdp.mobile.widget.core.WidgetJson
 import com.bondimdp.mobile.widget.core.WidgetStore
@@ -45,6 +46,15 @@ class WidgetStorage(context: Context) {
         prefs.edit().putString(KEY_SNAPSHOTS, WidgetJson.snapshotsToJson(kept)).apply()
     }
 
+    fun offlineTable(): OfflineTable? = OfflineTable.parse(prefs.getString(KEY_OFFLINE, null))
+
+    /** Reemplaza la tabla offline sólo si es válida; una inválida no borra la anterior. */
+    fun saveOfflineJson(json: String): Boolean {
+        if (OfflineTable.parse(json) == null) return false
+        prefs.edit().putString(KEY_OFFLINE, json).apply()
+        return true
+    }
+
     fun configIdFor(appWidgetId: Int): String? = prefs.getString("$KEY_INSTANCE$appWidgetId", null)
 
     fun setConfigFor(appWidgetId: Int, configId: String) {
@@ -60,5 +70,6 @@ class WidgetStorage(context: Context) {
         private const val KEY_STORE = "store_v1"
         private const val KEY_SNAPSHOTS = "snapshots_v1"
         private const val KEY_INSTANCE = "instance_"
+        private const val KEY_OFFLINE = "offline_v1"
     }
 }

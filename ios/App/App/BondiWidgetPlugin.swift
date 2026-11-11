@@ -12,6 +12,7 @@ public class BondiWidgetPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "saveStore", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "pushSnapshots", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "reloadWidgets", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "saveOffline", returnType: CAPPluginReturnPromise),
     ]
 
     private var defaults: UserDefaults? {
@@ -40,6 +41,18 @@ public class BondiWidgetPlugin: CAPPlugin, CAPBridgedPlugin {
                              uniquingKeysWith: { a, _ in a })
         for s in incoming where (all[s.key]?.fetchedAt ?? .min) <= s.fetchedAt { all[s.key] = s }
         defaults?.set(WidgetJson.encodeSnapshots(Array(all.values)), forKey: "snapshots_v1")
+        call.resolve()
+    }
+
+    /// Tabla offline v1: sólo se reemplaza si es válida (una inválida no borra la anterior).
+    @objc func saveOffline(_ call: CAPPluginCall) {
+        guard let json = call.getString("json"), let data = json.data(using: .utf8) else {
+            return call.reject("json requerido")
+        }
+        guard OfflineTable.parse(data) != nil else {
+            return call.reject("Tabla offline inválida (versión o formato)")
+        }
+        defaults?.set(data, forKey: "offline_v1")
         call.resolve()
     }
 

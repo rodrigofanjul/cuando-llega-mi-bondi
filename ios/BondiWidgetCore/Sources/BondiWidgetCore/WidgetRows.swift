@@ -2,7 +2,7 @@ import Foundation
 
 /// Espejo de features/widgets/lib/rows.ts y WidgetRows.kt.
 public enum RowState: Equatable {
-    case ok, noService, missing, stale, error
+    case ok, noService, missing, stale, error, offlineEstimate
 }
 
 public struct WidgetRow: Equatable {
@@ -13,8 +13,16 @@ public struct WidgetRow: Equatable {
     public let freshness: Freshness?
     public let updatedAt: Int64?
     public let note: String?
+    /// Estimación histórica; sólo se completa si no hay dato en vivo usable.
+    public var offline: OfflineHint? = nil
+
+    /// Sin dato en vivo usable: nunca hubo, venció o la última consulta falló sin arribos.
+    public var liveUnusable: Bool {
+        freshness == nil || freshness == .stale || (note != nil && nextMinutes == nil)
+    }
 
     public var state: RowState {
+        if offline != nil && liveUnusable { return .offlineEstimate }
         guard let freshness else { return .missing }
         if freshness == .stale { return .stale }
         if note != nil && nextMinutes == nil { return .error }
@@ -65,7 +73,15 @@ public enum WidgetRows {
             .min { windowLength($0.from, $0.to) < windowLength($1.from, $1.to) }
     }
 
-    public static func buildRow(_ target: WidgetTarget, index: [String: QuerySnapshot], now: Int64) -> WidgetRow {
+    public static func buildRow(_ target: WidgetTarget, index: [String: QuerySnapshot], now: Int64, offline: OfflineTable? = nil) -> WidgetRow {
+        var row = buildLiveRow(target, index: index, now: now)
+        if let offline, row.liveUnusable {
+            row.offline = offline.lookup(stopId: target.stopId, lineCode: target.lineCode, now: now)
+        }
+        return row
+    }
+
+    private static func buildLiveRow(_ target: WidgetTarget, index: [String: QuerySnapshot], now: Int64) -> WidgetRow {
         guard let snap = index[QuerySnapshot.key(target.stopId, target.lineCode)] else {
             return WidgetRow(target: target, nextMinutes: nil, secondMinutes: nil, nextArriving: false,
                              freshness: nil, updatedAt: nil, note: nil)
@@ -98,7 +114,7 @@ public enum WidgetRows {
         }.map(\.element)
     }
 
-    public static func resolve(_ config: WidgetConfig, index: [String: QuerySnapshot], now: Int64) -> WidgetView {
+    public static func resolve(_ config: WidgetConfig, index: [String: QuerySnapshot], now: Int64, offline: OfflineTable? = nil) -> WidgetView {
         var context: String?
         let targets: [WidgetTarget]
         if config.kind == "smart" {
@@ -108,7 +124,7 @@ public enum WidgetRows {
         } else {
             targets = config.targets
         }
-        let built = targets.map { buildRow($0, index: index, now: now) }
+        let built = targets.map { buildRow($0, index: index, now: now, offline: offline) }
         let rows = Array((config.kind == "single" ? built : sortRows(built)).prefix(config.maxRows))
         return WidgetView(configId: config.id, title: config.name, rows: rows, context: context,
                           oldestUpdate: rows.compactMap(\.updatedAt).min())

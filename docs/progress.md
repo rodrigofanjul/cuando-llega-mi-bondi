@@ -47,6 +47,6 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T9.1 Perfiles estadísticos | DONE (sintético) | ml/bondi_ml/profiles.py; evaluación vs frecuencia; 17 pytest |
 | T9.2 Artefacto + sincronización | DONE | checksum, versión anterior, subconjunto por favoritos/widgets, /api/offline/profiles |
 | T9.3 Inferencia local (web) | DONE | features/offline con paridad 18/18; estados §24 verificados en navegador sin red |
-| T9.3b Inferencia local en widgets (Kotlin/Swift, contrato v2) | TODO | siguiente |
+| T9.3b Inferencia local en widgets (Kotlin/Swift) | DONE (Android) | tabla `offline_v1` (D17) + vectores `shared/contracts/offline-vectors.json` en TS/Kotlin/Swift; widget Android verificado en emulador sin conexión; iOS: `swift test` + compilación en CI, sin simulador |
 | T9.4 Validación de desconexiones | DONE (sintético) | 1/6/12/24/72 h |
 | T9.5 ML offline | TODO | sólo si supera la estadística con datos reales |

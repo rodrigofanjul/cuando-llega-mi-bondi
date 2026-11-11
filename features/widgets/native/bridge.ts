@@ -7,6 +7,7 @@ import { Capacitor, registerPlugin } from "@capacitor/core";
 
 import type { WidgetConfig } from "@features/widgets/lib/config";
 import type { QuerySnapshot } from "@features/widgets/lib/rows";
+import type { OfflineWidgetTable } from "@features/offline/lib/widgetTable";
 
 import { buildSnapshotPayload, buildStorePayload } from "./payload";
 
@@ -14,6 +15,8 @@ export interface BondiWidgetPlugin {
     saveStore(options: { json: string }): Promise<void>;
     pushSnapshots(options: { json: string }): Promise<void>;
     reloadWidgets(): Promise<void>;
+    /** Tabla offline v1 (features/offline/lib/widgetTable.ts). */
+    saveOffline(options: { json: string }): Promise<void>;
 }
 
 export interface WidgetBridgeDeps {
@@ -62,6 +65,21 @@ export function createWidgetBridge(deps: WidgetBridgeDeps = defaultDeps()) {
             if (!deps.isNative() || snapshots.length === 0) return false;
             await deps.plugin.pushSnapshots({ json: JSON.stringify(buildSnapshotPayload(snapshots)) });
             return true;
+        },
+
+        /**
+         * Guarda la tabla de estimación histórica para que el widget la use cuando
+         * no hay dato en vivo. Un shell nativo viejo sin el método no rompe la app.
+         */
+        async saveOfflineTable(table: OfflineWidgetTable): Promise<boolean> {
+            if (!deps.isNative()) return false;
+            try {
+                await deps.plugin.saveOffline({ json: JSON.stringify(table) });
+                await deps.plugin.reloadWidgets();
+                return true;
+            } catch {
+                return false;
+            }
         },
     };
 }

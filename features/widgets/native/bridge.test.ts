@@ -47,6 +47,7 @@ function mockPlugin(): BondiWidgetPlugin & { calls: string[] } {
         saveStore: vi.fn(async ({ json }) => void calls.push(`save:${json}`)),
         pushSnapshots: vi.fn(async ({ json }) => void calls.push(`push:${json}`)),
         reloadWidgets: vi.fn(async () => void calls.push("reload")),
+        saveOffline: vi.fn(async ({ json }) => void calls.push(`offline:${json}`)),
     };
 }
 

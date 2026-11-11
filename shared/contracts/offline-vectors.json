@@ -1,0 +1,1522 @@
+{
+ "comment": "Generado por features/offline/lib/widgetTable.test.ts (perfil SINTÉTICO). UPDATE_VECTORS=1 para regenerar.",
+ "table": {
+  "version": 1,
+  "profileVersion": "fixture-offline",
+  "dataSource": "synthetic",
+  "generatedAt": "2026-11-11T20:11:12+00:00",
+  "syncedAt": 1794395220000,
+  "binMinutes": 15,
+  "firstDay": 20768,
+  "dayTypes": [
+   "weekday",
+   "weekday",
+   "weekday",
+   "saturday",
+   "sunday_holiday",
+   "weekday",
+   "weekday",
+   "weekday",
+   "weekday",
+   "weekday",
+   "saturday",
+   "sunday_holiday",
+   "weekday",
+   "weekday"
+  ],
+  "entries": {
+   "A-S1|A": {
+    "weekday": [
+     [
+      22,
+      15,
+      32,
+      11
+     ],
+     [
+      23,
+      15,
+      34,
+      11
+     ],
+     [
+      24,
+      14,
+      34,
+      10
+     ],
+     [
+      25,
+      8,
+      34,
+      19
+     ],
+     [
+      26,
+      7,
+      18,
+      18
+     ],
+     [
+      27,
+      7,
+      18,
+      18
+     ],
+     [
+      28,
+      6,
+      17,
+      19
+     ],
+     [
+      29,
+      4,
+      10,
+      20
+     ],
+     [
+      30,
+      4,
+      10,
+      20
+     ],
+     [
+      31,
+      4,
+      10,
+      20
+     ],
+     [
+      32,
+      4,
+      10,
+      20
+     ],
+     [
+      33,
+      4,
+      10,
+      20
+     ],
+     [
+      34,
+      4,
+      10,
+      20
+     ],
+     [
+      35,
+      4,
+      10,
+      20
+     ],
+     [
+      36,
+      5,
+      11,
+      20
+     ],
+     [
+      37,
+      7,
+      17,
+      20
+     ],
+     [
+      38,
+      7,
+      17,
+      20
+     ],
+     [
+      39,
+      7,
+      18,
+      19
+     ],
+     [
+      40,
+      7,
+      17,
+      17
+     ],
+     [
+      41,
+      7,
+      17,
+      20
+     ],
+     [
+      42,
+      7,
+      16,
+      20
+     ],
+     [
+      43,
+      7,
+      17,
+      19
+     ],
+     [
+      44,
+      7,
+      17,
+      19
+     ],
+     [
+      45,
+      8,
+      18,
+      19
+     ],
+     [
+      46,
+      6,
+      17,
+      19
+     ],
+     [
+      47,
+      8,
+      17,
+      18
+     ],
+     [
+      48,
+      7,
+      17,
+      19
+     ],
+     [
+      49,
+      7,
+      17,
+      19
+     ],
+     [
+      50,
+      7,
+      17,
+      17
+     ],
+     [
+      51,
+      7,
+      17,
+      20
+     ],
+     [
+      52,
+      7,
+      17,
+      19
+     ],
+     [
+      53,
+      7,
+      16,
+      20
+     ],
+     [
+      54,
+      7,
+      16,
+      18
+     ],
+     [
+      55,
+      7,
+      17,
+      19
+     ],
+     [
+      56,
+      8,
+      18,
+      19
+     ],
+     [
+      57,
+      7,
+      17,
+      20
+     ],
+     [
+      58,
+      7,
+      16,
+      20
+     ],
+     [
+      59,
+      8,
+      17,
+      18
+     ],
+     [
+      60,
+      7,
+      18,
+      20
+     ],
+     [
+      61,
+      7,
+      17,
+      19
+     ],
+     [
+      62,
+      7,
+      18,
+      20
+     ],
+     [
+      63,
+      7,
+      17,
+      20
+     ],
+     [
+      64,
+      7,
+      18,
+      20
+     ],
+     [
+      65,
+      6,
+      17,
+      19
+     ],
+     [
+      66,
+      7,
+      17,
+      19
+     ],
+     [
+      67,
+      7,
+      17,
+      19
+     ],
+     [
+      68,
+      6,
+      17,
+      19
+     ],
+     [
+      69,
+      4,
+      9,
+      20
+     ],
+     [
+      70,
+      4,
+      9,
+      20
+     ],
+     [
+      71,
+      4,
+      10,
+      20
+     ],
+     [
+      72,
+      4,
+      10,
+      20
+     ],
+     [
+      73,
+      4,
+      10,
+      20
+     ],
+     [
+      74,
+      4,
+      10,
+      20
+     ],
+     [
+      75,
+      4,
+      9,
+      20
+     ],
+     [
+      76,
+      4,
+      11,
+      20
+     ],
+     [
+      77,
+      7,
+      17,
+      19
+     ],
+     [
+      78,
+      7,
+      17,
+      20
+     ],
+     [
+      79,
+      7,
+      17,
+      17
+     ],
+     [
+      80,
+      8,
+      17,
+      20
+     ],
+     [
+      81,
+      7,
+      17,
+      19
+     ],
+     [
+      82,
+      7,
+      17,
+      17
+     ],
+     [
+      83,
+      7,
+      18,
+      20
+     ],
+     [
+      84,
+      7,
+      18,
+      19
+     ],
+     [
+      85,
+      7,
+      18,
+      17
+     ],
+     [
+      86,
+      7,
+      17,
+      19
+     ],
+     [
+      87,
+      7,
+      17,
+      20
+     ],
+     [
+      88,
+      7,
+      17,
+      19
+     ],
+     [
+      89,
+      7,
+      17,
+      19
+     ],
+     [
+      90,
+      7,
+      16,
+      20
+     ],
+     [
+      91,
+      7,
+      17,
+      18
+     ],
+     [
+      92,
+      8,
+      18,
+      19
+     ],
+     [
+      94,
+      14,
+      37,
+      13
+     ]
+    ]
+   }
+  }
+ },
+ "cases": [
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794279600000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794299460000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794303840000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794308340000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794308820000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794322800000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794347040000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794365940000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794366000000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794385860000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794390240000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794394740000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794395220000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794409200000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794433440000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794452340000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794452400000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794472260000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794476640000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794481140000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794481620000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794495600000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794519840000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794538740000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794538800000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794558660000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794563040000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794567540000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794568020000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794582000000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794606240000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794625140000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794625200000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794645060000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794649440000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794653940000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794654420000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794668400000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794692640000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794711540000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794711600000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794731460000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794735840000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794740340000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794740820000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794754800000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794779040000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794797940000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794798000000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794817860000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794822240000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794826740000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794827220000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794841200000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794865440000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794884340000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794884400000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794904260000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794908640000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794913140000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794913620000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794927600000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794951840000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794970740000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794970800000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794990660000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794995040000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1794999540000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795000020000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795014000000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795038240000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795057140000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795057200000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795077060000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795081440000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795085940000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795086420000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795100400000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795124640000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795143540000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795143600000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795163460000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795167840000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795172340000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795172820000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795186800000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795211040000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795229940000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795230000000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795249860000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795254240000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795258740000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795259220000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795273200000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795297440000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795316340000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795316400000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795336260000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795340640000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795345140000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795345620000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795359600000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795383840000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795402740000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795402800000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795422660000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795427040000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795431540000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795432020000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795446000000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795470240000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795489140000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795489200000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795509060000,
+   "expected": {
+    "medianMin": 15,
+    "highMin": 32,
+    "days": 11
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795513440000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 18,
+    "days": 18
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795517940000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795518420000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795532400000,
+   "expected": {
+    "medianMin": 7,
+    "highMin": 17,
+    "days": 19
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795556640000,
+   "expected": {
+    "medianMin": 4,
+    "highMin": 10,
+    "days": 20
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795575540000,
+   "expected": {
+    "medianMin": 14,
+    "highMin": 37,
+    "days": 13
+   }
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795575600000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795595460000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795599840000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795604340000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795604820000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795618800000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795643040000,
+   "expected": null
+  },
+  {
+   "stopId": "A-S1",
+   "lineCode": "A",
+   "now": 1795661940000,
+   "expected": null
+  },
+  {
+   "stopId": "X",
+   "lineCode": "A",
+   "now": 1794395220000,
+   "expected": null
+  }
+ ]
+}

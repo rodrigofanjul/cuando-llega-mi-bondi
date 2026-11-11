@@ -9,9 +9,16 @@ data class WidgetRow(
     val freshness: Freshness?,
     val updatedAt: Long?,
     val note: String?,
+    /** Estimación histórica; sólo se completa si no hay dato en vivo usable. */
+    val offline: OfflineHint? = null,
 ) {
+    /** Sin dato en vivo usable: nunca hubo, venció o la última consulta falló sin arribos. */
+    val liveUnusable: Boolean
+        get() = freshness == null || freshness == Freshness.STALE || (note != null && nextMinutes == null)
+
     val state: RowState
         get() = when {
+            offline != null && liveUnusable -> RowState.OFFLINE_ESTIMATE
             freshness == null -> RowState.MISSING
             freshness == Freshness.STALE -> RowState.STALE
             note != null && nextMinutes == null -> RowState.ERROR
@@ -20,7 +27,7 @@ data class WidgetRow(
         }
 }
 
-enum class RowState { OK, NO_SERVICE, MISSING, STALE, ERROR }
+enum class RowState { OK, NO_SERVICE, MISSING, STALE, ERROR, OFFLINE_ESTIMATE }
 
 data class WidgetView(
     val configId: String,
@@ -66,7 +73,13 @@ object WidgetRows {
             .minByOrNull { windowLength(it.from, it.to) }
     }
 
-    fun buildRow(target: WidgetTarget, index: Map<String, QuerySnapshot>, now: Long): WidgetRow {
+    fun buildRow(target: WidgetTarget, index: Map<String, QuerySnapshot>, now: Long, offline: OfflineTable? = null): WidgetRow {
+        val live = buildLiveRow(target, index, now)
+        if (offline == null || !live.liveUnusable) return live
+        return live.copy(offline = offline.lookup(target.stopId, target.lineCode, now))
+    }
+
+    private fun buildLiveRow(target: WidgetTarget, index: Map<String, QuerySnapshot>, now: Long): WidgetRow {
         val snap = index[QuerySnapshot.key(target.stopId, target.lineCode)]
             ?: return WidgetRow(target, null, null, false, null, null, null)
         val projected = snap.arrivals
@@ -92,7 +105,7 @@ object WidgetRows {
             .sortedWith(compareBy<IndexedValue<WidgetRow>>({ it.value.nextMinutes == null }, { it.value.nextMinutes ?: 0 }, { it.index }))
             .map { it.value }
 
-    fun resolve(config: WidgetConfig, index: Map<String, QuerySnapshot>, now: Long): WidgetView {
+    fun resolve(config: WidgetConfig, index: Map<String, QuerySnapshot>, now: Long, offline: OfflineTable? = null): WidgetView {
         var context: String? = null
         val targets = if (config.kind == "smart") {
             val slot = activeSlot(config.slots, now)
@@ -101,7 +114,7 @@ object WidgetRows {
         } else {
             config.targets
         }
-        val built = targets.map { buildRow(it, index, now) }
+        val built = targets.map { buildRow(it, index, now, offline) }
         val rows = (if (config.kind == "single") built else sortRows(built)).take(config.maxRows)
         return WidgetView(config.id, config.name, rows, context, rows.mapNotNull { it.updatedAt }.minOrNull())
     }

@@ -23,7 +23,7 @@ describe("useWidgetConfigsStore", () => {
         __setWidgetBridgeForTests(
             createWidgetBridge({
                 isNative: () => true,
-                plugin: { saveStore, reloadWidgets, pushSnapshots: vi.fn(async () => {}) },
+                plugin: { saveStore, reloadWidgets, pushSnapshots: vi.fn(async () => {}), saveOffline: vi.fn(async () => {}) },
                 now: () => 0,
                 apiBase: () => "https://bondimdp.com.ar/api",
             }),

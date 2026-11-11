@@ -93,7 +93,7 @@ class BondiWidget : GlanceAppWidget() {
             ?: store.configs.firstOrNull()
             ?: return WidgetUiState.NotConfigured
         val now = System.currentTimeMillis()
-        return WidgetUiState.Ready(WidgetRows.resolve(config, storage.snapshots(), now), now)
+        return WidgetUiState.Ready(WidgetRows.resolve(config, storage.snapshots(), now, storage.offlineTable()), now)
     }
 }
 
@@ -147,6 +147,8 @@ internal fun minutesLabel(row: WidgetRow): String = when (row.state) {
     RowState.MISSING -> "Sin datos"
     RowState.STALE -> "Vencido"
     RowState.ERROR -> "—"
+    // «≈»: nunca se confunde con un arribo en vivo.
+    RowState.OFFLINE_ESTIMATE -> "≈${row.offline?.medianMin ?: 0} min"
 }
 
 internal fun accessibilityLabel(row: WidgetRow): String {
@@ -161,6 +163,11 @@ internal fun accessibilityLabel(row: WidgetRow): String {
         RowState.MISSING -> "$base, sin datos todavía"
         RowState.NO_SERVICE -> "$base, sin arribos informados"
         RowState.ERROR -> "$base, ${row.note}"
+        RowState.OFFLINE_ESTIMATE -> {
+            val hint = row.offline
+            "$base, sin datos en vivo. Estimación histórica: alrededor de ${spokenMinutes(hint?.medianMin ?: 0)}, " +
+                "hasta ${spokenMinutes(hint?.highMin ?: 0)}"
+        }
     }
 }
 
@@ -253,7 +260,12 @@ private fun ArrivalRow(row: WidgetRow, compact: Boolean) {
         }
         Column(horizontalAlignment = Alignment.End) {
             Text(minutesLabel(row), style = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.Bold, color = emphasis))
-            if (!compact && row.state == RowState.OK && row.secondMinutes != null) {
+            if (!compact && row.state == RowState.OFFLINE_ESTIMATE) {
+                Text(
+                    "histórico · hasta ${row.offline?.highMin ?: 0}",
+                    style = TextStyle(fontSize = 11.sp, color = GlanceTheme.colors.onSurfaceVariant),
+                )
+            } else if (!compact && row.state == RowState.OK && row.secondMinutes != null) {
                 Text(
                     "luego ${row.secondMinutes} min",
                     style = TextStyle(fontSize = 11.sp, color = GlanceTheme.colors.onSurfaceVariant),
@@ -268,7 +280,9 @@ private fun Footer(state: WidgetUiState.Ready) {
     val updated = state.view.oldestUpdate
     val stale = state.view.rows.any { it.state == RowState.STALE }
     val error = state.view.rows.firstNotNullOfOrNull { it.note }
+    val estimated = state.view.rows.any { it.state == RowState.OFFLINE_ESTIMATE }
     val text = when {
+        estimated -> "Sin datos en vivo · estimación histórica"
         updated == null -> "Esperando primera actualización"
         stale -> "Dato de las ${formatClock(updated)} · abrí la app"
         error != null -> "${formatClock(updated)} · $error"

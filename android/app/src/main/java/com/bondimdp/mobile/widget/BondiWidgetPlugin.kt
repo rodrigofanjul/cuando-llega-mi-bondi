@@ -31,6 +31,13 @@ class BondiWidgetPlugin : Plugin() {
     }
 
     @PluginMethod
+    fun saveOffline(call: PluginCall) {
+        val json = call.getString("json") ?: return call.reject("json requerido")
+        if (!storage.saveOfflineJson(json)) return call.reject("Tabla offline inválida (versión o formato)")
+        call.resolve()
+    }
+
+    @PluginMethod
     fun reloadWidgets(call: PluginCall) {
         scope.launch {
             BondiWidget.refreshAll(context)

@@ -155,7 +155,7 @@ private func minutesLabel(_ row: WidgetRow) -> String {
     }
 }
 
-private func accessibilityLabel(_ row: WidgetRow) -> String {
+private func rowAccessibilityLabel(_ row: WidgetRow) -> String {
     let base = "Línea \(row.target.lineLabel), \(row.target.destination.isEmpty ? "cualquier sentido" : row.target.destination), parada \(row.target.stopLabel)"
     switch row.state {
     case .ok:
@@ -195,7 +195,7 @@ struct ArrivalRowView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityLabel(row))
+        .accessibilityLabel(rowAccessibilityLabel(row))
     }
 }
 

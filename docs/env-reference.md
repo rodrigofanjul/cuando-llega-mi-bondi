@@ -91,6 +91,18 @@ Requiere `supabase/migrations/20261111150000_community_reports.sql` y programar 
 | `PREDICTION_MODEL_PATH` | Artefacto de `ml/` (sólo se usa si es real y publicable). Sin ella → ETA oficial. |
 | `PREDICTION_ALLOW_SYNTHETIC` | `true` sólo fuera de producción, para pruebas. |
 
+## Asistente conversacional
+
+| Variable | Default | Uso |
+| -------- | ------- | --- |
+| `ANTHROPIC_API_KEY` | sin definir | Con clave, el asistente usa Claude (SDK oficial). Sin clave, usa el proveedor simulado por reglas (sin costo). |
+| `ASSISTANT_MODEL` | `claude-opus-5-5` | Modelo de Claude. |
+| `ASSISTANT_PROVIDER` | — | `mock` fuerza el proveedor simulado aunque haya clave. |
+| `ASSISTANT_DAILY_LIMIT` | `500` | Tope diario de consultas a Claude por instancia (control de costos). Además: 20 consultas/hora por IP. |
+
+Configuración fija: esfuerzo `low`, `max_tokens` 2048, máximo 3 rondas de herramientas, `fallbacks: "default"`
+(beta `server-side-fallback-2026-07-01`: ante un rechazo, el servidor reintenta con otro modelo).
+
 ## Capacitor (builds móviles)
 
 | Variable | Default | Uso |

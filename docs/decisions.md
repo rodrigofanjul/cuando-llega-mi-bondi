@@ -61,3 +61,11 @@ arribo en vivo está implementada como función pura pero no conectada a la UI, 
 ## D15 — Personalización local opt-in
 Sólo `favId` + minuto, en LocalStorage, 60 días, máx. 200 eventos. Apagada por defecto; desactivar borra. Mayoría
 estricta en la franja para sugerir (evita sugerencias arbitrarias en empates).
+
+## D16 — Asistente: proveedor intercambiable y fundamentación obligatoria
+LLM → herramientas tipadas → datos de la app. El modelo nunca calcula arribos ni rutas. Todo «N min» de la respuesta
+debe aparecer en resultados/entradas de herramientas; si no, se responde sólo con datos. Claude se usa con el SDK
+oficial, modelo `claude-opus-5-5`, esfuerzo `low` (chat, costo), `tool_choice` auto + `strict`, y fallback del lado del
+servidor ante rechazos (`fallbacks: "default"`). Sin clave, un proveedor simulado por reglas cubre las intenciones
+frecuentes sin costo. No se guardan conversaciones; al modelo sólo van favoritos y, si el usuario la comparte, la
+ubicación redondeada a ~100 m.

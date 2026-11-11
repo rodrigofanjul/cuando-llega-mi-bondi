@@ -36,5 +36,5 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T6.3 Planificador avanzado | DONE | preferencias (rápido, menos caminata, menos transbordos, líneas preferidas) + salir ahora/a las/llegar antes de; verificado en navegador |
 | T6.4 Personalización local | DONE | opt-in, sólo en el dispositivo, sin ubicación, explicada y borrable; verificada en navegador |
 | T7.2 Reportes colaborativos + ocupación | DONE (sin backend configurado) | lógica, API, migración y UI verificados; falta job de reputación y panel de moderación |
-| T7.1 Asistente conversacional | TODO | BLOCKED para LLM real (B5) |
+| T7.1 Asistente conversacional | DONE (simulado) / BLOCKED (Claude real, B5) | herramientas tipadas, proveedor intercambiable, fundamentación, límites; Claude implementado con SDK oficial y testeado con cliente falso |
 | Fase 9 Offline-first | TODO | Dependencias arquitectónicas fijadas (D10) |

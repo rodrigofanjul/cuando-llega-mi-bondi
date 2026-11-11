@@ -92,6 +92,12 @@ export function FavoritosClient() {
         actions={
           <>
             <Link
+              href="/asistente"
+              className="inline-flex min-h-9 items-center rounded-xl bg-foreground/[0.07] px-3 text-xs font-semibold text-foreground hover:bg-foreground/[0.12]"
+            >
+              Asistente
+            </Link>
+            <Link
               href="/alertas"
               className="inline-flex min-h-9 items-center rounded-xl bg-foreground/[0.07] px-3 text-xs font-semibold text-foreground hover:bg-foreground/[0.12]"
             >

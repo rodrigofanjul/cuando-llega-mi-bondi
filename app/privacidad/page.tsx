@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { BRAND } from "@shared/brand";
 import { BottomNav } from "@shared/layout/BottomNav";
 import { PageShell } from "@shared/layout/PageShell";
 import { Footer } from "@shared/layout/Footer";
@@ -9,61 +11,17 @@ import { BrandLogo } from "@shared/ui/BrandLogo";
 export const instant = false;
 
 export const metadata: Metadata = {
-    title: {
-        absolute: "Política de privacidad | Bondi MDP",
-    },
-    description:
-        "Cómo Bondi MDP trata tus datos: sin publicidad ni rastreadores de terceros, cookies y tus derechos según la Ley 25.326.",
-    alternates: {
-        canonical: "/privacidad",
-    },
-    openGraph: {
-        type: "website",
-        locale: "es_AR",
-        url: "https://bondimdp.com.ar/privacidad",
-        title: "Política de privacidad | Bondi MDP",
-        description:
-            "Cómo Bondi MDP trata tus datos: sin publicidad ni rastreadores de terceros, y cuáles son tus derechos.",
-        siteName: "Bondi MDP",
-        images: ["/opengraph-image"],
-    },
-    robots: {
-        index: true,
-        follow: true,
-    },
+    title: "Privacidad",
+    description: `Cómo ${BRAND.name} trata tus datos: sin publicidad ni rastreadores de terceros.`,
+    alternates: { canonical: "/privacidad" },
+    robots: { index: true, follow: true },
 };
 
-// Última actualización de esta política.
-const LAST_UPDATED = "6 de julio de 2026";
+const LAST_UPDATED = "12 de noviembre de 2026";
 
-const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-        {
-            "@type": "ListItem",
-            position: 1,
-            name: "Inicio",
-            item: "https://bondimdp.com.ar",
-        },
-        {
-            "@type": "ListItem",
-            position: 2,
-            name: "Política de privacidad",
-            item: "https://bondimdp.com.ar/privacidad",
-        },
-    ],
-};
+const linkClass = "underline decoration-border underline-offset-2 hover:text-foreground";
 
-// ── Sub-componentes ──────────────────────────────────────────────────────────
-
-function Section({
-    title,
-    children,
-}: {
-    title: string;
-    children: React.ReactNode;
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <section className="space-y-3">
             <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
@@ -77,161 +35,104 @@ function Section({
 }
 
 function Card({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="space-y-2 rounded-xl border border-border bg-card p-4">
-            {children}
-        </div>
-    );
+    return <div className="space-y-2 rounded-xl border border-border bg-card p-4">{children}</div>;
 }
-
-function ExtLink({ href, children }: { href: string; children: React.ReactNode }) {
-    return (
-        <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
-        >
-            {children}
-        </a>
-    );
-}
-
-// ── Página ───────────────────────────────────────────────────────────────────
 
 export default function PrivacidadPage() {
     return (
-        <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbJsonLd),
-                }}
-            />
-            <div className="flex min-h-pwa-shell flex-col lg:pl-60">
-                <PageShell className="space-y-10 pt-4">
-                    {/* ── ENCABEZADO ──────────────────────────────────── */}
-                    <section className="space-y-3 text-center">
-                        <BrandLogo className="text-3xl lg:text-4xl" />
-                        <h1 className="text-[15px] font-semibold text-foreground">
-                            Política de privacidad
-                        </h1>
-                        <p className="text-[12px] uppercase tracking-wider text-muted-foreground opacity-80">
-                            Última actualización: {LAST_UPDATED}
-                        </p>
-                    </section>
+        <div className="flex min-h-pwa-shell flex-col lg:pl-60">
+            <PageShell className="space-y-10 pt-4">
+                <section className="space-y-3 text-center">
+                    <BrandLogo className="text-3xl lg:text-4xl" />
+                    <h1 className="text-[15px] font-semibold text-foreground">Política de privacidad</h1>
+                    <p className="text-[12px] uppercase tracking-wider text-muted-foreground opacity-80">
+                        Última actualización: {LAST_UPDATED}
+                    </p>
+                </section>
 
-                    {/* ── INTRO ───────────────────────────────────────── */}
-                    <Section title="Resumen">
+                <Section title="Resumen">
+                    <p>
+                        {BRAND.name} es una app gratuita para consultar el transporte público de {BRAND.city}.
+                        No pedimos registro ni creamos cuentas, y no vendemos tus datos. No hay publicidad, ni
+                        rastreadores de terceros, ni pagos dentro de la app.
+                    </p>
+                    {BRAND.contactEmail ? (
                         <p>
-                            Bondi MDP es una app gratuita para consultar el transporte
-                            público de Mar del Plata. No pedimos registro ni creamos cuentas
-                            de usuario, y no vendemos tus datos personales. La app no muestra publicidad ni usa herramientas de analítica o
-                            rastreo de terceros.
-                        </p>
-                    </Section>
-
-                    {/* ── RESPONSABLE ─────────────────────────────────── */}
-                    <Section title="Responsable">
-                        <p>
-                            Bondi MDP es un proyecto independiente y de código abierto,
-                            mantenido por su equipo de desarrollo. Ante cualquier consulta
-                            sobre esta política o sobre tus datos, podés escribirnos a través
-                            de{" "}
-                            <ExtLink href="https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi/issues">
-                                los issues del repositorio en GitHub
-                            </ExtLink>
+                            Ante cualquier consulta, escribinos a{" "}
+                            <a href={`mailto:${BRAND.contactEmail}`} className={linkClass}>
+                                {BRAND.contactEmail}
+                            </a>
                             .
                         </p>
-                    </Section>
+                    ) : null}
+                </Section>
 
-                    {/* ── QUÉ DATOS TRATAMOS ──────────────────────────── */}
-                    <Section title="Qué información tratamos">
-                        <Card>
-                            <p className="text-[14px] font-semibold text-foreground">
-                                Datos que vos nos das
-                            </p>
-                            <p>
-                                No hay registro ni inicio de sesión. Si usás las funciones de
-                                ubicación (por ejemplo, «paradas cerca» o «cómo llego»), tu
-                                navegador nos pide permiso y usamos tu ubicación únicamente
-                                para calcular paradas y recorridos cercanos. No guardamos un
-                                historial de tus ubicaciones asociado a tu identidad.
-                            </p>
-                        </Card>
-                        <Card>
-                            <p className="text-[14px] font-semibold text-foreground">
-                                Datos que se recopilan automáticamente
-                            </p>
-                            <p>
-                                Como en la mayoría de los sitios web, al navegar se procesan
-                                datos técnicos como tu dirección IP, tipo de dispositivo y
-                                navegador, y las páginas que visitás. Estos datos se usan solo para
-                                que la app funcione.
-                            </p>
-                        </Card>
-                        <Card>
-                            <p className="text-[14px] font-semibold text-foreground">
-                                Datos guardados en tu dispositivo
-                            </p>
-                            <p>
-                                Tus favoritos y preferencias (por ejemplo, el tema claro u
-                                oscuro) se guardan localmente en tu navegador. No se envían a
-                                nuestros servidores.
-                            </p>
-                        </Card>
-                    </Section>
-
-                    {/* ── PUBLICIDAD Y ANALÍTICA ─────────────────────── */}
-                    <Section title="Publicidad y analítica">
+                <Section title="Ubicación">
+                    <Card>
                         <p>
-                            La app no muestra publicidad ni usa servicios de terceros de
-                            analítica o rastreo (como Google AdSense, Google Analytics,
-                            Microsoft Clarity o Vercel Analytics).
+                            Si usás funciones como «paradas cerca» o «cómo llego», tu navegador te pide permiso
+                            y usamos tu ubicación solo para calcular paradas y recorridos cercanos. No la
+                            guardamos ni la asociamos a vos.
                         </p>
-                    </Section>
+                    </Card>
+                </Section>
 
-                    {/* ── COOKIES ─────────────────────────────────────── */}
-                    <Section title="Cookies y tecnologías similares">
+                <Section title="Datos en tu dispositivo">
+                    <Card>
                         <p>
-                            Usamos cookies y tecnologías similares (como el almacenamiento
-                            local del navegador) para el funcionamiento de la app, para
-                            recordar tus preferencias. Podés bloquear o eliminar las cookies desde la
-                            configuración de tu navegador; ten en cuenta que algunas
-                            funciones podrían dejar de funcionar correctamente.
+                            Tus favoritos, recientes y preferencias (como el tema claro u oscuro) se guardan
+                            solo en tu dispositivo. Podés borrarlos cuando quieras desde{" "}
+                            <strong>Perfil → Borrar datos</strong>.
                         </p>
-                    </Section>
+                    </Card>
+                </Section>
 
-                    {/* ── DERECHOS ────────────────────────────────────── */}
-                    <Section title="Tus derechos">
+                <Section title="Observaciones anónimas">
+                    <Card>
                         <p>
-                            De acuerdo con la Ley N.º 25.326 de Protección de los Datos
-                            Personales de Argentina, tenés derecho a acceder, rectificar,
-                            actualizar y suprimir tus datos personales. Para ejercerlos,
-                            contactanos por los medios indicados más arriba.
+                            Si lo activás, la app puede enviar observaciones anónimas sobre cómo se mueven los
+                            colectivos para mejorar las estimaciones. Esta opción viene desactivada y podés
+                            apagarla en cualquier momento. No incluye datos que te identifiquen.
                         </p>
+                    </Card>
+                </Section>
+
+                <Section title="Asistente">
+                    <Card>
                         <p>
-                            La Agencia de Acceso a la Información Pública (AAIP), órgano de
-                            control de la Ley N.º 25.326, tiene la atribución de atender
-                            denuncias y reclamos relativos al incumplimiento de las normas de
-                            protección de datos personales.
+                            Cuando le hacés una pregunta al asistente, el mensaje se procesa para generar la
+                            respuesta. No guardamos las conversaciones.
                         </p>
-                    </Section>
+                    </Card>
+                </Section>
 
-                    {/* ── CAMBIOS ─────────────────────────────────────── */}
-                    <Section title="Cambios en esta política">
-                        <p>
-                            Podemos actualizar esta política para reflejar cambios en la app o
-                            en los servicios que utilizamos. Publicaremos siempre la versión
-                            vigente en esta página, con su fecha de última actualización.
-                        </p>
-                    </Section>
+                <Section title="Datos técnicos">
+                    <p>
+                        Como en cualquier sitio web, el servidor puede procesar datos técnicos (como la
+                        dirección IP y el tipo de navegador) únicamente para que la app funcione.
+                    </p>
+                </Section>
 
-                    <Footer />
-                </PageShell>
+                <Section title="Tus derechos">
+                    <p>
+                        Según la Ley N.º 25.326 de Protección de los Datos Personales de Argentina, tenés
+                        derecho a acceder, rectificar y suprimir tus datos. Como casi todo queda en tu
+                        dispositivo, la forma más rápida es borrarlo desde tu Perfil. Consultá también los{" "}
+                        <Link href="/terminos" className={linkClass}>
+                            términos de uso
+                        </Link>
+                        .
+                    </p>
+                </Section>
 
-                <BottomNav />
-            </div>
-        </>
+                <Section title="Cambios en esta política">
+                    <p>Si la actualizamos, publicamos la versión vigente en esta página con su fecha.</p>
+                </Section>
+
+                <Footer />
+            </PageShell>
+
+            <BottomNav />
+        </div>
     );
 }

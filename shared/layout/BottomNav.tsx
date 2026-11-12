@@ -8,9 +8,9 @@ import { IconSearch } from "@shared/icons/IconSearch";
 import { IconStar } from "@shared/icons/IconStar";
 import { IconInfo } from "@shared/icons/IconInfo";
 import { IconBus } from "@shared/icons/IconBus";
+import { BRAND } from "@shared/brand";
 import { BrandLogo } from "@shared/ui/BrandLogo";
 import { ThemeToggle } from "./ThemeToggle";
-import { PlayStoreNavLink } from "./PlayStoreNavLink";
 import { cn } from "@shared/utils";
 
 type NavTab = "consultar" | "recorrido" | "favoritos" | "acerca";
@@ -108,8 +108,8 @@ function SideNav() {
             {/* En desktop la landing es accesible: el logo lleva a ella */}
             <Link
                 href="/"
-                aria-label="Bondi MDP — Ir a la página principal"
-                title="Bondi MDP"
+                aria-label={`${BRAND.name} — Ir a la página principal`}
+                title={BRAND.name}
                 className="flex h-16 shrink-0 items-center gap-2.5 px-5 text-foreground transition-opacity hover:opacity-80"
             >
                 <IconBus />
@@ -147,7 +147,6 @@ function SideNav() {
             </div>
 
             <div className="flex flex-col gap-1 px-3 pb-4">
-                <PlayStoreNavLink variant="row" />
                 <div className="flex items-center px-2 pt-1">
                     <ThemeToggle />
                 </div>

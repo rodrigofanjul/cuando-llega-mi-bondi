@@ -11,6 +11,7 @@ import type { Linea } from "@shared/types";
 import { lineaNumero } from "@features/route/lineaNumero";
 import { lineaToSlug } from "@/lib/server/lineaSlug";
 import { cn } from "@shared/utils";
+import { BRAND } from "@shared/brand";
 
 const IconBack = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -52,11 +53,11 @@ export function LineDetailScreen({
 
     const handleShare = useCallback(async () => {
         const url = `${window.location.origin}/recorrido/${lineaToSlug(line.Descripcion)}`;
-        const text = `¿Viajaste en la línea ${numero}? Contá cómo te fue y ayudá a otros pasajeros en Bondi MDP.`;
+        const text = `¿Viajaste en la línea ${numero}? Contá cómo te fue y ayudá a otros pasajeros en ${BRAND.name}.`;
 
         if (navigator.share) {
             try {
-                await navigator.share({ title: `Línea ${numero} — Bondi MDP`, text, url });
+                await navigator.share({ title: `Línea ${numero} — ${BRAND.name}`, text, url });
                 setShareStatus("shared");
             } catch {
                 return; // el usuario canceló

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { BRAND } from "@shared/brand";
 
 export const metadata: Metadata = {
     title: "Página no encontrada",
     description:
-        "La página que buscás no existe. Volvé al inicio de Bondi MDP para consultar colectivos en Mar del Plata.",
+        `La página que buscás no existe. Volvé al inicio de ${BRAND.name} para consultar colectivos en ${BRAND.city}.`,
 };
 
 const links = [
@@ -97,7 +98,7 @@ export default function NotFound() {
                                 "@type": "ListItem",
                                 position: 1,
                                 name: "Inicio",
-                                item: "https://bondimdp.com.ar",
+                                item: BRAND.appUrl,
                             },
                         ],
                     }),

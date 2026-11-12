@@ -1,7 +1,8 @@
-import { NextResponse, userAgent } from "next/server";
+import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { acceptsNeitherMarkdownNorHtml, prefersMarkdown } from "@shared/seo/acceptNegotiation";
-import { MARKDOWN_ROUTES, NOT_FOUND_MARKDOWN } from "@shared/seo/markdownPages";
+import { prefersMarkdown } from "@shared/seo/acceptNegotiation";
+
+const NOT_FOUND_MARKDOWN = "# 404\n\nLa ruta pedida no existe.\n";
 
 /**
  * Rutas reales de la app (fuente: carpetas bajo app/**\/page.tsx). Se usa
@@ -19,10 +20,9 @@ const KNOWN_PATH_PATTERNS: RegExp[] = [
     /^\/perfil$/,
     /^\/privacidad$/,
     /^\/recorrido(\/[^/]+)?$/,
-    /^\/un-mes-en-numeros$/,
-    /^\/primer-trimestre-en-numeros$/,
-    /^\/blog(\/[^/]+)?$/,
-    /^\/contacto$/,
+    /^\/terminos$/,
+    /^\/viajes$/,
+    /^\/mas$/,
     /^\/opengraph-image$/,
 ];
 
@@ -33,33 +33,6 @@ export function proxy(request: NextRequest) {
 
     const accept = request.headers.get("accept");
     const { pathname } = request.nextUrl;
-    const markdownSlug = MARKDOWN_ROUTES[pathname];
-
-    // Ruta con contraparte Markdown: negociar por Accept (acceptmarkdown.com).
-    if (markdownSlug) {
-        if (acceptsNeitherMarkdownNorHtml(accept)) {
-            return new NextResponse(
-                "406 Not Acceptable: this route serves text/html or text/markdown only.",
-                { status: 406, headers: { Vary: "Accept" } },
-            );
-        }
-        if (prefersMarkdown(accept)) {
-            const url = request.nextUrl.clone();
-            url.pathname = `/md/${markdownSlug}`;
-            const response = NextResponse.rewrite(url);
-            response.headers.set("Vary", "Accept");
-            return response;
-        }
-
-        // Landing en mobile: directo a /consultar, sin renderizar la home de desktop.
-        // Bots (Googlebot smartphone incluido) quedan afuera: deben indexar "/", no un redirect.
-        const ua = userAgent(request);
-        if (pathname === "/" && !ua.isBot && ua.device.type === "mobile") {
-            return NextResponse.redirect(new URL("/consultar", request.url));
-        }
-
-        return NextResponse.next();
-    }
 
     // Path sin página real + agente que prefiere Markdown -> 404 navegable,
     // en vez del app shell HTML de siempre.

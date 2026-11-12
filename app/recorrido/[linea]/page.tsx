@@ -7,12 +7,13 @@ import RecorridoClient from "@features/route/components/RecorridoClient";
 import { LineaInfoSection } from "@features/route/components/LineaInfoSection";
 import { buildLineaInfo } from "@features/route/lineaInfo";
 import type { Linea } from "@shared/types";
+import { BRAND } from "@shared/brand";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
 
-const BASE_URL = "https://bondimdp.com.ar";
+const BASE_URL = BRAND.appUrl;
 
 // ─── Static generation ─────────────────────────────────────────────────────────
 
@@ -60,7 +61,7 @@ export async function generateMetadata({
     const paradasCount = lineaData?.recorrido?.paradas?.length ?? 0;
     const ramalesCount = lineaData?.recorrido?.ramales?.length ?? 0;
 
-    const title = `Recorrido línea ${nombre} en Mar del Plata — Bondi MDP`;
+    const title = `Recorrido línea ${nombre} en Mar del Plata — ${BRAND.name}`;
     const description = `Consultá el recorrido completo de la línea ${nombre} en Mar del Plata. ${paradasCount > 0 ? `${paradasCount} paradas` : "Paradas"}${ramalesCount > 1 ? `, ${ramalesCount} ramales` : ""} y mapa interactivo.${callesStr}`;
 
     return {
@@ -74,7 +75,6 @@ export async function generateMetadata({
             `colectivo ${nombre.toLowerCase()} mar del plata`,
             `bondi ${nombre.toLowerCase()} mdp`,
             "recorridos colectivos mar del plata",
-            "bondi mdp",
         ],
         alternates: {
             canonical: `/recorrido/${slug}`,
@@ -85,7 +85,7 @@ export async function generateMetadata({
             url: `${BASE_URL}/recorrido/${slug}`,
             title,
             description,
-            siteName: "Bondi MDP",
+            siteName: BRAND.name,
         },
         twitter: {
             card: "summary_large_image",
@@ -155,7 +155,7 @@ export default async function LineaRecorridoPage({
         url: `${BASE_URL}/recorrido/${slug}`,
         isPartOf: {
             "@type": "WebSite",
-            name: "Bondi MDP",
+            name: BRAND.name,
             url: BASE_URL,
         },
         about: {
@@ -167,7 +167,7 @@ export default async function LineaRecorridoPage({
             },
             provider: {
                 "@type": "Organization",
-                name: "Bondi MDP",
+                name: BRAND.name,
                 url: BASE_URL,
             },
         },

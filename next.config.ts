@@ -45,25 +45,8 @@ const nextConfig: NextConfig = {
     "/recorrido/[linea]": ["./data/static/**/*.json"],
   },
 
-  /**
-   * Link headers para descubrimiento por agentes (RFC 8288). Apuntan a los
-   * recursos machine-readable que ya servimos para LLMs/agentes. Van
-   * comma-separated en un solo header `Link` porque dos entradas con la misma
-   * key se pisan (la última gana).
-   *   - describedby -> /llms.txt        (descripción del sitio para agentes)
-   *   - service-doc -> /llms-full.txt   (documentación extendida)
-   */
   async headers() {
     return [
-      {
-        source: "/",
-        headers: [
-          {
-            key: "Link",
-            value: `</llms.txt>; rel="describedby"; type="text/plain", </llms-full.txt>; rel="service-doc"; type="text/plain"`,
-          },
-        ],
-      },
       {
         // CSP no incluida: el sitio carga tiles de mapa (OSM) y
         // Supabase — armar un allowlist completo es un cambio aparte, no algo
@@ -82,11 +65,8 @@ const nextConfig: NextConfig = {
   /**
    * Compatibilidad: links viejos con ?tab=favoritos redirigen a /favoritos.
    * Alias en inglés (/about, /contact, /privacy) -> páginas reales en
-   * español: varias herramientas de auditoría para agentes buscan estas
-   * rutas convencionales para verificar "trust anchor pages".
-   * /blog/un-mes-en-numeros y /blog/primer-trimestre-en-numeros -> las
-   * páginas reales, por si alguien infiere esa URL viéndolas listadas
-   * como entradas del blog (viven en su propia ruta, no en /blog/[slug]).
+   * español. Rutas de contenido retirado (blog, android, anunciantes, etc.)
+   * redirigen al inicio.
    */
   async redirects() {
     return [
@@ -97,14 +77,17 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       { source: "/about", destination: "/acerca", permanent: true },
-      { source: "/contact", destination: "/contacto", permanent: true },
+      { source: "/contacto", destination: "/acerca", permanent: true },
+      { source: "/contact", destination: "/acerca", permanent: true },
       { source: "/privacy", destination: "/privacidad", permanent: true },
-      { source: "/blog/un-mes-en-numeros", destination: "/un-mes-en-numeros", permanent: true },
-      {
-        source: "/blog/primer-trimestre-en-numeros",
-        destination: "/primer-trimestre-en-numeros",
-        permanent: true,
-      },
+      { source: "/blog/:path*", destination: "/", permanent: true },
+      { source: "/blog", destination: "/", permanent: true },
+      { source: "/un-mes-en-numeros", destination: "/", permanent: true },
+      { source: "/primer-trimestre-en-numeros", destination: "/", permanent: true },
+      { source: "/android", destination: "/", permanent: true },
+      { source: "/anunciate/:path*", destination: "/", permanent: true },
+      { source: "/anunciate", destination: "/", permanent: true },
+      { source: "/anunciantes", destination: "/", permanent: true },
     ];
   },
 };

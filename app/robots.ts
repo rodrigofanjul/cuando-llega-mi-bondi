@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { BRAND } from "@shared/brand";
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -12,6 +13,6 @@ export default function robots(): MetadataRoute.Robots {
                 allow: "/",
             }
         ],
-        sitemap: "https://bondimdp.com.ar/sitemap.xml",
+        sitemap: `${BRAND.appUrl}/sitemap.xml`,
     };
 }

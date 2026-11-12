@@ -1,48 +1,443 @@
+"use client";
+
+import { useCallback } from "react";
 import Link from "next/link";
-
-import { BRAND } from "@shared/brand";
+import { useReviewsUser } from "@features/reviews/hooks/useReviewsUser";
+import { IconBus } from "@shared/icons/IconBus";
+import { IconGithub } from "@shared/icons/IconGithub";
+import { IconLinkedin } from "@shared/icons/IconLinkedin";
+import { IconExternalLink } from "@shared/icons/IconExternalLink";
+import { IconShare } from "@shared/icons/IconShare";
+import { IconWhatsApp } from "@shared/icons/IconWhatsApp";
+import { IconZap } from "@shared/icons/IconZap";
+import { IconCode } from "@shared/icons/IconCode";
+import { IconMessage } from "@shared/icons/IconMessage";
+import { IconSearch } from "@shared/icons/IconSearch";
 import { BottomNav } from "@shared/layout/BottomNav";
-import { Footer } from "@shared/layout/Footer";
 import { PageShell } from "@shared/layout/PageShell";
+import { PageHeader } from "@shared/layout/PageHeader";
 import { BrandLogo } from "@shared/ui/BrandLogo";
+import { Footer } from "@shared/layout/Footer";
+import { IconIg } from "@shared/icons/IconIg";
+import { IconXBrand } from "@shared/icons/IconXBrand";
+// ── Data ────────────────────────────────────────────────────────────────────
 
-const linkClass = "underline decoration-border underline-offset-2 transition-colors hover:text-foreground";
+const FAQ = [
+    {
+        q: "¿Es gratis?",
+        a: "Sí. 100% gratuita. Se sostiene con publicidad no intrusiva.",
+    },
+    {
+        q: "¿Funciona sin internet?",
+        a: "Necesitás conexión para obtener los datos en tiempo real.",
+    },
+    {
+        q: "¿Qué líneas incluye?",
+        a: "Todas las líneas de colectivos de Mar del Plata.",
+    },
+] as const;
+
+interface Developer {
+    name: string;
+    role: string;
+    education: { label: string; href: string };
+    institution: { label: string; href: string };
+    links: { icon: React.ReactNode; label: string; href: string }[];
+}
+
+const DEVELOPERS: Developer[] = [
+    {
+        name: "Nicolás Jiménez",
+        role: "Frontend Developer · Multimedia Designer",
+        education: {
+            label: "TUP",
+            href: "https://mdp.utn.edu.ar/tecnicatura/tecnico_universitario_en_programacion/",
+        },
+        institution: { label: "UTN FRMDP", href: "https://mdp.utn.edu.ar/" },
+        links: [
+            {
+                icon: <IconGithub className="h-4 w-4" />,
+                label: "GitHub",
+                href: "https://github.com/dotfn",
+            },
+            {
+                icon: <IconLinkedin className="h-4 w-4" />,
+                label: "LinkedIn",
+                href: "https://linkedin.com/in/dotfn",
+            },
+            {
+                icon: <IconExternalLink className="h-4 w-4" />,
+                label: "Portfolio",
+                href: "https://dotfn.dev",
+            },
+            {
+                icon: <IconXBrand className="h-4 w-4" />,
+                label: "X (Twitter)",
+                href: "https://twitter.com/dotfn_",
+            },
+            {
+                icon: <IconIg className="h-4 w-4" />,
+                label: "Instagram",
+                href: "https://instagram.com/dotfndev",
+            },
+        ],
+    },
+    {
+        name: "Matias Celiz Ramos",
+        role: "Técnico en Informática",
+        education: { label: "Tecnicatura en Ciencia de Datos", href: "https://exactas.mdp.edu.ar/estudiantes/tecnicatura-universitaria-en-ciencia-de-datos/" },
+        institution: { label: "UNMDP", href: "https://www.mdp.edu.ar/" },
+        links: [
+            {
+                icon: <IconGithub className="h-4 w-4" />,
+                label: "GitHub",
+                href: "https://github.com/Celiz",
+            },
+            {
+                icon: <IconLinkedin className="h-4 w-4" />,
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/celizm/",
+            },
+            {
+                icon: <IconExternalLink className="h-4 w-4" />,
+                label: "Portfolio",
+                href: "https://celizin.dev",
+            },
+            {
+                icon: <IconXBrand className="h-4 w-4" />,
+                label: "X (Twitter)",
+                href: "https://twitter.com/celizin",
+            },
+            {
+                icon: <IconIg className="h-4 w-4" />,
+                label: "Instagram",
+                href: "https://instagram.com/celizin_",
+            },
+        ],
+    },
+];
+
+const APP_FEATURES = [
+    {
+        icon: <IconSearch className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />,
+        title: "Tiempo real",
+        description: "Consultá líneas, paradas y próximos arribos al instante.",
+    },
+    {
+        icon: <IconZap className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />,
+        title: "Rápida",
+        description: "Sin registro ni pasos innecesarios.",
+    },
+    {
+        icon: <IconCode className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />,
+        title: "Independiente",
+        description: "Alternativa simple y directa para consultar el transporte.",
+    },
+] as const;
+
+// ── Sub-components ───────────────────────────────────────────────────────────
+
+function DevCard({ dev }: { dev: Developer }) {
+    return (
+        <div className="space-y-4 rounded-xl border border-border bg-card p-4">
+            <div className="min-w-0 space-y-1">
+                <div className="flex items-center justify-between gap-3">
+                    <h3 className="text-[15px] font-semibold">{dev.name}</h3>
+                    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-success bg-success/10 px-2.5 py-1 text-[12px] font-semibold text-success">
+                        <span className="h-1.5 w-1.5 animate-pulse-soft rounded-full bg-current" />
+                        Conectemos
+                    </span>
+                </div>
+                <p className="text-[13px] text-muted-foreground">{dev.role}</p>
+                <p className="text-[12px] text-muted-foreground opacity-80">
+                    Alumno de la{" "}
+                    <a
+                        href={dev.education.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
+                    >
+                        {dev.education.label}
+                    </a>
+                    {" · "}
+                    <a
+                        href={dev.institution.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
+                    >
+                        {dev.institution.label}
+                    </a>
+                </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+                {dev.links.map(({ icon, label, href }) => (
+                    <a
+                        key={label}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:border-secondary hover:text-foreground"
+                    >
+                        {icon}
+                        {label}
+                    </a>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+// ── Main component ───────────────────────────────────────────────────────────
 
 export function AcercaClient() {
+    const { user } = useReviewsUser();
+
+    const handleShareWhatsApp = useCallback(() => {
+        const text = encodeURIComponent(
+            "Mirá esta app para ver cuándo llega el bondi en Mar del Plata 🚌 https://bondimdp.com.ar",
+        );
+        window.open(`https://wa.me/?text=${text}`, "_blank", "noopener");
+    }, []);
+
+    const handleShareNative = useCallback(async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "Bondi MDP",
+                    text: "Consultá cuándo llega tu colectivo en Mar del Plata",
+                    url: "https://bondimdp.com.ar",
+                });
+            } catch {
+                /* user cancelled */
+            }
+        } else {
+            handleShareWhatsApp();
+        }
+    }, [handleShareWhatsApp]);
+
     return (
         <div className="flex min-h-pwa-shell flex-col lg:pl-60">
-            <PageShell className="space-y-8 pt-4">
-                <section className="space-y-3 text-center">
-                    <BrandLogo className="text-4xl lg:text-[40px]" />
-                    <h1 className="text-[15px] font-semibold text-foreground">{BRAND.name}</h1>
-                    <p className="text-[13px] text-muted-foreground">{BRAND.description}</p>
-                </section>
+            <PageShell wide className="space-y-10 lg:space-y-6">
+                <PageHeader
+                    title="Acerca de"
+                    highlight="Bondi MDP"
+                    subtitle="El proyecto y el equipo"
+                />
+                {/* Desktop: rail izquierdo sticky (marca + compartir) y contenido
+                    a la derecha. En mobile todo fluye en una columna. */}
+                <div className="space-y-10 lg:grid lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-10 lg:space-y-0">
+                    <div className="space-y-10 lg:sticky lg:top-8 lg:space-y-5">
+                        {/* ── HERO ──────────────────────────────────── */}
+                        <section className="flex flex-col items-center gap-5 text-center lg:gap-4 lg:rounded-2xl lg:border lg:border-border lg:bg-card lg:px-6 lg:py-6">
+                            {/* El ícono grande duplica el logo de la sidebar en desktop */}
+                            <div className="flex items-center justify-center text-secondary lg:hidden">
+                                <IconBus size={64} />
+                            </div>
+                            <div>
+                                <BrandLogo className="text-4xl lg:text-[40px]" />
+                                <p className="mt-1 text-[10.4px] uppercase tracking-wider text-muted-foreground">
+                                    MAR DEL PLATA
+                                </p>
+                            </div>
+                            <p className="max-w-sm text-[14px] leading-relaxed text-muted-foreground">
+                                Información de colectivos en tiempo real para Mar del Plata.
+                                Rápida, clara y sin vueltas.
+                            </p>
+                        </section>
 
-                <section className="space-y-3 text-[13px] leading-relaxed text-muted-foreground">
-                    <p>
-                        Gratuita y sin publicidad. Usa los datos de arribos que publica la Municipalidad de
-                        General Pueyrredon.
-                    </p>
-                    <p>{BRAND.originalProjectCredit}</p>
-                    {BRAND.contactEmail ? (
-                        <p>
-                            Contacto:{" "}
-                            <a href={`mailto:${BRAND.contactEmail}`} className={linkClass}>
-                                {BRAND.contactEmail}
+                        {/* ── SOBRE LA APP ──────────────────────────── */}
+                        <section className="space-y-3">
+                            <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                                Sobre la app
+                            </h2>
+                            <div className="space-y-3">
+                                {APP_FEATURES.map(({ icon, title, description }) => (
+                                    <div
+                                        key={title}
+                                        className="flex items-start gap-3 rounded-xl border border-border bg-card p-4"
+                                    >
+                                        {icon}
+                                        <div>
+                                            <p className="text-[14px] font-semibold">{title}</p>
+                                            <p className="mt-1 text-[13px] text-muted-foreground">
+                                                {description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* ── COMPARTIR ─────────────────────────────── */}
+                        <section className="space-y-3">
+                            <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                                Compartir
+                            </h2>
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    onClick={handleShareWhatsApp}
+                                    className="btn-pill btn-secondary w-full gap-2 text-[13px]"
+                                >
+                                    <IconWhatsApp className="h-5 w-5" />
+                                    WhatsApp
+                                </button>
+                                <button
+                                    onClick={handleShareNative}
+                                    className="btn-pill btn-primary w-full gap-2 text-[13px]"
+                                >
+                                    <IconShare className="h-5 w-5" />
+                                    Compartir
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div className="space-y-10 lg:space-y-8">
+                        {/* ── TU CUENTA ─────────────────────────────── */}
+                        {user && (
+                            <section className="space-y-3">
+                                <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                                    Tu cuenta
+                                </h2>
+                                <Link
+                                    href="/perfil"
+                                    className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 no-underline transition-colors hover:border-secondary"
+                                >
+                                    <div className="min-w-0">
+                                        <p className="truncate text-[14px] font-semibold text-foreground">
+                                            {user.email}
+                                        </p>
+                                        <p className="text-[12px] text-muted-foreground opacity-80">
+                                            Cerrar sesión o eliminar tu cuenta
+                                        </p>
+                                    </div>
+                                    <svg
+                                        className="shrink-0 text-muted-foreground"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <polyline points="9 18 15 12 9 6" />
+                                    </svg>
+                                </Link>
+                            </section>
+                        )}
+
+                        {/* ── HECHO POR ─────────────────────────────── */}
+                        <section className="space-y-3">
+                            <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                                Hecho por
+                            </h2>
+                            <div className="space-y-3 lg:grid lg:grid-cols-2 lg:items-start lg:gap-4 lg:space-y-0">
+                                {DEVELOPERS.map((dev) => (
+                                    <DevCard key={dev.name} dev={dev} />
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* ── CÓDIGO ABIERTO ────────────────────────── */}
+                <section className="space-y-3">
+                    <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                        Código abierto
+                    </h2>
+                    <div className="space-y-3 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-4 lg:space-y-0">
+                        {[
+                            {
+                                href: "https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi",
+                                icon: <IconGithub className="h-5 w-5 text-secondary" />,
+                                title: "Repositorio en GitHub",
+                                subtitle: "Código fuente y decisiones técnicas",
+                            },
+                            {
+                                href: "https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi/issues",
+                                icon: <IconMessage className="h-5 w-5 text-secondary" />,
+                                title: "Reportar bugs o proponer mejoras",
+                                subtitle: "El proyecto crece con la comunidad",
+                            },
+                        ].map(({ href, icon, title, subtitle }) => (
+                            <a
+                                key={href}
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-colors hover:border-secondary"
+                            >
+                                <div className="flex items-center gap-3">
+                                    {icon}
+                                    <div>
+                                        <p className="text-[14px] font-semibold">{title}</p>
+                                        <p className="text-[12px] text-muted-foreground opacity-80">
+                                            {subtitle}
+                                        </p>
+                                    </div>
+                                </div>
+                                <IconExternalLink className="h-4 w-4 shrink-0 text-muted-foreground opacity-80" />
                             </a>
-                        </p>
-                    ) : null}
-                    <p>
-                        <Link href="/privacidad" className={linkClass}>
-                            Privacidad
-                        </Link>
-                        {" · "}
-                        <Link href="/terminos" className={linkClass}>
-                            Términos
-                        </Link>
-                    </p>
+                        ))}
+                    </div>
                 </section>
 
+                {/* ── BLOG ──────────────────────────────────────────── */}
+                <section className="space-y-3">
+                    <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                        Blog
+                    </h2>
+                    <Link
+                        href="/blog"
+                        className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 no-underline transition-colors hover:border-secondary"
+                    >
+                        <div className="min-w-0">
+                            <p className="text-[14px] font-semibold text-foreground">
+                                Comparativas y guías
+                            </p>
+                            <p className="text-[12px] text-muted-foreground opacity-80">
+                                Bondi MDP vs. la app oficial, y cómo saber cuándo llega el colectivo
+                            </p>
+                        </div>
+                        <svg
+                            className="shrink-0 text-muted-foreground"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </Link>
+                </section>
+
+                {/* ── FAQ ───────────────────────────────────────────── */}
+                <section className="space-y-3">
+                    <h2 className="text-[10.4px] font-normal uppercase tracking-wider text-muted-foreground">
+                        Preguntas frecuentes
+                    </h2>
+                    <div className="space-y-3 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-4 lg:space-y-0">
+                        {FAQ.map(({ q, a }) => (
+                            <div
+                                key={q}
+                                className="rounded-xl border border-border bg-card p-4"
+                            >
+                                <p className="text-[14px] font-semibold">{q}</p>
+                                <p className="mt-1 text-[13px] text-muted-foreground">{a}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+                    </div>
+                </div>
+
+                {/* ── FOOTER ────────────────────────────────────────── */}
                 <Footer />
             </PageShell>
 

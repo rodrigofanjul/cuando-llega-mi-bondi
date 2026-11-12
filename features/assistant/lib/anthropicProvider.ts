@@ -12,12 +12,11 @@ import Anthropic from "@anthropic-ai/sdk";
 
 import type { AssistantContext, LlmProvider, ProviderRun } from "./orchestrator";
 import { toolJsonSchemas, type ToolCallRecord } from "./tools";
-import { BRAND } from "@shared/brand";
 
 export const MAX_TOOL_ROUNDS = 3;
 const DEFAULT_MODEL = "claude-opus-5-5";
 
-const SYSTEM_RULES = `Sos el asistente de ${BRAND.name}, la app de colectivos de Mar del Plata.
+const SYSTEM_RULES = `Sos el asistente de Bondi MDP, la app de colectivos de Mar del Plata.
 Reglas:
 - Para arribos, paradas, recorridos, demoras o cuándo salir usá SIEMPRE las herramientas. Nunca inventes minutos, líneas, paradas ni recorridos.
 - Si falta la parada o la línea, pedila (podés sugerir los favoritos del usuario).

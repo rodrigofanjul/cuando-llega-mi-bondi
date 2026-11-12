@@ -1,4 +1,4 @@
-# Arquitectura de Cuándo Viene
+# Arquitectura de Bondi MDP
 
 Este documento explica **cómo encajan las piezas** del front Next.js. El backend que habla con la Municipalidad vive **fuera** de este repositorio.
 

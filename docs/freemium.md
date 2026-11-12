@@ -3,7 +3,7 @@
 Implementación: `features/entitlements/lib/entitlements.ts`. **Apagado** (`NEXT_PUBLIC_MONETIZATION_ENABLED` sin definir):
 todo habilitado, sin límites de plan gratuito.
 
-| Siempre gratis (incluye todo lo que la app ya hace hoy) | Candidatas a premium (nuevas) |
+| Siempre gratis (incluye todo lo que la app ya tenía) | Candidatas a premium (nuevas) |
 | --------------------------------------------------- | ----------------------------- |
 | Consultar arribos, favoritos, recorridos, planificador, widget básico, alertas básicas, reportes | Alertas avanzadas, widgets personalizados, automatizaciones recurrentes, estadísticas históricas, recomendaciones avanzadas, asistente con más consultas |
 
@@ -16,4 +16,4 @@ Límites de referencia (sólo con monetización activa): asistente 10/día grati
    Play Billing / web; hoy sólo existe `NoopPurchaseProvider` (no cobra nada).
 3. Validación de recibos del lado del servidor y estado de suscripción por cuenta (requiere cuentas de tiendas, B4).
 4. Política de reembolsos, precios por país y textos legales.
-5. Estado previo (proyecto original, ya quitado en D19): vendía anuncios a comercios con MercadoPago. Esta app no tiene publicidad ni cobros.
+5. La venta de anuncios a comercios (MercadoPago, web) es preexistente y no es una compra digital dentro de la app.

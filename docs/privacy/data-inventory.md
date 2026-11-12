@@ -15,10 +15,13 @@ Relevado del código el 2026-11-11. «Dispositivo» = LocalStorage / SharedPrefe
 | Reportes colaborativos | Usuario | Supabase `community_reports` (hash con sal de id aleatorio, sin IP) | No | Funcionalidad | Caducan solos; purga a 30 días de vencidos |
 | Id aleatorio de dispositivo | App | Dispositivo (servidor sólo guarda el hash) | No | Antispam | Borrado local |
 | Observaciones de arribos (histórico) | Consultas de la app (sólo pasiva), **apagado** hasta activar en producción | Supabase, 1 año crudo; llegadas inferidas 2 años | No (sin usuario, sin ubicación) | Analítica de servicio / ML | Retención automática |
+| Analítica de uso (Google Analytics) | Sitio (también dentro de la WebView) | Google | Identificadores de dispositivo/cookies | Analítica | Según Google |
+| Grabación de sesión (Microsoft Clarity) | Sitio (también en la WebView) | Microsoft | Identificadores de dispositivo/cookies | Analítica | Según Microsoft |
+| Métricas anónimas (Vercel Analytics) | Sitio | Vercel | No | Analítica | — |
+| Publicidad (Google AdSense) | Sitio (también en la WebView) | Google | Identificadores; puede ser personalizada | Publicidad de terceros | Según Google |
 | Preguntas al asistente | Usuario | No se guardan; si hay clave, se envían a Anthropic con favoritos | No | Funcionalidad | No aplica |
-| Métricas de experiencia propias (`/api/ux`) | App, **apagado por defecto** (`NEXT_PUBLIC_UX_METRICS_ENABLED`) | Contadores en memoria; búsquedas sin resultado normalizadas en logs del servidor | No (sin identificador, sin IP guardada) | Mejora de la experiencia | No aplica |
 | IP | Toda request | Sólo en memoria para límites de frecuencia (no se guarda ni se loguea) | — | Seguridad | No aplica |
 
 Notas:
 - El código nativo propio (widgets, plugin) **no recolecta ni envía datos**: sólo lee/escribe almacenamiento local y consulta el mismo endpoint de arribos.
-- La **WebView** no carga scripts de terceros de analítica, grabación de sesión ni publicidad (se quitaron; B11 resuelto): no hay rastreo.
+- Lo que más condiciona las declaraciones es lo que la **WebView** carga del sitio (GA, Clarity, AdSense): ver B11.

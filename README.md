@@ -1,14 +1,14 @@
 <div align="center">
-  <img src="public/icon-192.png" alt="Cuándo Viene" width="120" />
+  <img src="public/icon-192.png" alt="Bondi MDP Logo" width="120" />
 
-  <h1>Cuándo Viene</h1>
+  <h1>Bondi MDP</h1>
 
   <p>
     <strong>Tiempos de arribo de colectivos en tiempo real para Mar del Plata.</strong>
   </p>
 
   <p>
-    
+    <a href="https://bondimdp.com.ar/">Sitio en vivo</a> •
     <a href="#-empezar-getting-started">Empezar</a> •
     <a href="CONTRIBUTING.md">Contribuir</a> •
     <a href="docs/DIATAXIS.md">Documentación (Diátaxis)</a> •
@@ -19,9 +19,7 @@
 ---
 
 > [!NOTE]
-> App de colectivos para Mar del Plata, sin anuncios ni rastreadores de terceros (web y PWA; las apps nativas todavía no están publicadas). Consultá cuándo llega tu bondi con datos oficiales y caché local para datos estáticos.
-
-> Crédito: este proyecto parte del código abierto de [Bondi MDP](https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi) y le debe su base; la marca, los textos y la experiencia son propios (ver docs/decisions.md, D19).
+> App de colectivos para Mar del Plata (web, PWA y [Google Play](https://play.google.com/store/apps/details?id=com.bondimdp.app)). Consultá cuándo llega tu bondi con datos oficiales y caché local para datos estáticos.
 
 <div align="center">
   <img src="public/screenshots/results.jpg" alt="Screenshot de la aplicación" width="400" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" />
@@ -104,7 +102,7 @@ Telegram, Supabase, analytics y el resto: [docs/env-reference.md](docs/env-refer
 1. **Clonar:**
 
    ```bash
-   git clone https://github.com/rodrigofanjul/cuando-llega-mi-bondi.git
+   git clone https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi.git
    cd cuando-llega-mi-bondi
    ```
 
@@ -180,4 +178,4 @@ Pull requests y reportes de bugs son bienvenidos. Guía completa: [CONTRIBUTING.
 ---
 
 > [!TIP]
-> Base de código abierto: [Bondi MDP](https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi) (MIT).
+> Si la app te sirve, una estrella ⭐ en [GitHub](https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi) ayuda mucho.

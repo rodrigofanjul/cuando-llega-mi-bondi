@@ -1,4 +1,4 @@
-# Contribuir a Cuándo Viene
+# Contribuir a Bondi MDP
 
 Gracias por tu interés en este proyecto open-source. Estas pautas mantienen el proceso claro para todos.
 

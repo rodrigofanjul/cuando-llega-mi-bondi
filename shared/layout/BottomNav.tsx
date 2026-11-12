@@ -1,35 +1,69 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bus } from "lucide-react";
 import { IconSearch } from "@shared/icons/IconSearch";
+import { IconStar } from "@shared/icons/IconStar";
 import { IconInfo } from "@shared/icons/IconInfo";
 import { IconBus } from "@shared/icons/IconBus";
-import { BRAND } from "@shared/brand";
 import { BrandLogo } from "@shared/ui/BrandLogo";
 import { ThemeToggle } from "./ThemeToggle";
+import { PlayStoreNavLink } from "./PlayStoreNavLink";
 import { cn } from "@shared/utils";
 
-type NavTab = "inicio" | "viajes" | "mas";
+type NavTab = "consultar" | "recorrido" | "favoritos" | "acerca";
 
-const NAV_ITEMS: { id: NavTab; label: string; href: string; match: (p: string) => boolean; icon: () => React.ReactNode }[] = [
-    { id: "inicio", label: "Inicio", href: "/", match: (p) => p === "/" || p.startsWith("/consultar") || p.startsWith("/favoritos"), icon: () => <IconSearch className="h-[22px] w-[22px]" /> },
-    { id: "viajes", label: "Viajes", href: "/viajes", match: (p) => ["/viajes", "/como-llego", "/recorrido", "/paradas-cerca"].some((x) => p.startsWith(x)), icon: () => <Bus className="h-[22px] w-[22px]" /> },
-    { id: "mas", label: "Más", href: "/mas", match: (p) => ["/mas", "/alertas", "/widgets", "/asistente", "/perfil", "/acerca", "/privacidad", "/terminos"].some((x) => p.startsWith(x)), icon: () => <IconInfo className="h-[22px] w-[22px]" /> },
+const NAV_ITEMS: { id: NavTab; label: string; href: string; icon: (active: boolean) => React.ReactNode }[] = [
+    {
+        id: "consultar",
+        label: "Consultar",
+        href: "/consultar",
+        icon: () => <IconSearch className="h-[22px] w-[22px]" />,
+    },
+    {
+        id: "recorrido",
+        label: "Reseñas",
+        href: "/recorrido",
+        icon: () => <Bus className="h-[22px] w-[22px]" />,
+    },
+    {
+        id: "favoritos",
+        label: "Favoritos",
+        href: "/favoritos",
+        icon: (active) => <IconStar filled={active} className="h-[22px] w-[22px]" />,
+    },
+    {
+        id: "acerca",
+        label: "Acerca de",
+        href: "/acerca",
+        icon: () => <IconInfo className="h-[22px] w-[22px]" />,
+    },
 ];
+
+function useActiveTab(): NavTab {
+    const pathname = usePathname();
+
+    return useMemo((): NavTab => {
+        if (pathname.startsWith("/favoritos")) return "favoritos";
+        if (pathname.startsWith("/recorrido")) return "recorrido";
+        if (pathname.startsWith("/acerca")) return "acerca";
+        return "consultar";
+    }, [pathname]);
+}
 
 /** Barra inferior — solo mobile (<lg). */
 function MobileBar() {
-    const pathname = usePathname();
+    const activeTab = useActiveTab();
 
     return (
         <nav
             className="fixed bottom-0 left-0 z-[100] w-full border-t border-border bg-background/90 backdrop-blur-xl pb-safe-area-bottom lg:hidden"
         >
             <div className="mx-auto flex max-w-[520px] items-stretch justify-around">
-                {NAV_ITEMS.map(({ id, label, href, match, icon }) => {
-                    const isActive = match(pathname);
+                {NAV_ITEMS.map(({ id, label, href, icon }) => {
+                    const isActive = activeTab === id;
                     return (
                         <Link
                             key={id}
@@ -37,7 +71,7 @@ function MobileBar() {
                             aria-label={label}
                             aria-current={isActive ? "page" : undefined}
                             className={cn(
-                                "relative flex min-h-[var(--bottom-nav-h)] flex-1 flex-col items-center justify-center gap-1 py-2 transition-colors",
+                                "relative flex min-h-[56px] flex-1 flex-col items-center justify-center gap-1 py-2 transition-colors",
                                 isActive
                                     ? "text-secondary"
                                     : "text-muted-foreground hover:text-foreground active:text-foreground"
@@ -50,7 +84,7 @@ function MobileBar() {
                                     isActive ? "opacity-100" : "opacity-0"
                                 )}
                             />
-                            {icon()}
+                            {icon(isActive)}
                             <span className="font-sans text-[11px] font-medium tracking-tight">
                                 {label}
                             </span>
@@ -64,17 +98,18 @@ function MobileBar() {
 
 /** Sidebar expandida — solo desktop (≥lg). Ancho w-60 (240px), compensar con lg:pl-60. */
 function SideNav() {
-    const pathname = usePathname();
+    const activeTab = useActiveTab();
 
     return (
         <nav
             className="fixed left-0 top-0 z-[100] hidden h-dvh w-60 flex-col border-r border-border bg-background/90 backdrop-blur-xl lg:flex"
             aria-label="Navegación principal"
         >
+            {/* En desktop la landing es accesible: el logo lleva a ella */}
             <Link
                 href="/"
-                aria-label={`${BRAND.name} — Ir al inicio`}
-                title={BRAND.name}
+                aria-label="Bondi MDP — Ir a la página principal"
+                title="Bondi MDP"
                 className="flex h-16 shrink-0 items-center gap-2.5 px-5 text-foreground transition-opacity hover:opacity-80"
             >
                 <IconBus />
@@ -82,8 +117,8 @@ function SideNav() {
             </Link>
 
             <div className="flex flex-1 flex-col gap-1 px-3 pt-3">
-                {NAV_ITEMS.map(({ id, label, href, match, icon }) => {
-                    const isActive = match(pathname);
+                {NAV_ITEMS.map(({ id, label, href, icon }) => {
+                    const isActive = activeTab === id;
                     return (
                         <Link
                             key={id}
@@ -104,7 +139,7 @@ function SideNav() {
                                     isActive ? "opacity-100" : "opacity-0"
                                 )}
                             />
-                            {icon()}
+                            {icon(isActive)}
                             <span>{label}</span>
                         </Link>
                     );
@@ -112,6 +147,7 @@ function SideNav() {
             </div>
 
             <div className="flex flex-col gap-1 px-3 pb-4">
+                <PlayStoreNavLink variant="row" />
                 <div className="flex items-center px-2 pt-1">
                     <ThemeToggle />
                 </div>

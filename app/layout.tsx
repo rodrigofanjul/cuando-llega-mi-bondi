@@ -1,14 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { GoogleAnalyticsDeferred } from "@shared/analytics/GoogleAnalyticsDeferred";
+import { MicrosoftClarityDeferred } from "@shared/analytics/MicrosoftClarityDeferred";
+import { VercelAnalyticsDeferred } from "@shared/analytics/VercelAnalyticsDeferred";
 import { JsonLd } from "@shared/seo/JsonLd";
 import { InstallPwaPrompt } from "@shared/layout/InstallPwaPrompt";
+import { PlayStorePromo } from "@shared/layout/PlayStorePromo";
 import { ThemeColorMeta } from "@shared/layout/ThemeColorMeta";
 import { ThemeProvider } from "@shared/layout/ThemeProvider";
 import { PwaViewportSync } from "@shared/layout/PwaViewportSync";
 import { ToasterDeferred } from "@shared/ui/ToasterDeferred";
 import Script from "next/script";
-import { BRAND } from "@shared/brand";
+import { ADSENSE_CLIENT } from "@shared/ads/AdSenseScript";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
@@ -22,12 +26,63 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL(BRAND.appUrl),
-    title: { default: `${BRAND.name} — ${BRAND.description}`, template: `%s | ${BRAND.name}` },
-    description: BRAND.description,
-    alternates: { canonical: "/" },
-    openGraph: { type: "website", locale: "es_AR", url: BRAND.appUrl, title: BRAND.name, description: BRAND.description, siteName: BRAND.name },
-    appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: BRAND.shortName },
+    metadataBase: new URL("https://bondimdp.com.ar"),
+    title: {
+        default: "Bondi MDP — Cuándo llega tu colectivo en Mar del Plata",
+        template: "%s | Bondi MDP",
+    },
+    description:
+        "App gratuita para saber cuándo llega tu bondi en Mar del Plata. Horarios, recorridos y paradas en tiempo real de todas las líneas (511, 522, 541 y más) con datos MGP.",
+    keywords: [
+        "bondimdp",
+        "bondi mdp",
+        "app bondi mar del plata",
+        "app colectivos mar del plata",
+        "colectivos mar del plata",
+        "cuando llega mdp",
+        "horarios colectivos mar del plata",
+        "transporte publico mdp",
+        "mgp",
+        "paradas de colectivo",
+        "recorridos colectivos mar del plata",
+        "recorrido colectivos",
+        "mi bondi",
+        "bondi app",
+        "cuando viene el bondi",
+        "cuando llega mi bondi",
+        "aplicacion cuando llega mar del plata",
+    ],
+    manifest: "/manifest.json",
+    alternates: {
+        canonical: "/",
+    },
+    openGraph: {
+        type: "website",
+        locale: "es_AR",
+        url: "https://bondimdp.com.ar",
+        title: "Bondi MDP — Cuándo llega tu colectivo en Mar del Plata",
+        description:
+            "App gratuita para saber cuándo llega tu bondi en Mar del Plata. Datos oficiales de MGP en una interfaz rápida, instalable en el celular.",
+        siteName: "Bondi MDP",
+    },
+    twitter: {
+        card: "summary_large_image",
+        site: "@bondimdp",
+        title: "Bondi MDP — Cuándo llega tu colectivo en Mar del Plata",
+        description:
+            "App gratuita de colectivos en tiempo real para Mar del Plata. No pierdas más tiempo esperando el bondi.",
+    },
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "black-translucent",
+        title: "Bondi MDP",
+    },
+    verification: {
+        google: [
+            "KjCilanSVlDWUMLsTnJa4vj2NjVIeSNXFUlkG10JbgU",
+            "ABFvUfmKFrDnQyejLLezkYWvZe7Vd8EuKO4mETRL8_A"
+        ],
+    },
     icons: {
         icon: [
             { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
@@ -36,12 +91,17 @@ export const metadata: Metadata = {
         apple: "/apple-icon.png",
         shortcut: "/favicon.ico",
     },
+    // Verificación del sitio en AdSense en todas las páginas; el script de
+    // anuncios solo carga junto a los bloques manuales (ver AdSenseUnit).
+    other: {
+        "google-adsense-account": ADSENSE_CLIENT,
+    },
 };
 
 export const viewport: Viewport = {
     themeColor: [
-        { media: "(prefers-color-scheme: light)", color: BRAND.backgroundLight },
-        { media: "(prefers-color-scheme: dark)", color: BRAND.backgroundDark },
+        { media: '(prefers-color-scheme: light)', color: '#f7f7f4' },
+        { media: '(prefers-color-scheme: dark)', color: '#0f2d4a' },
     ],
     width: "device-width",
     initialScale: 1,
@@ -72,8 +132,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <PwaViewportSync />
                     <ThemeColorMeta />
                     <JsonLd />
+                    <MicrosoftClarityDeferred />
+                    <VercelAnalyticsDeferred />
+                    <GoogleAnalyticsDeferred />
                     {children}
                     <ToasterDeferred />
+                    <PlayStorePromo />
                     <InstallPwaPrompt />
                 </ThemeProvider>
             </body>

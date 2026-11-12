@@ -13,7 +13,6 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--mdp-success);
@@ -47,7 +46,6 @@
 
 @layer base {
   :root {
-    --bottom-nav-h: 57px;
     /* Brand Tokens */
     --mdp-rosa: #c93679;
     --mdp-amarillo: #f9cd4a;
@@ -652,11 +650,6 @@ body.arrivals-overlay-open {
   overscroll-behavior: none;
 }
 
-/* El aviso de instalación PWA tapa el panel de arribos y su barra de acciones. */
-body.arrivals-overlay-open pwa-install {
-  display: none !important;
-}
-
 body.como-llego-overlay-open {
   overflow: hidden;
   overscroll-behavior: none;
@@ -679,20 +672,4 @@ body.como-llego-overlay-open {
   ::view-transition-new(root) {
     animation-duration: 0.01ms;
   }
-}
-
-@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-.live-dot { animation: live-pulse 2s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
-
-/* Alto contraste (para usar al sol): texto secundario y bordes más marcados. */
-:root[data-contrast="high"] {
-  --muted-foreground: #1f2937;
-  --border: #111827;
-  --foreground: #000000;
-}
-:root.dark[data-contrast="high"] {
-  --muted-foreground: #e5e7eb;
-  --border: #f9fafb;
-  --foreground: #ffffff;
 }

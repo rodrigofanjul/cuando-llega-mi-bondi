@@ -43,7 +43,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
         if (configs.isEmpty()) {
             setContentView(
                 TextView(this).apply {
-                    text = "Todavía no creaste widgets. Abrí la app → Widgets para elegir líneas y paradas."
+                    text = "Todavía no creaste widgets. Abrí Bondi MDP → Widgets para elegir líneas y paradas."
                     setPadding(48, 48, 48, 48)
                     textSize = 16f
                     setOnClickListener {

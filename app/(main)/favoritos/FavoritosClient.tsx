@@ -17,6 +17,9 @@ import { PageHeader } from "@shared/layout/PageHeader";
 import { useSearchFlowData } from "@features/search/context/SearchFlowContext";
 import { useSearchFlowStore } from "@features/search/store/useSearchFlowStore";
 import { useUIStore } from "@shared/ui/store/useUIStore";
+import { AdSenseRail } from "@shared/ads/AdSenseUnit";
+
+const ADSENSE_SLOT_FAVORITOS = process.env.NEXT_PUBLIC_ADSENSE_SLOT_FAVORITOS?.trim();
 
 export function FavoritosClient() {
   const router = useRouter();
@@ -127,6 +130,7 @@ export function FavoritosClient() {
             onRename={handleEditFavName}
             onGoToSearch={() => router.push("/consultar")}
           />
+          <AdSenseRail slot={ADSENSE_SLOT_FAVORITOS} className="mt-6 lg:mt-8" />
         </div>
         <div className="lg:col-span-2">
           <HistorialList

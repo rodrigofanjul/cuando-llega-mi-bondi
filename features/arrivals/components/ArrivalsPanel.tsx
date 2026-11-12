@@ -1,8 +1,8 @@
 "use client";
 
 import { IconRefresh } from "@shared/icons/IconRefresh";
+import { IconHeart } from "@shared/icons/IconHeart";
 import { ArriboCard } from "@features/arrivals/components/ArriboCard";
-import { StopActionBar } from "@features/arrivals/components/StopActionBar";
 import { OtrasLineasSuggestion } from "@features/arrivals/components/OtrasLineasSuggestion";
 import { ShareButton } from "@shared/layout/ShareButton";
 import { IconButton } from "@shared/ui/IconButton";
@@ -18,11 +18,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrivalsEmpty } from "./ArrivalsEmpty";
 import { ArrivalsLoading } from "./ArrivalsLoading";
 import { LiveSharingBanner } from "./LiveSharingBanner";
+import { AdSenseRail } from "@shared/ads/AdSenseUnit";
 import { DepartureAdvisor } from "@features/departure/components/DepartureAdvisor";
 import { AnomalyNotice } from "@features/anomalies/components/AnomalyNotice";
 import { CommunityReports } from "@features/reports/components/CommunityReports";
-import { sortArribosByEta } from "@features/arrivals/lib/sortArrivals";
 import { OfflineEstimateNotice } from "@features/offline/components/OfflineEstimateNotice";
+
+const ADSENSE_SLOT_ARRIVALS = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARRIVALS?.trim();
 
 interface ArrivalsPanelProps {
     consult: Pick<
@@ -144,8 +146,6 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
     // respaldo (ej. la pestaña estuvo en background y el polling no corrió).
     const isStale = isStaleFromProxy || (elapsedMs !== null && elapsedMs > STALE_AFTER_MS);
 
-    // Solo para mostrar: el primero (hero) debe ser el más cercano.
-    const sortedArribos = useMemo(() => sortArribosByEta(displayArribos), [displayArribos]);
     const hasArribos = displayArribos.length > 0;
     const hasLiveSharings = liveSharings.length > 0;
     const showOtrasLineas =
@@ -186,6 +186,22 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                                 : formatRelative(elapsedMs)}
                         </span>
                     ) : null}
+                    {isConsulting && (
+                        <IconButton
+                            onClick={handleToggleFavCurrent}
+                            aria-label={isCurrentFavorito ? "Quitar de favoritos" : "Guardar en favoritos"}
+                            aria-pressed={isCurrentFavorito}
+                            title={isCurrentFavorito ? "Quitar de favoritos" : "Guardar en favoritos"}
+                            tone={isCurrentFavorito ? "active" : "default"}
+                        >
+                            <IconHeart filled={isCurrentFavorito} width={16} height={16} />
+                        </IconButton>
+                    )}
+                    <ShareButton
+                        arribos={displayArribos}
+                        calleLabel={arrivalsCalleLabel}
+                        interseccionLabel={arrivalsInterseccionLabel}
+                    />
                     <IconButton
                         onClick={fetchArribos}
                         disabled={loadingArribos}
@@ -230,14 +246,10 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                 <div className="flex flex-col gap-3">
                     <LiveSharingBanner count={liveSharings.length} />
                     {hasArribos ? (
-                        sortedArribos.map((a, i) => (
+                        displayArribos.map((a, i) => (
                             <ArriboCard
                                 key={`${a.CodigoLineaParada}-${a.Arribo}-${i}`}
                                 arribo={a}
-                                size={i === 0 ? "hero" : "row"}
-                                fetchedAt={lastUpdate?.getTime()}
-                                now={nowTick}
-                                stale={isStale}
                             />
                         ))
                     ) : (
@@ -246,16 +258,6 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                             ubicaciones compartidas en tiempo real en el mapa.
                         </div>
                     )}
-                    {hasArribos ? (
-                        <DepartureAdvisor
-                            arribos={displayArribos}
-                            paradaId={paradaId}
-                            codLinea={codLinea}
-                            lastUpdate={lastUpdate}
-                            stale={isStale}
-                            now={nowTick}
-                        />
-                    ) : null}
                     {hasArribos ? (
                         <AnomalyNotice
                             arribos={displayArribos}
@@ -266,6 +268,16 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                         />
                     ) : null}
                     {isConsulting && codLinea ? <CommunityReports lineCode={codLinea} stopId={paradaId} /> : null}
+                    {hasArribos ? (
+                        <DepartureAdvisor
+                            arribos={displayArribos}
+                            paradaId={paradaId}
+                            codLinea={codLinea}
+                            lastUpdate={lastUpdate}
+                            stale={isStale}
+                            now={nowTick}
+                        />
+                    ) : null}
                 </div>
             )}
 
@@ -279,30 +291,9 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                 </div>
             ) : null}
 
-            {isConsulting ? (
-                <StopActionBar
-                    isFavorite={isCurrentFavorito}
-                    onToggleFavorite={handleToggleFavCurrent}
-                    share={
-                        <ShareButton
-                            arribos={sortedArribos}
-                            calleLabel={arrivalsCalleLabel}
-                            interseccionLabel={arrivalsInterseccionLabel}
-                        />
-                    }
-                    target={
-                        codLinea
-                            ? {
-                                  stopId: paradaId,
-                                  stopLabel: [calleLabel, interseccionLabel].filter(Boolean).join(" y ") || paradaId,
-                                  lineCode: codLinea,
-                                  lineLabel: (lineaLabel ?? codLinea).trim(),
-                                  destination: "",
-                              }
-                            : null
-                    }
-                />
-            ) : null}
+            {/* Montado mientras consultás: NO gates con loadingArribos (el refresh
+                cada 25s desmontaba el bloque y AdSense parpadeaba / quedaba unfilled). */}
+            {isConsulting ? <AdSenseRail slot={ADSENSE_SLOT_ARRIVALS} /> : null}
         </div>
     );
 }

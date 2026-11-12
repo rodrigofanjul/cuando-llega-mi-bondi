@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ComoLlegoClient } from "@features/trip-planner/components/ComoLlegoClient";
-import { BRAND } from "@shared/brand";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
@@ -9,7 +8,7 @@ export const instant = false;
 
 export const metadata: Metadata = {
     title: {
-        absolute: `Cómo llego en bondi por Mar del Plata — ${BRAND.name}`,
+        absolute: "Cómo llego en bondi por Mar del Plata — Bondi MDP",
     },
     description:
         "Planificá tu viaje en colectivo por Mar del Plata. Ingresá tu destino y encontrá qué línea tomar, paradas y tiempos de llegada en tiempo real.",
@@ -28,16 +27,16 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         locale: "es_AR",
-        url: `${BRAND.appUrl}/como-llego`,
-        title: `Cómo llego en bondi por Mar del Plata — ${BRAND.name}`,
+        url: "https://bondimdp.com.ar/como-llego",
+        title: "Cómo llego en bondi por Mar del Plata — Bondi MDP",
         description:
             "Planificá tu viaje en colectivo por Mar del Plata. Encontrá qué línea tomar, paradas y tiempos en tiempo real.",
-        siteName: BRAND.name,
+        siteName: "Bondi MDP",
         images: ["/opengraph-image"],
     },
     twitter: {
         card: "summary",
-        title: `Cómo llego en bondi por Mar del Plata — ${BRAND.name}`,
+        title: "Cómo llego en bondi por Mar del Plata — Bondi MDP",
         description:
             "Planificá tu viaje en colectivo por Mar del Plata. Paradas, líneas y tiempos en tiempo real.",
     },
@@ -51,13 +50,13 @@ const breadcrumbJsonLd = {
             "@type": "ListItem",
             position: 1,
             name: "Inicio",
-            item: BRAND.appUrl,
+            item: "https://bondimdp.com.ar",
         },
         {
             "@type": "ListItem",
             position: 2,
             name: "Cómo llego",
-            item: `${BRAND.appUrl}/como-llego`,
+            item: "https://bondimdp.com.ar/como-llego",
         },
     ],
 };

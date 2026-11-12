@@ -1,8 +1,7 @@
 import { getLineas } from "@/lib/server/loadStaticDump";
 import { lineaToSlug } from "@/lib/server/lineaSlug";
-import { BRAND } from "@shared/brand";
 
-const BASE = BRAND.appUrl;
+const BASE = "https://bondimdp.com.ar";
 
 const breadcrumbList = {
     "@context": "https://schema.org",
@@ -32,7 +31,7 @@ const webPage = {
     url: `${BASE}/recorrido`,
     isPartOf: {
         "@type": "WebSite",
-        name: BRAND.name,
+        name: "Bondi MDP",
         url: BASE,
     },
     about: {

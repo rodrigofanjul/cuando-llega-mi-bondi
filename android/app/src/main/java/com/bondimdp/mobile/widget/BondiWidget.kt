@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
-import androidx.glance.LocalContext
 import androidx.glance.LocalSize
 import androidx.glance.currentState
 import androidx.glance.appwidget.state.updateAppWidgetState
@@ -39,7 +38,6 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.bondimdp.mobile.MainActivity
-import com.bondimdp.mobile.R
 import com.bondimdp.mobile.widget.core.RowState
 import com.bondimdp.mobile.widget.core.WidgetRow
 import com.bondimdp.mobile.widget.core.WidgetRows
@@ -185,7 +183,7 @@ private fun WidgetContent(state: WidgetUiState) {
 
     when (state) {
         WidgetUiState.NotConfigured -> Column(container, verticalAlignment = Alignment.CenterVertically) {
-            Text(LocalContext.current.getString(R.string.app_name), style = TextStyle(fontWeight = FontWeight.Bold, color = GlanceTheme.colors.onSurface))
+            Text("Bondi MDP", style = TextStyle(fontWeight = FontWeight.Bold, color = GlanceTheme.colors.onSurface))
             Text(
                 "Tocá para elegir línea y parada en la app",
                 style = TextStyle(fontSize = 12.sp, color = GlanceTheme.colors.onSurfaceVariant),

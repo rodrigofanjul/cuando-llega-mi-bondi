@@ -28,16 +28,6 @@ function writeWalk(stopId: string, minutes: number) {
     }
 }
 
-/** Caminata guardada para la parada, o null si el usuario nunca la ajustó. */
-export function readStoredWalkMin(stopId: string): number | null {
-    try {
-        const v = (JSON.parse(localStorage.getItem(WALK_KEY) ?? "{}") as Record<string, number>)[stopId];
-        return Number.isFinite(v) ? v : null;
-    } catch {
-        return null;
-    }
-}
-
 const isRecommendation = (a: Advice | null): a is Recommendation => a !== null && a.kind !== "stale-data";
 
 interface Props {

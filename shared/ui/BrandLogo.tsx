@@ -1,4 +1,3 @@
-import { BRAND } from "@shared/brand";
 import { cn } from "@shared/utils";
 
 interface BrandLogoProps {
@@ -17,12 +16,12 @@ export function BrandLogo({ className, size = "md" }: BrandLogoProps) {
     return (
         <span
             className={cn(
-                "font-black tracking-tight",
+                "font-black uppercase italic tracking-tighter",
                 sizeMap[size],
                 className
             )}
         >
-            {BRAND.shortName}
+            BONDI<span className="text-amarillo">MDP</span>
         </span>
     );
 }

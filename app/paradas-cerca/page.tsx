@@ -4,7 +4,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ParadasCercaClient } from "@features/search/components/ParadasCercaClient";
-import { BRAND } from "@shared/brand";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
@@ -12,13 +11,14 @@ export const instant = false;
 
 export const metadata: Metadata = {
     title: {
-        absolute: `Paradas de colectivo cerca tuyo — ${BRAND.name}`,
+        absolute: "Paradas de colectivo cerca tuyo — Bondi MDP",
     },
     description:
         "Encontrá las paradas de colectivo más cercanas a tu ubicación en Mar del Plata, vistas en el mapa, y consultá qué líneas pasan por cada una.",
     keywords: [
         "paradas de colectivo cerca",
         "paradas cercanas mar del plata",
+        "mapa paradas bondi mdp",
         "qué colectivo pasa cerca mío",
         "parada de bondi más cercana",
         "paradas colectivo cerca de mi ubicación",
@@ -30,16 +30,16 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         locale: "es_AR",
-        url: `${BRAND.appUrl}/paradas-cerca`,
-        title: `Paradas de colectivo cerca tuyo — ${BRAND.name}`,
+        url: "https://bondimdp.com.ar/paradas-cerca",
+        title: "Paradas de colectivo cerca tuyo — Bondi MDP",
         description:
             "Mirá en el mapa las paradas de colectivo más cercanas a vos en Mar del Plata y qué líneas pasan por cada una.",
-        siteName: BRAND.name,
+        siteName: "Bondi MDP",
         images: ["/opengraph-image"],
     },
     twitter: {
         card: "summary",
-        title: `Paradas de colectivo cerca tuyo — ${BRAND.name}`,
+        title: "Paradas de colectivo cerca tuyo — Bondi MDP",
         description:
             "Las paradas de colectivo más cercanas a tu ubicación en Mar del Plata, en el mapa.",
     },
@@ -53,13 +53,13 @@ const breadcrumbJsonLd = {
             "@type": "ListItem",
             position: 1,
             name: "Inicio",
-            item: BRAND.appUrl,
+            item: "https://bondimdp.com.ar",
         },
         {
             "@type": "ListItem",
             position: 2,
             name: "Paradas cerca mío",
-            item: `${BRAND.appUrl}/paradas-cerca`,
+            item: "https://bondimdp.com.ar/paradas-cerca",
         },
     ],
 };

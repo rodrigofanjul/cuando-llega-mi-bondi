@@ -15,7 +15,6 @@ import { usePersistHydration } from "@shared/hooks/usePersistHydration";
 import { PageHeader } from "@shared/layout/PageHeader";
 import { PageShell } from "@shared/layout/PageShell";
 import { Button, Card } from "@shared/ui";
-import { BRAND } from "@shared/brand";
 
 const TRIGGERS: { value: TriggerKind; label: string }[] = [
     { value: "eta-threshold", label: "Cuando esté a N minutos" },
@@ -95,7 +94,7 @@ export function AlertsClient() {
         <PageShell>
             <PageHeader title="Mis" highlight="alertas" subtitle="Avisos de arribo" />
             <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
-                Te avisamos mientras {BRAND.name} está abierta. Con la app cerrada todavía no podemos garantizar el aviso: los teléfonos no
+                Te avisamos mientras Bondi MDP está abierta. Con la app cerrada todavía no podemos garantizar el aviso: los teléfonos no
                 permiten consultas exactas en segundo plano.
             </p>
 

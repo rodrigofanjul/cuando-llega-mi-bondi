@@ -9,10 +9,14 @@ services:
         - NEXT_PUBLIC_SUPABASE_URL
         - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
         - NEXT_PUBLIC_TELEGRAM_BOT_USERNAME
+        - NEXT_PUBLIC_CLARITY_PROJECT_ID
+        - NEXT_PUBLIC_GA_MEASUREMENT_ID
         - NEXT_PUBLIC_USE_STATIC_REFERENCE
         - NEXT_PUBLIC_CUANDO_API_URL
         - NEXT_PUBLIC_BONDI_API_URL
         - NEXT_PUBLIC_VAPID_PUBLIC
+        - NEXT_PUBLIC_ADSENSE_SLOT_CONSULTAR
+        - NEXT_PUBLIC_ADSENSE_SLOT_RECORRIDO
     restart: always
     # Usamos 'expose' en lugar de 'ports' para que el puerto 3000 quede oculto del mundo
     expose:

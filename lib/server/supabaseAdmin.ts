@@ -11,3 +11,7 @@ export function createAdminClient(): SupabaseClient {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
+
+export function isAdCheckoutConfigured(): boolean {
+  return Boolean(supabaseUrl() && supabaseSecretKey() && process.env.MERCADOPAGO_ACCESS_TOKEN);
+}

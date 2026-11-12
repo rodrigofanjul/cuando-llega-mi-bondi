@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useId, useMemo, useRef, useState } from "react";
 
 import { resolveFavoritoLinea } from "@features/favorites/resolveFavoritoLinea";
 import { useFavoritos } from "@features/favorites/hooks/useFavoritos";
@@ -69,21 +68,6 @@ export function AssistantClient() {
             requestAnimationFrame(() => listRef.current?.lastElementChild?.scrollIntoView({ block: "end" }));
         }
     };
-
-    // Pregunta que viene de Inicio (?q=): se envía una sola vez al montar y se limpia la URL.
-    const router = useRouter();
-    const initialQ = useSearchParams().get("q");
-    const sentInitial = useRef(false);
-    const sendRef = useRef(send);
-    useEffect(() => {
-        sendRef.current = send;
-    });
-    useEffect(() => {
-        if (sentInitial.current || !initialQ) return;
-        sentInitial.current = true;
-        void sendRef.current(initialQ);
-        router.replace("/asistente");
-    }, [initialQ, router]);
 
     const shareLocation = () => {
         if (!("geolocation" in navigator)) return setGeoMsg("Este dispositivo no permite obtener la ubicación.");

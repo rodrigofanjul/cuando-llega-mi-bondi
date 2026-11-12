@@ -18,12 +18,22 @@ Valores de ejemplo en [`.env.example`](../.env.example). En desarrollo, copiá e
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Idem (`sb_publishable_…`). Reemplaza la anon key |
 | `SUPABASE_URL` | URL del proyecto en el server (puede ser la misma) |
 | `SUPABASE_PUBLISHABLE_KEY` | Publishable en el server si no hay `NEXT_PUBLIC_` |
-| `SUPABASE_SECRET_KEY` | Escritura admin (borrar cuenta, webhooks; el lugar publicitario se quitó, ver D19). Nunca `NEXT_PUBLIC_` |
+| `SUPABASE_SECRET_KEY` | Escritura admin (lugar publicitario, borrar cuenta, webhooks). Nunca `NEXT_PUBLIC_` |
 | `SUPABASE_JWKS_URL` | JWKS de Auth para verificar JWTs de usuario |
 | `NEXT_PUBLIC_MOCK_REVIEWS` | `true` en dev: reseñas y login fake, sin Supabase. Ignorado en producción |
 | `TELEGRAM_BOT_TOKEN` | `app/api/telegram-webhook` — `sendMessage` |
-| `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` | Bot propio de Telegram para compartir ubicación (sin `@`); si está vacío, se oculta el enlace de compartir por Telegram |
-| `NEXT_PUBLIC_APP_URL` | URL pública de la app. HTTPS en producción |
+| `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` | Enlaces `t.me/...` en UI (sin `@`) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics (`shared/analytics/`) |
+| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Microsoft Clarity |
+| `NEXT_PUBLIC_ADSENSE_SLOT_CONSULTAR` | ID del bloque de AdSense en `/consultar` (`shared/ads/AdSenseUnit.tsx`). Vacío = no se muestra |
+| `NEXT_PUBLIC_ADSENSE_SLOT_ARRIVALS` | ID del bloque en el sheet de arribos (después de los minutos). Puede repetir el de `/consultar` |
+| `NEXT_PUBLIC_ADSENSE_SLOT_FAVORITOS` | ID del bloque en `/favoritos` (entre lista e historial). Puede repetir el de `/consultar` |
+| `NEXT_PUBLIC_ADSENSE_SLOT_RECORRIDO` | ID del bloque entre carteles y calles en `/recorrido/[linea]`. Puede ser el mismo que el de `/consultar`. Vacío = no se muestra |
+| `NEXT_PUBLIC_APP_URL` | URL pública de la app (pagos MercadoPago). HTTPS en producción |
+| `MERCADOPAGO_ACCESS_TOKEN` | Checkout Pro del lugar publicitario. Usar `TEST-` en desarrollo |
+| `MERCADOPAGO_WEBHOOK_SECRET` | Firma HMAC del webhook de MercadoPago |
+| `AD_SLOT_FLOOR_ARS` | Precio inicial del lugar si está libre (default 1000) |
+| `AD_SLOT_STEP_ARS` | Incremento mínimo para sacar al ocupante (default 1000) |
 
 Sin Telegram ni Supabase, consultas de arribos y catálogo estático siguen funcionando si el backend y el dump están configurados.
 
@@ -99,7 +109,7 @@ Configuración fija: esfuerzo `low`, `max_tokens` 2048, máximo 3 rondas de herr
 
 | Variable | Default | Uso |
 | -------- | ------- | --- |
-| `CAP_SERVER_URL` | `BRAND.appUrl` (`NEXT_PUBLIC_APP_URL` o `http://localhost:3000`) | Sitio que carga la WebView; `allowNavigation` sale de su host. En release (`CAP_RELEASE=1`/`NODE_ENV=production`) es obligatoria y no puede ser localhost. En emulador Android contra `next dev`: `http://10.0.2.2:3000`. |
+| `CAP_SERVER_URL` | `https://bondimdp.com.ar` | Sitio que carga la WebView. En emulador Android contra `next dev`: `http://10.0.2.2:3000`. |
 | `CAP_APP_ID` | `com.bondimdp.app.dev` | Identificador de la app (ver B6 antes de usar `com.bondimdp.app`). |
 
 ## Vercel
@@ -112,7 +122,6 @@ En producción, definí las `NEXT_PUBLIC_*` en el panel de Vercel. El catálogo 
 | -------- | --- |
 | `METRICS_TOKEN` | Habilita `GET /api/metrics` (Bearer). Sin ella la ruta responde 404. |
 | `NEXT_PUBLIC_MONETIZATION_ENABLED` | `true` activa planes (sin cobros: no hay proveedor de compras). Default: todo habilitado. |
-| `NEXT_PUBLIC_UX_METRICS_ENABLED` | `true` activa métricas de experiencia propias (`POST /api/ux`). Se recolectan sólo contadores agregados (tiempo hasta ver minutos por rango, avisos rápidos, búsquedas sin resultado) y, para las búsquedas sin resultado, el texto normalizado (sin números de 4+ dígitos) en los logs del servidor. Nada se asocia a una persona. Default: apagado (la ruta responde 404 y el cliente no envía nada). |
 
 ## Motor offline
 

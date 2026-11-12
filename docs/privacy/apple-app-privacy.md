@@ -1,6 +1,6 @@
 # App Store: privacidad (borrador para App Store Connect)
 
-Fuente: `docs/privacy/data-inventory.md`. B11 resuelto: el sitio y la WebView no cargan analítica ni publicidad de terceros (sin rastreo).
+Fuente: `docs/privacy/data-inventory.md`. **No enviar sin resolver B11** (rastreo en la WebView).
 
 ## Manifiestos de privacidad (incluidos)
 - `ios/App/App/PrivacyInfo.xcprivacy` y `ios/App/BondiWidgetExtension/PrivacyInfo.xcprivacy`: `NSPrivacyTracking=false`,
@@ -10,14 +10,21 @@ Fuente: `docs/privacy/data-inventory.md`. B11 resuelto: el sitio y la WebView no
 
 ## Etiquetas («Data Used to Track You / Linked / Not Linked»)
 
-La app no rastrea: no hay scripts de terceros de analítica ni publicidad.
+Dos escenarios según la decisión de B11:
 
+### A. La app nativa NO carga GA, Clarity ni AdSense (recomendado)
 | Tipo | Categoría Apple | Vinculado | Rastreo | Uso |
 | ---- | --------------- | --------- | ------- | --- |
 | Email | Contact Info → Email Address | Sí | No | App Functionality |
 | Reseñas | User Content → Other User Content | Sí | No | App Functionality |
 | Ubicación en vivo (Telegram, voluntaria) | Location → Precise Location | Sí (si se vincula al chat) | No | App Functionality |
-No requiere App Tracking Transparency. Las métricas de experiencia propias (/api/ux) están apagadas por defecto; si se activan, son anónimas (sin identificador) y no se declaran como rastreo.
+| Métricas anónimas (Vercel) | Usage Data → Product Interaction | No | No | Analytics |
+No requiere App Tracking Transparency.
+
+### B. La app nativa carga el sitio tal cual (GA + Clarity + AdSense)
+Sumar: Identifiers → Device ID, Usage Data → Product Interaction / Advertising Data, Diagnostics, con **Rastreo: Sí**
+para publicidad personalizada. **Requiere el aviso de App Tracking Transparency** antes de cargar esos scripts, y
+respetar la negativa (anuncios no personalizados, sin GA/Clarity). Más riesgo de rechazo en revisión.
 
 ## Otros requisitos de revisión
 - Eliminación de cuenta dentro de la app: existe (Perfil → Eliminar cuenta).

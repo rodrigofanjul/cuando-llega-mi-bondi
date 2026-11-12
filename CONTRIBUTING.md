@@ -7,8 +7,8 @@ Gracias por tu interés en este proyecto open-source. Estas pautas mantienen el 
 1. **Fork** del repositorio en tu cuenta de GitHub.
 2. **Clonar** tu fork:
    ```bash
-   git clone https://github.com/TU_USUARIO/CuandoLlega.git
-   cd CuandoLlega
+   git clone https://github.com/TU_USUARIO/cuando-llega-mi-bondi.git
+   cd cuando-llega-mi-bondi
    ```
 3. **Rama** para tu cambio:
    ```bash

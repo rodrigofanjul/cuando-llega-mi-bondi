@@ -104,8 +104,8 @@ Telegram, Supabase, analytics y el resto: [docs/env-reference.md](docs/env-refer
 1. **Clonar:**
 
    ```bash
-   git clone https://github.com/rodrigofanjul/CuandoLlega.git
-   cd CuandoLlega
+   git clone https://github.com/rodrigofanjul/cuando-llega-mi-bondi.git
+   cd cuando-llega-mi-bondi
    ```
 
 2. **Dependencias:**

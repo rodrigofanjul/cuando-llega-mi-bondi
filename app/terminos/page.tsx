@@ -52,9 +52,20 @@ export default function TerminosPage() {
 
                 <Section title="El servicio">
                     <p>
-                        {BRAND.name} es un servicio gratuito, ofrecido sin garantías de ningún tipo. Podemos
+                        {BRAND.name} es un servicio gratuito, ofrecido «tal cual», sin garantías de ningún tipo
+                        (ni de exactitud, ni de disponibilidad, ni de aptitud para un fin particular). Podemos
                         modificarlo o suspenderlo en cualquier momento.
                     </p>
+                    {BRAND.contactEmail ? (
+                        <p>
+                            Ante cualquier consulta, escribinos a{" "}
+                            <a href={`mailto:${BRAND.contactEmail}`} className={linkClass}>
+                                {BRAND.contactEmail}
+                            </a>
+                            .
+                        </p>
+                    ) : null}
+
                 </Section>
 
                 <Section title="Horarios y estimaciones">
@@ -77,22 +88,6 @@ export default function TerminosPage() {
                         Los reportes y comentarios tienen que ser respetuosos. Podemos moderarlos o eliminarlos
                         si no lo son.
                     </p>
-                </Section>
-
-                <Section title="Contenido «tal cual»">
-                    <p>
-                        Todo el contenido se brinda «tal cual», sin garantía de exactitud, disponibilidad ni
-                        aptitud para un fin particular.
-                    </p>
-                    {BRAND.contactEmail ? (
-                        <p>
-                            Ante cualquier consulta, escribinos a{" "}
-                            <a href={`mailto:${BRAND.contactEmail}`} className={linkClass}>
-                                {BRAND.contactEmail}
-                            </a>
-                            .
-                        </p>
-                    ) : null}
                 </Section>
 
                 <Section title="Licencia">

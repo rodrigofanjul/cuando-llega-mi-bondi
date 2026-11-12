@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 import { BRAND } from "@shared/brand";
 
-export const alt = "Cuándo Viene — Colectivos en Mar del Plata";
+export const alt = `${BRAND.name} — Colectivos en Mar del Plata`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

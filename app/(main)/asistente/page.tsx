@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { AssistantClient } from "@features/assistant/components/AssistantClient";
 
 export const instant = false;
@@ -9,5 +11,9 @@ export const metadata = {
 };
 
 export default function Page() {
-    return <AssistantClient />;
+    return (
+        <Suspense fallback={null}>
+            <AssistantClient />
+        </Suspense>
+    );
 }

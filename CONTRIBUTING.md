@@ -1,4 +1,4 @@
-# Contribuir a Bondi MDP
+# Contribuir a Cuándo Viene
 
 Gracias por tu interés en este proyecto open-source. Estas pautas mantienen el proceso claro para todos.
 
@@ -7,8 +7,8 @@ Gracias por tu interés en este proyecto open-source. Estas pautas mantienen el 
 1. **Fork** del repositorio en tu cuenta de GitHub.
 2. **Clonar** tu fork:
    ```bash
-   git clone https://github.com/TU_USUARIO/cuando-llega-mi-bondi.git
-   cd cuando-llega-mi-bondi
+   git clone https://github.com/TU_USUARIO/CuandoLlega.git
+   cd CuandoLlega
    ```
 3. **Rama** para tu cambio:
    ```bash

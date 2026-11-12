@@ -2,7 +2,7 @@
 
 ## Arquitectura
 
-- Shell Capacitor 8.5.3 en modo `server.url`: carga el sitio desplegado (`CAP_SERVER_URL`, default `https://bondimdp.com.ar`). Sin red se muestra `mobile/www/offline.html`.
+- Shell Capacitor 8.5.3 en modo `server.url`: carga el sitio desplegado (`CAP_SERVER_URL`; default = `BRAND.appUrl` de `shared/brand.ts`, que sale de `NEXT_PUBLIC_APP_URL` o `http://localhost:3000`). `allowNavigation` se deriva del host de esa URL. **Build de release** (`CAP_RELEASE=1` o `NODE_ENV=production`): `CAP_SERVER_URL` es obligatoria y no puede ser localhost; si no, `capacitor.config.ts` corta con un error. Sin red se muestra `mobile/www/offline.html`.
 - La web guarda las configuraciones de widgets y comparte los arribos ya consultados a través del plugin `BondiWidget` (`features/widgets/native/bridge.ts`).
 - Los widgets leen ese almacenamiento compartido y, si el dato tiene más de 90 s, consultan **el mismo endpoint** que usa la web (`{apiBase}/mgp/RecuperarProximosArribosW`). Una request por par (parada, línea), compartida entre widgets, con un máximo de 12 por ejecución.
 - La lógica está replicada en TS (`features/widgets/lib`), Kotlin (`widget/core`) y Swift (`ios/BondiWidgetCore`), y se valida contra `shared/contracts/arrival-vectors.json`.
@@ -13,7 +13,7 @@ Requisitos: JDK 21 y Android SDK 36.
 
 ```bash
 bun install
-CAP_SERVER_URL=https://bondimdp.com.ar npx cap sync android
+CAP_SERVER_URL=https://TU_DOMINIO npx cap sync android
 cd android
 ./gradlew testDebugUnitTest      # tests JVM (vectores compartidos)
 ./gradlew assembleDebug          # app/build/outputs/apk/debug/app-debug.apk

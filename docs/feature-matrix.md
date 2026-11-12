@@ -18,7 +18,7 @@ Estado al 2026-11-11 (revisado contra el código, no supuesto).
 | Accesibilidad | EM | `DESIGN.md` (WCAG AA) | Auditar lectores de pantalla en flujos nuevos. |
 | Reseñas de líneas | E | `features/reviews` | Base para reportes colaborativos (§13). |
 | Borrado de cuenta | E | `/api/account/delete` | |
-| App Android | EM / BX | Play `com.bondimdp.app` | Proyecto nativo fuera del repo. |
+| App Android | EM / BX | Estado previo: app original `com.bondimdp.app` (no es esta app) | Proyecto nativo propio en `android/`; sin publicar (B4/B6). |
 | Capacitor (§3) | NI | — | |
 | App iOS | NI | — | Requiere macOS/Apple Developer para firmar. |
 | Widget una línea (§4.1) | NI | — | |

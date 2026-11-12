@@ -96,6 +96,7 @@ nativos; cambiar de nombre es tocar un archivo. Se quitaron AdSense, el tablero 
 `mercadopago`), Google Analytics, Microsoft Clarity y Vercel Analytics: no hay publicidad ni rastreadores de terceros
 (resuelve B11). Se sacó también el contenido de la marca original (portada, blog, estadísticas, `/android`, `/contacto`,
 promo de Play, `security.txt`); términos, privacidad y «Acerca de» son propios.
+Las migraciones históricas `ad_*` siguen sin usarse (no hay migración de drop para local; decidir antes de producción).
 Inicio = buscador abajo (alcance del pulgar) + tarjeta «Ahora» + paradas guardadas agrupadas por esquina con minutos en
 vivo. La búsqueda usa un índice local (`/api/search-index` + `quickSearch`), sin pedir al municipio por cada letra. La
 navegación son tres pestañas (Inicio, Viajes, Más). El detalle de la parada ordena por importancia (minutos primero) y

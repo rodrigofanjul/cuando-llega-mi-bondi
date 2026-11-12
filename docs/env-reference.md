@@ -18,7 +18,7 @@ Valores de ejemplo en [`.env.example`](../.env.example). En desarrollo, copiá e
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Idem (`sb_publishable_…`). Reemplaza la anon key |
 | `SUPABASE_URL` | URL del proyecto en el server (puede ser la misma) |
 | `SUPABASE_PUBLISHABLE_KEY` | Publishable en el server si no hay `NEXT_PUBLIC_` |
-| `SUPABASE_SECRET_KEY` | Escritura admin (lugar publicitario, borrar cuenta, webhooks). Nunca `NEXT_PUBLIC_` |
+| `SUPABASE_SECRET_KEY` | Escritura admin (borrar cuenta, webhooks; el lugar publicitario se quitó, ver D19). Nunca `NEXT_PUBLIC_` |
 | `SUPABASE_JWKS_URL` | JWKS de Auth para verificar JWTs de usuario |
 | `NEXT_PUBLIC_MOCK_REVIEWS` | `true` en dev: reseñas y login fake, sin Supabase. Ignorado en producción |
 | `TELEGRAM_BOT_TOKEN` | `app/api/telegram-webhook` — `sendMessage` |
@@ -99,7 +99,7 @@ Configuración fija: esfuerzo `low`, `max_tokens` 2048, máximo 3 rondas de herr
 
 | Variable | Default | Uso |
 | -------- | ------- | --- |
-| `CAP_SERVER_URL` | `https://bondimdp.com.ar` | Sitio que carga la WebView. En emulador Android contra `next dev`: `http://10.0.2.2:3000`. |
+| `CAP_SERVER_URL` | `BRAND.appUrl` (`NEXT_PUBLIC_APP_URL` o `http://localhost:3000`) | Sitio que carga la WebView; `allowNavigation` sale de su host. En release (`CAP_RELEASE=1`/`NODE_ENV=production`) es obligatoria y no puede ser localhost. En emulador Android contra `next dev`: `http://10.0.2.2:3000`. |
 | `CAP_APP_ID` | `com.bondimdp.app.dev` | Identificador de la app (ver B6 antes de usar `com.bondimdp.app`). |
 
 ## Vercel

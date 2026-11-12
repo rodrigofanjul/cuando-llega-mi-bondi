@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type { Favorito } from "@features/favorites/types";
@@ -28,6 +28,8 @@ export function HomeScreen() {
     const index = useSearchIndex();
     const now = useNow();
     const [query, setQuery] = useState("");
+    const deferredQuery = useDeferredValue(query);
+    const inputWrapRef = useRef<HTMLDivElement>(null);
     const [focused, setFocused] = useState(false);
     const [recents, setRecents] = useState<string[]>(() => (typeof window === "undefined" ? [] : loadRecents()));
 
@@ -41,8 +43,20 @@ export function HomeScreen() {
     const nowFav = nowPick ? (favoritos.find((f) => f.id === nowPick.favId) ?? null) : null;
 
     const favStopIds = useMemo(() => new Set(favoritos.map((f) => f.identificadorParada)), [favoritos]);
-    const result = useMemo(() => (index && query.trim() ? quickSearch(index, query, { favoriteStopIds: favStopIds }) : null), [index, query, favStopIds]);
-    const question = query.trim() && (looksLikeQuestion(query) || result?.items.length === 0) ? query.trim() : null;
+    const result = useMemo(
+        () => (index && deferredQuery.trim() ? quickSearch(index, deferredQuery, { favoriteStopIds: favStopIds }) : null),
+        [index, deferredQuery, favStopIds],
+    );
+    const noResults = result !== null && result.items.length === 0;
+    const question = query.trim() && (looksLikeQuestion(query) || noResults) ? query.trim() : null;
+
+    // Las primeras 6 filas (la tarjeta Ahora cuenta como una) consultan cada 25 s; el resto una sola vez.
+    const liveIds = useMemo(() => {
+        const ids: string[] = [];
+        if (nowFav) ids.push(nowFav.id);
+        for (const g of groups) for (const f of g.favorites) if (!ids.includes(f.id)) ids.push(f.id);
+        return new Set(ids.slice(0, 6));
+    }, [nowFav, groups]);
 
     const openStop = (paradaId: string, codLinea: string) => {
         useSearchFlowStore.getState().resetToParada(paradaId, codLinea, { consulting: true });
@@ -55,7 +69,11 @@ export function HomeScreen() {
     };
     const onPick = (it: SearchItem) => {
         remember(query);
-        if (it.stopId && it.lineCode) openStop(it.stopId, it.lineCode);
+        if (it.stopId && it.lineCode) {
+            openStop(it.stopId, it.lineCode);
+            setQuery("");
+            inputWrapRef.current?.querySelector("input")?.blur();
+        }
         else if (it.expandQuery) setQuery(it.expandQuery);
     };
     const onAsk = (q: string) => {
@@ -67,8 +85,8 @@ export function HomeScreen() {
     return (
         <div className="mx-auto flex w-full max-w-[640px] flex-1 flex-col gap-4 px-4 pb-[calc(140px+env(safe-area-inset-bottom))] pt-4 lg:pb-8">
             <div className="order-last lg:order-first">
-                <div className="fixed inset-x-0 bottom-[calc(58px+env(safe-area-inset-bottom))] z-30 px-4 pb-2 lg:static lg:px-0 lg:pb-0">
-                    <div className="mx-auto max-w-[640px]">
+                <div className="fixed inset-x-0 bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] z-30 px-4 pb-2 lg:static lg:px-0 lg:pb-0">
+                    <div ref={inputWrapRef} className="mx-auto max-w-[640px]">
                         <SearchBar value={query} onChange={setQuery} onFocusChange={setFocused} onNear={() => router.push("/paradas-cerca")} />
                     </div>
                 </div>
@@ -99,7 +117,7 @@ export function HomeScreen() {
                         <section className="flex flex-col gap-3">
                             <h2 className="text-[12px] font-semibold uppercase tracking-[1.2px] text-muted-foreground">Tus paradas</h2>
                             {groups.map((g) => (
-                                <CornerCard key={g.key} group={g} now={now} onOpen={openFav} />
+                                <CornerCard key={g.key} group={g} now={now} liveIds={liveIds} onOpen={openFav} />
                             ))}
                         </section>
                     ) : (

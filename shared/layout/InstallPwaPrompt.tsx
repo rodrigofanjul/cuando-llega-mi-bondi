@@ -9,7 +9,7 @@ export function InstallPwaPrompt() {
 
     return (
         <pwa-install
-            manifestUrl="/manifest.json"
+            manifestUrl="/manifest.webmanifest"
             installDescription="Instalá la app para acceso rápido"
             useLocalStorage
         />

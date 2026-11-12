@@ -47,6 +47,7 @@
 
 @layer base {
   :root {
+    --bottom-nav-h: 57px;
     /* Brand Tokens */
     --mdp-rosa: #c93679;
     --mdp-amarillo: #f9cd4a;

@@ -71,7 +71,7 @@ function MobileBar() {
                             aria-label={label}
                             aria-current={isActive ? "page" : undefined}
                             className={cn(
-                                "relative flex min-h-[56px] flex-1 flex-col items-center justify-center gap-1 py-2 transition-colors",
+                                "relative flex min-h-[var(--bottom-nav-h)] flex-1 flex-col items-center justify-center gap-1 py-2 transition-colors",
                                 isActive
                                     ? "text-secondary"
                                     : "text-muted-foreground hover:text-foreground active:text-foreground"

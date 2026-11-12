@@ -9,13 +9,13 @@
 // cross-origin al backend self-hosted, que el SW no toca por la guarda de
 // `url.origin !== self.location.origin`.
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const STATIC_CACHE = `bondimdp-static-${CACHE_VERSION}`;
 const PAGES_CACHE = `bondimdp-pages-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
-  '/manifest.json',
+  '/manifest.webmanifest',
   '/favicon.ico',
   '/icon-192x192.png',
   '/icon-512x512.png',
@@ -25,7 +25,7 @@ const PRECACHE_URLS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
-      return cache.addAll(PRECACHE_URLS);
+      return Promise.allSettled(PRECACHE_URLS.map((u) => cache.add(u)));
     }).then(() => self.skipWaiting())
   );
 });
@@ -67,7 +67,7 @@ self.addEventListener('fetch', (event) => {
 
   // Other static-like assets (manifest, geojson, screenshots): SWR.
   if (
-    url.pathname === '/manifest.json' ||
+    url.pathname === '/manifest.webmanifest' ||
     url.pathname.endsWith('.geojson') ||
     url.pathname.startsWith('/screenshots/')
   ) {

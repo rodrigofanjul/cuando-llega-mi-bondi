@@ -652,6 +652,11 @@ body.arrivals-overlay-open {
   overscroll-behavior: none;
 }
 
+/* El aviso de instalación PWA tapa el panel de arribos y su barra de acciones. */
+body.arrivals-overlay-open pwa-install {
+  display: none !important;
+}
+
 body.como-llego-overlay-open {
   overflow: hidden;
   overscroll-behavior: none;

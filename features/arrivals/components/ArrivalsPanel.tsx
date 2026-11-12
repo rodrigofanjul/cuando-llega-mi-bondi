@@ -21,6 +21,7 @@ import { LiveSharingBanner } from "./LiveSharingBanner";
 import { DepartureAdvisor } from "@features/departure/components/DepartureAdvisor";
 import { AnomalyNotice } from "@features/anomalies/components/AnomalyNotice";
 import { CommunityReports } from "@features/reports/components/CommunityReports";
+import { sortArribosByEta } from "@features/arrivals/lib/sortArrivals";
 import { OfflineEstimateNotice } from "@features/offline/components/OfflineEstimateNotice";
 
 interface ArrivalsPanelProps {
@@ -143,6 +144,8 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
     // respaldo (ej. la pestaña estuvo en background y el polling no corrió).
     const isStale = isStaleFromProxy || (elapsedMs !== null && elapsedMs > STALE_AFTER_MS);
 
+    // Solo para mostrar: el primero (hero) debe ser el más cercano.
+    const sortedArribos = useMemo(() => sortArribosByEta(displayArribos), [displayArribos]);
     const hasArribos = displayArribos.length > 0;
     const hasLiveSharings = liveSharings.length > 0;
     const showOtrasLineas =
@@ -227,7 +230,7 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                 <div className="flex flex-col gap-3">
                     <LiveSharingBanner count={liveSharings.length} />
                     {hasArribos ? (
-                        displayArribos.map((a, i) => (
+                        sortedArribos.map((a, i) => (
                             <ArriboCard
                                 key={`${a.CodigoLineaParada}-${a.Arribo}-${i}`}
                                 arribo={a}
@@ -282,7 +285,7 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                     onToggleFavorite={handleToggleFavCurrent}
                     share={
                         <ShareButton
-                            arribos={displayArribos}
+                            arribos={sortedArribos}
                             calleLabel={arrivalsCalleLabel}
                             interseccionLabel={arrivalsInterseccionLabel}
                         />

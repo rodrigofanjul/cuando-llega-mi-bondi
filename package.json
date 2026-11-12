@@ -4,6 +4,7 @@
   "private": true,
   "packageManager": "bun@1.2.18",
   "scripts": {
+    "apply-brand": "node scripts/apply-brand.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

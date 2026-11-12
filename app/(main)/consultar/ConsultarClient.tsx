@@ -6,16 +6,11 @@ import { cn } from "@shared/utils";
 
 import { SearchFlow } from "@features/search/components/SearchFlow";
 import { FavoritosQuickList } from "@features/favorites/components/FavoritosQuickList";
-import { SponsorSlot } from "@features/sponsors/components/SponsorSlot";
-import { AdSenseRail } from "@shared/ads/AdSenseUnit";
 import { PageShell } from "@shared/layout/PageShell";
 import { PageHeader } from "@shared/layout/PageHeader";
 import { Footer } from "@shared/layout/Footer";
 import { IconLocation } from "@shared/icons/IconLocation";
 import { ConsultarMapPane } from "./ConsultarMapPane";
-
-/** Una sola unidad en el DOM (mobile + desktop). Vacío = no se muestra. */
-const ADSENSE_SLOT_CONSULTAR = process.env.NEXT_PUBLIC_ADSENSE_SLOT_CONSULTAR?.trim();
 
 /** Directions / route icon (signpost style) */
 const IconRoute = () => (
@@ -64,11 +59,6 @@ export function ConsultarClient({ children }: { children?: ReactNode }) {
           </div>
           <SearchFlow loadingArribos={false} />
           <FavoritosQuickList className="mt-6 hidden lg:block" />
-          {/* Una sola unidad AdSense (no duplicar dentro de SponsorSlot). */}
-          <AdSenseRail slot={ADSENSE_SLOT_CONSULTAR} className="mt-6" />
-          <div className="hidden lg:block">
-            <SponsorSlot />
-          </div>
         </div>
 
         <div className="hidden lg:relative lg:block lg:min-w-0 lg:flex-1 lg:overflow-hidden lg:rounded-2xl lg:border lg:border-border lg:bg-muted">
@@ -77,7 +67,7 @@ export function ConsultarClient({ children }: { children?: ReactNode }) {
       </div>
       {/* Solo mobile: en desktop el layout fluid queda a altura fija (dvh) sin scroll de página.
           mt-10 extra (Footer ya trae pt-4 propio) para que se lea como quiebre de sección
-          después de publicidad, no una continuación del mismo ritmo. */}
+   después de las acciones, no una continuación del mismo ritmo. */}
       <div className="mt-10 lg:hidden">
         <Footer />
       </div>

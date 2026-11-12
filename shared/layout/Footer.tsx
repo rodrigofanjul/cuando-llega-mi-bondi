@@ -18,13 +18,6 @@ export function Footer() {
                 </Link>
                 {" · "}
                 <Link
-                    href="/terminos"
-                    className="underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
-                >
-                    Términos del lugar
-                </Link>
-                {" · "}
-                <Link
                     href="/blog"
                     className="underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
                 >

@@ -23,17 +23,7 @@ Valores de ejemplo en [`.env.example`](../.env.example). En desarrollo, copiá e
 | `NEXT_PUBLIC_MOCK_REVIEWS` | `true` en dev: reseñas y login fake, sin Supabase. Ignorado en producción |
 | `TELEGRAM_BOT_TOKEN` | `app/api/telegram-webhook` — `sendMessage` |
 | `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` | Enlaces `t.me/...` en UI (sin `@`) |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics (`shared/analytics/`) |
-| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Microsoft Clarity |
-| `NEXT_PUBLIC_ADSENSE_SLOT_CONSULTAR` | ID del bloque de AdSense en `/consultar` (`shared/ads/AdSenseUnit.tsx`). Vacío = no se muestra |
-| `NEXT_PUBLIC_ADSENSE_SLOT_ARRIVALS` | ID del bloque en el sheet de arribos (después de los minutos). Puede repetir el de `/consultar` |
-| `NEXT_PUBLIC_ADSENSE_SLOT_FAVORITOS` | ID del bloque en `/favoritos` (entre lista e historial). Puede repetir el de `/consultar` |
-| `NEXT_PUBLIC_ADSENSE_SLOT_RECORRIDO` | ID del bloque entre carteles y calles en `/recorrido/[linea]`. Puede ser el mismo que el de `/consultar`. Vacío = no se muestra |
-| `NEXT_PUBLIC_APP_URL` | URL pública de la app (pagos MercadoPago). HTTPS en producción |
-| `MERCADOPAGO_ACCESS_TOKEN` | Checkout Pro del lugar publicitario. Usar `TEST-` en desarrollo |
-| `MERCADOPAGO_WEBHOOK_SECRET` | Firma HMAC del webhook de MercadoPago |
-| `AD_SLOT_FLOOR_ARS` | Precio inicial del lugar si está libre (default 1000) |
-| `AD_SLOT_STEP_ARS` | Incremento mínimo para sacar al ocupante (default 1000) |
+| `NEXT_PUBLIC_APP_URL` | URL pública de la app. HTTPS en producción |
 
 Sin Telegram ni Supabase, consultas de arribos y catálogo estático siguen funcionando si el backend y el dump están configurados.
 

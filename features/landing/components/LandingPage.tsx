@@ -5,7 +5,6 @@ import { LandingTestimonials } from "./LandingTestimonials";
 import { LandingStats } from "./LandingStats";
 import { SocialTestimonials } from "./SocialTestimonials";
 import { LandingAuthors } from "./LandingAuthors";
-import { LandingSponsors } from "./LandingSponsors";
 import { LandingFaq } from "./LandingFaq";
 import { LandingCta } from "./LandingCta";
 import { ParallaxDecor } from "./ParallaxDecor";
@@ -46,9 +45,6 @@ export function LandingPage() {
           </Reveal>
           <Reveal>
             <LandingAuthors />
-          </Reveal>
-          <Reveal>
-            <LandingSponsors />
           </Reveal>
           <LandingFaq />
           <Reveal>

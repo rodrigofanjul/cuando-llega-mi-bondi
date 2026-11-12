@@ -92,11 +92,11 @@ Proyecto independiente y de código abierto. Consultas: [issues en GitHub](https
 
 ## Qué información tratamos
 - **Datos que vos nos das**: ninguno por registro, no hay login. Si usás geolocalización (paradas cerca, cómo llego), se usa solo para calcular resultados cercanos; no guardamos un historial de ubicaciones asociado a tu identidad.
-- **Datos automáticos**: IP, dispositivo, navegador y páginas visitadas, vía los servicios de terceros de abajo.
+- **Datos automáticos**: no usamos servicios de analítica ni publicidad de terceros.
 - **Datos en tu dispositivo**: favoritos y tema (claro/oscuro) se guardan localmente en el navegador, no se envían a nuestros servidores.
 
-## Publicidad y analítica (terceros)
-Google AdSense, Google Analytics, Microsoft Clarity y Vercel Analytics. Detalle completo y última fecha de actualización en [/privacidad](${BASE}/privacidad).
+## Publicidad y analítica
+La app no muestra publicidad ni usa rastreadores de terceros (Google AdSense, Google Analytics, Microsoft Clarity, Vercel Analytics). Detalle en [/privacidad](${BASE}/privacidad).
 
 ## Tus derechos
 Según la Ley N.º 25.326 de Protección de Datos Personales de Argentina, tenés derecho a acceder, rectificar, actualizar y suprimir tus datos personales. Contactanos en [/contacto](${BASE}/contacto).
@@ -110,9 +110,6 @@ Bondi MDP es un proyecto independiente y de código abierto hecho en Mar del Pla
 
 ## Reportar un problema o error en los horarios
 Abrí un [issue en GitHub](https://github.com/cuando-llega-mi-bondi/cuando-llega-mi-bondi/issues).
-
-## Consultas por publicidad
-Ver [/anunciate](${BASE}/anunciate) y los [Términos del lugar](${BASE}/terminos).
 
 ## Datos personales y privacidad
 Escribinos a maticelizramos@gmail.com para ejercer tus derechos sobre datos personales (Ley N.º 25.326) o por cualquier otra consulta. Más en [/privacidad](${BASE}/privacidad).

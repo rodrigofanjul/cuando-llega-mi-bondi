@@ -13,7 +13,7 @@ export const metadata: Metadata = {
         absolute: "Política de privacidad | Bondi MDP",
     },
     description:
-        "Cómo Bondi MDP trata tus datos: publicidad de Google AdSense, analítica con Google Analytics y Microsoft Clarity, cookies y tus derechos según la Ley 25.326.",
+        "Cómo Bondi MDP trata tus datos: sin publicidad ni rastreadores de terceros, cookies y tus derechos según la Ley 25.326.",
     alternates: {
         canonical: "/privacidad",
     },
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: "https://bondimdp.com.ar/privacidad",
         title: "Política de privacidad | Bondi MDP",
         description:
-            "Cómo Bondi MDP trata tus datos, qué servicios de terceros usamos (Google AdSense, Google Analytics, Microsoft Clarity) y cuáles son tus derechos.",
+            "Cómo Bondi MDP trata tus datos: sin publicidad ni rastreadores de terceros, y cuáles son tus derechos.",
         siteName: "Bondi MDP",
         images: ["/opengraph-image"],
     },
@@ -126,9 +126,8 @@ export default function PrivacidadPage() {
                         <p>
                             Bondi MDP es una app gratuita para consultar el transporte
                             público de Mar del Plata. No pedimos registro ni creamos cuentas
-                            de usuario, y no vendemos tus datos personales. Para sostener el
-                            proyecto y mejorarlo usamos publicidad y herramientas de
-                            analítica de terceros, que se describen en detalle más abajo.
+                            de usuario, y no vendemos tus datos personales. La app no muestra publicidad ni usa herramientas de analítica o
+                            rastreo de terceros.
                         </p>
                     </Section>
 
@@ -167,10 +166,8 @@ export default function PrivacidadPage() {
                             <p>
                                 Como en la mayoría de los sitios web, al navegar se procesan
                                 datos técnicos como tu dirección IP, tipo de dispositivo y
-                                navegador, y las páginas que visitás. Estos datos se usan para
-                                que la app funcione, para medir su uso y para mostrar
-                                publicidad, a través de los servicios de terceros descritos
-                                abajo.
+                                navegador, y las páginas que visitás. Estos datos se usan solo para
+                                que la app funcione.
                             </p>
                         </Card>
                         <Card>
@@ -185,93 +182,13 @@ export default function PrivacidadPage() {
                         </Card>
                     </Section>
 
-                    {/* ── PUBLICIDAD ──────────────────────────────────── */}
-                    <Section title="Publicidad">
+                    {/* ── PUBLICIDAD Y ANALÍTICA ─────────────────────── */}
+                    <Section title="Publicidad y analítica">
                         <p>
-                            Además de AdSense, se puede comprar un lugar publicitario
-                            autoservicio en Consultar. Las condiciones, incluida la falta de
-                            garantía de resultados, están en los{" "}
-                            <a
-                                href="/terminos"
-                                className="underline decoration-border underline-offset-2 hover:text-foreground"
-                            >
-                                Términos del lugar
-                            </a>
-                            . Van rotulados como «Publicidad» y al tocarlos vas al sitio del
-                            anunciante.
+                            La app no muestra publicidad ni usa servicios de terceros de
+                            analítica o rastreo (como Google AdSense, Google Analytics,
+                            Microsoft Clarity o Vercel Analytics).
                         </p>
-                        <p>
-                            También mostramos anuncios a través de{" "}
-                            <ExtLink href="https://policies.google.com/technologies/ads">
-                                Google AdSense
-                            </ExtLink>
-                            . Google y sus socios usan cookies e identificadores para mostrar
-                            anuncios basados en tus visitas a este y otros sitios.
-                        </p>
-                        <p>
-                            Podés gestionar la personalización de anuncios de Google en{" "}
-                            <ExtLink href="https://adssettings.google.com/">
-                                Configuración de anuncios
-                            </ExtLink>{" "}
-                            y desactivar cookies de terceros para publicidad en{" "}
-                            <ExtLink href="https://www.aboutads.info/choices/">
-                                aboutads.info/choices
-                            </ExtLink>
-                            . Más información en la{" "}
-                            <ExtLink href="https://policies.google.com/privacy">
-                                Política de privacidad de Google
-                            </ExtLink>
-                            .
-                        </p>
-                    </Section>
-
-                    {/* ── ANALÍTICA ───────────────────────────────────── */}
-                    <Section title="Analítica y mejora de la app">
-                        <Card>
-                            <p className="text-[14px] font-semibold text-foreground">
-                                Google Analytics
-                            </p>
-                            <p>
-                                Usamos{" "}
-                                <ExtLink href="https://policies.google.com/privacy">
-                                    Google Analytics
-                                </ExtLink>{" "}
-                                para entender de forma agregada cómo se usa la app (páginas
-                                más visitadas, dispositivos, etc.) y así mejorarla.
-                            </p>
-                        </Card>
-                        <Card>
-                            <p className="text-[14px] font-semibold text-foreground">
-                                Microsoft Clarity
-                            </p>
-                            <p>
-                                Usamos{" "}
-                                <ExtLink href="https://learn.microsoft.com/clarity/faq">
-                                    Microsoft Clarity
-                                </ExtLink>{" "}
-                                para capturar métricas de uso mediante cookies y mapas de
-                                calor y grabaciones de sesión (patrones de clic, movimiento y
-                                desplazamiento). Clarity ayuda a detectar problemas de uso.
-                                Consultá la{" "}
-                                <ExtLink href="https://privacy.microsoft.com/privacystatement">
-                                    Declaración de privacidad de Microsoft
-                                </ExtLink>
-                                .
-                            </p>
-                        </Card>
-                        <Card>
-                            <p className="text-[14px] font-semibold text-foreground">
-                                Vercel Analytics
-                            </p>
-                            <p>
-                                Usamos{" "}
-                                <ExtLink href="https://vercel.com/docs/analytics/privacy-policy">
-                                    Vercel Analytics
-                                </ExtLink>{" "}
-                                para medir el rendimiento y el tráfico de la app de forma
-                                anónima y agregada.
-                            </p>
-                        </Card>
                     </Section>
 
                     {/* ── COOKIES ─────────────────────────────────────── */}
@@ -279,8 +196,7 @@ export default function PrivacidadPage() {
                         <p>
                             Usamos cookies y tecnologías similares (como el almacenamiento
                             local del navegador) para el funcionamiento de la app, para
-                            recordar tus preferencias, para la analítica y para la
-                            publicidad. Podés bloquear o eliminar las cookies desde la
+                            recordar tus preferencias. Podés bloquear o eliminar las cookies desde la
                             configuración de tu navegador; ten en cuenta que algunas
                             funciones podrían dejar de funcionar correctamente.
                         </p>

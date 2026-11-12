@@ -130,30 +130,6 @@ export default function ContactoPage() {
                         </Card>
                     </Section>
 
-                    <Section title="Consultas por publicidad">
-                        <Card>
-                            <p>
-                                Para anunciar en Consultar (los lugares publicitarios
-                                autoservicio), la compra y el historial de precios están
-                                en{" "}
-                                <a
-                                    href="/anunciate"
-                                    className="underline decoration-border underline-offset-2 hover:text-foreground"
-                                >
-                                    /anunciate
-                                </a>
-                                . Las condiciones están en los{" "}
-                                <a
-                                    href="/terminos"
-                                    className="underline decoration-border underline-offset-2 hover:text-foreground"
-                                >
-                                    Términos del lugar
-                                </a>
-                                .
-                            </p>
-                        </Card>
-                    </Section>
-
                     <Section title="Datos personales y privacidad">
                         <Card>
                             <p>

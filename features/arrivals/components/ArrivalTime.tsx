@@ -14,7 +14,7 @@ export function ArrivalTime({ input, size = "row", className }: Props) {
     const v = arrivalDisplay(input);
     const muted = v.state === "stale" || v.state === "historical" || v.state === "none";
     return (
-        <span className={cn("inline-flex flex-col items-end leading-none", className)} aria-label={v.spoken} role="text">
+        <span className={cn("inline-flex flex-col items-end leading-none", className)} aria-label={v.spoken} role="img">
             <span
                 className={cn(
                     "inline-flex items-center gap-1.5 font-bold tabular-nums",

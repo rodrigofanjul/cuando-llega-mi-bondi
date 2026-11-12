@@ -8,7 +8,7 @@ import { getWidgetBridge, useWidgetConfigsStore } from "@features/widgets/store/
 import { shareArrivalsWithWidgets } from "@features/widgets/native/shareArrivals";
 import { reportObservations } from "@features/observations/client/reporter";
 import { normalizeArribo } from "@features/arrivals/lib/normalize";
-import { swrFetcherWithMeta, type MgpResult, type SwrActionKey } from "@shared/api/client";
+import { arrivalsFetcher, type ArrivalsResult } from "@features/arrivals/lib/arrivalsFetcher";
 import {
     MgpBusinessError,
     describeMgpError,
@@ -24,7 +24,7 @@ interface UseArribosParams {
     onError?: (message: string) => void;
 }
 
-type ArribosResult = MgpResult<{ arribos?: Arribo[] }>;
+type ArribosResult = ArrivalsResult;
 
 export function useArribos({
     isConsulting,
@@ -33,7 +33,6 @@ export function useArribos({
     onSuccess,
     onError,
 }: UseArribosParams) {
-    const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
     const [errorInfo, setErrorInfo] = useState<MgpErrorPresentation | null>(null);
     const [retryAt, setRetryAt] = useState<number | null>(null);
     const onSuccessRef = useRef(onSuccess);
@@ -43,10 +42,8 @@ export function useArribos({
         onErrorRef.current = onError;
     }, [onSuccess, onError]);
 
-    // Nueva parada/línea/consulta: no arrastrar el error NI el "última
-    // actualización" de la anterior (si no se resetea `lastUpdate`, el header
-    // sigue mostrando "hace Xs" creciendo desde la consulta previa mientras la
-    // nueva todavía está cargando o reintentando — confunde). Ajuste de estado
+    // Nueva parada/línea/consulta: no arrastrar el error de la anterior
+    // (`lastUpdate` sale de `data.fetchedAt`, que cambia con la key). Ajuste de estado
     // durante el render (no en un efecto) siguiendo el patrón que recomienda
     // React para resetear estado ante un cambio de "key" lógica.
     const consultKey = `${paradaId}|${codLinea}|${isConsulting}`;
@@ -55,7 +52,6 @@ export function useArribos({
         setPrevConsultKey(consultKey);
         setErrorInfo(null);
         setRetryAt(null);
-        setLastUpdate(null);
     }
 
     const swrOptions: SWRConfiguration<ArribosResult> = useMemo(
@@ -71,7 +67,6 @@ export function useArribos({
             // refresh fallido no vacíe la lista) no hace falta: SWR ya conserva
             // los datos de una key cuando su revalidación falla.
             onSuccess: () => {
-                setLastUpdate(new Date());
                 setErrorInfo(null);
                 setRetryAt(null);
                 onSuccessRef.current?.();
@@ -106,14 +101,17 @@ export function useArribos({
                   { identificadorParada: paradaId, codigoLineaParada: codLinea },
               ]
             : null,
-        // `swrFetcherWithMeta` devuelve `MgpResult<unknown>`; el shape real de
-        // `data.arribos` para esta acción puntual lo fija este hook.
-        swrFetcherWithMeta as (key: SwrActionKey) => Promise<ArribosResult>,
+        // Mismo fetcher que las tarjetas de Inicio (misma key de SWR): sella `fetchedAt`.
+        arrivalsFetcher,
         swrOptions,
     );
 
     const realArribos = (data?.data?.arribos as Arribo[] | undefined) ?? [];
     const isStale = data?.meta?.cache === "STALE";
+    // La hora de la consulta viaja con los datos: al cambiar parada/línea cambia la key de SWR y
+    // `data`, así que no se arrastra la antigüedad de la consulta anterior.
+    const fetchedAtMs = data?.fetchedAt ?? null;
+    const lastUpdate = useMemo(() => (fetchedAtMs === null ? null : new Date(fetchedAtMs)), [fetchedAtMs]);
 
     // Widgets nativos: reutilizan esta consulta en vez de hacer otra. No se
     // comparten datos STALE (su antigüedad real es desconocida) ni fixtures.

@@ -218,3 +218,25 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | Tests | `inferJob` 4, ruta del cron 3, pytest 19/19 (CSV real y perfil con pocos días). Suite: 52/53 archivos, **455/465** (mismos 10 preexistentes, B7). `tsc` y eslint OK. |
 | Datos reales en local | `MGP_UPSTREAM=https://bondi.aeterna.red` (backend self-hosted público de la app, sin tocar el código de conexión): líneas reales OK (28). **Arribos en vivo: 502 en el origen** (`bondi.aeterna.red` 502, `bondimdp.com.ar/api/mgp` 502, `proxy.bondimdp.com.ar` 530) al 2026-11-11 22:10. La recolección empieza sola cuando vuelvan. |
 | Nota de herramienta | El navegador automatizado escribe su log en `.playwright-mcp/` dentro del repo; con `next dev` eso dispara recompilaciones en bucle. No afecta el uso normal. |
+
+## 2026-11-12 — Ciclo 14 (marca propia y experiencia simple)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| Marca anterior (`git grep` «bondimdp / Bondi MDP») | 0 textos visibles. Quedan: claves de almacenamiento (`bondimdp-theme`, `bondimdp:como-llego:recientes`, prefijos en `localData.ts`), ids técnicos (`com.bondimdp.*`, App Group, `bondimdp-static/pages` del SW, `data-bondimdp-resolved`), procedencia de datos (`public/gtfs/feed_info.txt`, `frequencies-v1.json`: el GTFS lo publica Bondi MDP), URLs por defecto de Capacitor y de tests de widgets, y comentarios/tests que lo nombran para prohibirlo o citar el backend externo. |
+| `tsc --noEmit` | 0 errores |
+| `eslint .` | 0 errores, 0 advertencias |
+| `vitest run` | 59/60 archivos, **473/483** tests; los 10 fallos son los preexistentes de `shared/api/client.test.ts` (B7) |
+| `next build` (variables de Supabase de marcador) | OK, 98 páginas. Next 16.4.1 (Turbopack) no imprime «First Load JS»: de `.next/diagnostics/route-bundle-stats.json`, `/` = 1,08 MB sin comprimir y **~340 KB gzip** (18 chunks). **Supera la meta de 150 KB.** Lo más pesado: runtime de `react-dom` (~72 KB gzip, 1 chunk), el chunk de `@supabase/*` (~63 KB), el runtime de Next (~44 KB), un chunk de ~43 KB con `framer-motion` y otros compartidos del layout `(main)`. Sin optimizar en este ciclo. |
+| Servidor de producción (puerto 3300, upstream MOCK) | `/` 200, `/viajes` 200, `/mas` 200, `/api/search-index` 200 (json), `/manifest.webmanifest` 200 (`application/manifest+json`), `/terminos` 200, `/privacidad` 200, `/acerca` 200, `/alertas` 200, ruta inexistente 404, `/opengraph-image` 200 (png). |
+| Navegador, 390×844, almacenamiento vacío | «511 acha» → parada Acha y Gaboto → panel con minutos (el héroe primero) → Guardar (pide nombre, confirma) → Inicio muestra «Tus paradas» con minutos → «🔔 Avisarme» crea la regla «511 en ACHA y GABOTO: cuando esté a 5 min» → figura en `/alertas`. **Pasa.** |
+| Buscador sobre la barra inferior | Buscador y=726–770, barra y=784–844: no se pisan. Pasa. |
+| Modo oscuro (`prefers-color-scheme: dark`) | `<html class="dark">`, fondo oscuro. Pasa. |
+| Alto contraste | Perfil lo activa: `data-contrast="high"`; persiste tras recargar. Pasa. |
+| Texto al 200 % (`font-size: 200%`) | Los minutos se ven completos y no hay scroll horizontal. **Falla parcial:** el buscador de Inicio se desborda (el botón 📍 queda fuera de pantalla y «abc» se corta). |
+| Sin red (`setOffline`, recarga desde el service worker) | Dato reciente (<2 min) se ve normal; a los 2 min muestra «hace 2 min» (envejeciendo). No muestra vencido como en vivo. Pasa. |
+| Hallazgo corregido | El aviso de instalación (`pwa-install`) salía con nombre «PWA» e ícono roto y pedía `/manifest.json` (404): el atributo era `manifestUrl` y la librería lee `manifest-url`. Corregido en `shared/layout/InstallPwaPrompt.tsx`; verificado con el nombre y el ícono correctos. |
+| Android | `testDebugUnitTest assembleDebug` → exit 0; 18 tests, 0 fallos. |
+| `npm audit --omit=dev` | 1 alta: `zod` 3 (B12). `mercadopago` ya no está. |
+
+No se verificó: iOS en simulador (sin macOS; sólo CI), emulador Android con la marca nueva, arribos reales de la Municipalidad (todo con upstream MOCK), `/api/ux` encendido, lector de pantalla, zoom real del sistema (sólo `font-size` de la raíz), `/opengraph-image` visualmente. El nombre guardado de la parada salió del dataset MOCK («A LURO Y CARRILLO AC»), no del real. Las capturas quedan fuera del repo (no se commitearon).

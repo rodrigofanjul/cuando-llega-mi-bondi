@@ -53,4 +53,4 @@ Android: compila localmente y en CI, y el widget se verificó en emulador (ver `
    `localhost` y no `10.0.2.2`).
 4. `CAP_SERVER_URL=http://localhost:3100 npx cap sync android` → `gradlew assembleDebug` → `adb install -r`.
    El build debug incluye `src/debug/res/xml/network_security_config.xml`, que permite HTTP sólo a localhost/10.0.2.2.
-5. En la app: Favoritos → Widgets → crear. En el launcher: mantener presionado → Widgets → «Bondi MDP».
+5. En la app: Favoritos → Widgets → crear. En el launcher: mantener presionado → Widgets → «Próximo colectivo».

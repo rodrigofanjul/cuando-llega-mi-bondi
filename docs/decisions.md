@@ -89,3 +89,18 @@ servidor con un job idempotente (`/api/cron/infer-arrivals`, ventana de 3 h con 
 y se exportan con `scripts/export-arrival-history.mjs` al pipeline `ml/` (perfiles offline y ML). Consecuencia
 asumida: la cobertura sigue al uso (buena en horas pico y líneas populares, pobre de noche); los perfiles exigen soporte
 mínimo y, si no lo hay, el modo offline dice «datos insuficientes».
+
+## D19 — Marca propia configurable y experiencia simple (2026-11-12)
+La marca vive en `shared/brand.ts` (nombre, colores, textos, ids) y `scripts/apply-brand.mjs` la aplica a los proyectos
+nativos; cambiar de nombre es tocar un archivo. Se quitaron AdSense, el tablero de anunciantes con pagos (y
+`mercadopago`), Google Analytics, Microsoft Clarity y Vercel Analytics: no hay publicidad ni rastreadores de terceros
+(resuelve B11). Se sacó también el contenido de la marca original (portada, blog, estadísticas, `/android`, `/contacto`,
+promo de Play, `security.txt`); términos, privacidad y «Acerca de» son propios.
+Inicio = buscador abajo (alcance del pulgar) + tarjeta «Ahora» + paradas guardadas agrupadas por esquina con minutos en
+vivo. La búsqueda usa un índice local (`/api/search-index` + `quickSearch`), sin pedir al municipio por cada letra. La
+navegación son tres pestañas (Inicio, Viajes, Más). El detalle de la parada ordena por importancia (minutos primero) y
+tiene una barra Guardar · Avisarme (alerta de un toque) · Compartir. Los estados de confianza del dato (en vivo,
+envejeciendo, vencido, histórico, sin datos) viven en un solo componente, `ArrivalTime`. Las consultas en vivo de
+Inicio se acotan a 6 filas. Las métricas de experiencia propias (`/api/ux`) son anónimas y están apagadas por defecto.
+Se mantuvieron a propósito las claves de almacenamiento (`bondimdp-theme`, `bondi:*`, `cuandollega_*`) y los ids de
+paquete (`com.bondimdp.*`): cambiarlos borraría datos locales y rompería la actualización de la app publicada (B6).

@@ -50,3 +50,11 @@ Estados: TODO · IN_PROGRESS · BLOCKED · DONE (DONE = criterios cumplidos con 
 | T9.3b Inferencia local en widgets (Kotlin/Swift) | DONE (Android) | tabla `offline_v1` (D17) + vectores `shared/contracts/offline-vectors.json` en TS/Kotlin/Swift; widget Android verificado en emulador sin conexión; iOS: `swift test` + compilación en CI, sin simulador |
 | T9.4 Validación de desconexiones | DONE (sintético) | 1/6/12/24/72 h |
 | T9.5 ML offline | TODO | sólo si supera la estadística con datos reales |
+| Marca configurable (D19) | DONE | `shared/brand.ts`, `scripts/apply-brand.mjs`, test `shared/brand.test.ts`; sin textos de la marca anterior visibles |
+| Limpieza de terceros (D19) | DONE | sin AdSense, anunciantes/MercadoPago, GA, Clarity ni Vercel Analytics; B11 resuelto; `docs/privacy/` actualizado |
+| Inicio simple (D19) | DONE | buscar → parada → Guardar → aparece en «Tus paradas» con minutos, verificado en navegador (mock) |
+| Búsqueda local (D19) | DONE | `/api/search-index` 200 (~494 KB), `quickSearch`; «511 acha» devuelve paradas |
+| Navegación 3 pestañas (D19) | DONE | Inicio, Viajes, Más; `/viajes` y `/mas` responden 200 |
+| Detalle con barra de acciones (D19) | DONE | minutos primero; Guardar y Avisarme de un toque; la regla aparece en `/alertas` |
+| Alto contraste (D19) | DONE | Perfil → `<html data-contrast="high">`, persiste al recargar |
+| Métricas de experiencia propias (D19) | DONE (apagadas) | `/api/ux`, apagado por defecto; ver `docs/privacy/data-inventory.md` |

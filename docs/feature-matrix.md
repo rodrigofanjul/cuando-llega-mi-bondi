@@ -34,8 +34,8 @@ Estado al 2026-11-11 (revisado contra el código, no supuesto).
 | Asistente conversacional (§11) | NI / BX | — | Requiere API key de LLM. |
 | Ocupación estimada (§12) | NI | — | Sólo reportes voluntarios; no existe dato oficial conocido. |
 | Reportes colaborativos (§13) | NI | Reseñas como base | |
-| Analítica histórica (§14) | EM / BX | `app/un-mes-en-numeros` | Depende de §6.1. |
-| Freemium (§16) | NI | Anuncios existentes | Cobros prohibidos hasta B1/B4. |
+| Analítica histórica (§14) | NI / BX | — (la página de estadísticas se quitó, D19) | Depende de §6.1. |
+| Freemium (§16) | NI | — | Sin anuncios ni cobros (D19); cobros prohibidos hasta B1/B4. |
 | Motor offline-first (§24, Fase 9) | NI / BX | — | Requiere histórico autorizado (B1). Contrato y almacenamiento ya preparados (D10). |
 | CI/CD (§19) | NI | Sólo deploy Render | |
-| Observabilidad (§20) | EM | `X-Cache`, analytics | |
+| Observabilidad (§20) | EM | `X-Cache`, métricas propias anónimas (`/api/ux`, apagadas) | |

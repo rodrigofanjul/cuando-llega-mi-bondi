@@ -1,8 +1,8 @@
 "use client";
 
 import { IconRefresh } from "@shared/icons/IconRefresh";
-import { IconHeart } from "@shared/icons/IconHeart";
 import { ArriboCard } from "@features/arrivals/components/ArriboCard";
+import { StopActionBar } from "@features/arrivals/components/StopActionBar";
 import { OtrasLineasSuggestion } from "@features/arrivals/components/OtrasLineasSuggestion";
 import { ShareButton } from "@shared/layout/ShareButton";
 import { IconButton } from "@shared/ui/IconButton";
@@ -183,22 +183,6 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                                 : formatRelative(elapsedMs)}
                         </span>
                     ) : null}
-                    {isConsulting && (
-                        <IconButton
-                            onClick={handleToggleFavCurrent}
-                            aria-label={isCurrentFavorito ? "Quitar de favoritos" : "Guardar en favoritos"}
-                            aria-pressed={isCurrentFavorito}
-                            title={isCurrentFavorito ? "Quitar de favoritos" : "Guardar en favoritos"}
-                            tone={isCurrentFavorito ? "active" : "default"}
-                        >
-                            <IconHeart filled={isCurrentFavorito} width={16} height={16} />
-                        </IconButton>
-                    )}
-                    <ShareButton
-                        arribos={displayArribos}
-                        calleLabel={arrivalsCalleLabel}
-                        interseccionLabel={arrivalsInterseccionLabel}
-                    />
                     <IconButton
                         onClick={fetchArribos}
                         disabled={loadingArribos}
@@ -247,6 +231,10 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                             <ArriboCard
                                 key={`${a.CodigoLineaParada}-${a.Arribo}-${i}`}
                                 arribo={a}
+                                size={i === 0 ? "hero" : "row"}
+                                fetchedAt={lastUpdate?.getTime()}
+                                now={nowTick}
+                                stale={isStale}
                             />
                         ))
                     ) : (
@@ -255,16 +243,6 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                             ubicaciones compartidas en tiempo real en el mapa.
                         </div>
                     )}
-                    {hasArribos ? (
-                        <AnomalyNotice
-                            arribos={displayArribos}
-                            paradaId={paradaId}
-                            codLinea={codLinea}
-                            lastUpdate={lastUpdate}
-                            stale={isStale}
-                        />
-                    ) : null}
-                    {isConsulting && codLinea ? <CommunityReports lineCode={codLinea} stopId={paradaId} /> : null}
                     {hasArribos ? (
                         <DepartureAdvisor
                             arribos={displayArribos}
@@ -275,6 +253,16 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                             now={nowTick}
                         />
                     ) : null}
+                    {hasArribos ? (
+                        <AnomalyNotice
+                            arribos={displayArribos}
+                            paradaId={paradaId}
+                            codLinea={codLinea}
+                            lastUpdate={lastUpdate}
+                            stale={isStale}
+                        />
+                    ) : null}
+                    {isConsulting && codLinea ? <CommunityReports lineCode={codLinea} stopId={paradaId} /> : null}
                 </div>
             )}
 
@@ -286,6 +274,31 @@ export function ArrivalsPanel({ consult, arrivals }: ArrivalsPanelProps) {
                         onSelect={onSelectOtraLinea}
                     />
                 </div>
+            ) : null}
+
+            {isConsulting ? (
+                <StopActionBar
+                    isFavorite={isCurrentFavorito}
+                    onToggleFavorite={handleToggleFavCurrent}
+                    share={
+                        <ShareButton
+                            arribos={displayArribos}
+                            calleLabel={arrivalsCalleLabel}
+                            interseccionLabel={arrivalsInterseccionLabel}
+                        />
+                    }
+                    target={
+                        codLinea
+                            ? {
+                                  stopId: paradaId,
+                                  stopLabel: [calleLabel, interseccionLabel].filter(Boolean).join(" y ") || paradaId,
+                                  lineCode: codLinea,
+                                  lineLabel: (lineaLabel ?? codLinea).trim(),
+                                  destination: "",
+                              }
+                            : null
+                    }
+                />
             ) : null}
         </div>
     );

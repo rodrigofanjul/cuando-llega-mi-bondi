@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useReviewsUser } from "@features/reviews/hooks/useReviewsUser";
 import { SignInModal } from "@features/reviews/components/SignInModal";
 import { signOut, deleteAccount } from "@features/account/api/account";
+import { useDisplayPrefs } from "@shared/display/useDisplayPrefs";
 import { LocalDataSection } from "@shared/privacy/LocalDataSection";
 import { PageShell } from "@shared/layout/PageShell";
 import { PageHeader } from "@shared/layout/PageHeader";
@@ -21,6 +22,8 @@ export function PerfilClient() {
     const [signInOpen, setSignInOpen] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const highContrast = useDisplayPrefs((s) => s.highContrast);
+    const setHighContrast = useDisplayPrefs((s) => s.setHighContrast);
 
     async function handleSignOut() {
         await signOut();
@@ -96,6 +99,22 @@ export function PerfilClient() {
                         </div>
                     )}
                 </div>
+                <section className="mt-6" aria-labelledby="pantalla-title">
+                    <h2 id="pantalla-title" className="font-sans text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        Pantalla
+                    </h2>
+                    <label className="card mt-2 flex min-h-[48px] cursor-pointer items-center justify-between gap-3 p-4">
+                        <span className="font-sans text-sm text-foreground">Alto contraste (para usar al sol)</span>
+                        <input
+                            type="checkbox"
+                            role="switch"
+                            aria-checked={highContrast}
+                            checked={highContrast}
+                            onChange={(e) => setHighContrast(e.target.checked)}
+                            className="h-6 w-6 shrink-0 accent-secondary"
+                        />
+                    </label>
+                </section>
                 <LocalDataSection />
             </PageShell>
 

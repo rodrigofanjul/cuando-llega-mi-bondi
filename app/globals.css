@@ -679,3 +679,15 @@ body.como-llego-overlay-open {
 @keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .live-dot { animation: live-pulse 2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+/* Alto contraste (para usar al sol): texto secundario y bordes más marcados. */
+:root[data-contrast="high"] {
+  --muted-foreground: #1f2937;
+  --border: #111827;
+  --foreground: #000000;
+}
+:root.dark[data-contrast="high"] {
+  --muted-foreground: #e5e7eb;
+  --border: #f9fafb;
+  --foreground: #ffffff;
+}

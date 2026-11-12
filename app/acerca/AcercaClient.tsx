@@ -25,7 +25,7 @@ import { IconXBrand } from "@shared/icons/IconXBrand";
 const FAQ = [
     {
         q: "¿Es gratis?",
-        a: "Sí. 100% gratuita. Se sostiene con publicidad no intrusiva.",
+        a: "Sí. 100% gratuita. Es gratuita y sin publicidad.",
     },
     {
         q: "¿Funciona sin internet?",

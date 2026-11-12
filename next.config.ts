@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // CSP no incluida: el sitio carga tiles OSM, tiles de mapa y
+        // CSP no incluida: el sitio carga tiles de mapa (OSM) y
         // Supabase — armar un allowlist completo es un cambio aparte, no algo
         // para colar en un pase de SEO.
         source: "/(.*)",

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
         absolute: "Contacto | Bondi MDP",
     },
     description:
-        "Cómo contactar al equipo de Bondi MDP: reportar un error en los horarios, consultar por publicidad o ejercer tus derechos sobre datos personales.",
+        "Cómo contactar al equipo de Bondi MDP: reportar un error en los horarios o ejercer tus derechos sobre datos personales.",
     alternates: {
         canonical: "/contacto",
     },
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: "https://bondimdp.com.ar/contacto",
         title: "Contacto | Bondi MDP",
         description:
-            "Cómo contactar al equipo de Bondi MDP: reportar un error, consultar por publicidad o ejercer tus derechos sobre datos personales.",
+            "Cómo contactar al equipo de Bondi MDP: reportar un error o ejercer tus derechos sobre datos personales.",
         siteName: "Bondi MDP",
         images: ["/opengraph-image"],
     },

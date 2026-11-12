@@ -92,7 +92,7 @@ Proyecto independiente y de código abierto. Consultas: [issues en GitHub](https
 
 ## Qué información tratamos
 - **Datos que vos nos das**: ninguno por registro, no hay login. Si usás geolocalización (paradas cerca, cómo llego), se usa solo para calcular resultados cercanos; no guardamos un historial de ubicaciones asociado a tu identidad.
-- **Datos automáticos**: no usamos servicios de analítica ni publicidad de terceros.
+- **Sin rastreo de terceros**: no usamos Google Analytics, Clarity ni publicidad.
 - **Datos en tu dispositivo**: favoritos y tema (claro/oscuro) se guardan localmente en el navegador, no se envían a nuestros servidores.
 
 ## Publicidad y analítica

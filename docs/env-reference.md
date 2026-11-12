@@ -22,7 +22,7 @@ Valores de ejemplo en [`.env.example`](../.env.example). En desarrollo, copiá e
 | `SUPABASE_JWKS_URL` | JWKS de Auth para verificar JWTs de usuario |
 | `NEXT_PUBLIC_MOCK_REVIEWS` | `true` en dev: reseñas y login fake, sin Supabase. Ignorado en producción |
 | `TELEGRAM_BOT_TOKEN` | `app/api/telegram-webhook` — `sendMessage` |
-| `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` | Enlaces `t.me/...` en UI (sin `@`) |
+| `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` | Bot propio de Telegram para compartir ubicación (sin `@`); si está vacío, se oculta el enlace de compartir por Telegram |
 | `NEXT_PUBLIC_APP_URL` | URL pública de la app. HTTPS en producción |
 
 Sin Telegram ni Supabase, consultas de arribos y catálogo estático siguen funcionando si el backend y el dump están configurados.

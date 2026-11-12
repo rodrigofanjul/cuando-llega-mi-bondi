@@ -12,8 +12,8 @@ interface Props {
 export function SearchBar({ value, onChange, onFocusChange, onNear }: Props) {
     const [numeric, setNumeric] = useState(true);
     return (
-        <div className="flex items-center gap-2 rounded-[14px] border border-border bg-card px-3 py-2 shadow-sm">
-            <span aria-hidden="true">🔍</span>
+        <div className="@container flex items-center gap-1 rounded-[14px] border border-border bg-card px-3 py-2 shadow-sm">
+            <span aria-hidden="true" className="shrink-0 text-[16px]">🔍</span>
             <input
                 type="search"
                 inputMode={numeric ? "numeric" : "text"}
@@ -24,12 +24,12 @@ export function SearchBar({ value, onChange, onFocusChange, onNear }: Props) {
                 onChange={(e) => onChange(e.target.value)}
                 onFocus={() => onFocusChange(true)}
                 onBlur={() => onFocusChange(false)}
-                className="min-h-[44px] flex-1 bg-transparent text-[16px] outline-none"
+                className="min-h-[44px] min-w-0 flex-1 bg-transparent text-[16px] outline-none"
             />
-            <button type="button" onClick={() => setNumeric((n) => !n)} className="min-h-[44px] min-w-[44px] rounded-[10px] text-[13px] font-semibold text-muted-foreground" aria-label={numeric ? "Teclado de letras" : "Teclado numérico"}>
+            <button type="button" onClick={() => setNumeric((n) => !n)} className="hidden h-[44px] w-[44px] shrink-0 rounded-[10px] text-[13px] font-semibold text-muted-foreground @[260px]:block" aria-label={numeric ? "Teclado de letras" : "Teclado numérico"}>
                 {numeric ? "abc" : "123"}
             </button>
-            <button type="button" onClick={onNear} className="min-h-[44px] min-w-[44px] rounded-[10px] text-[18px]" aria-label="Paradas cerca mío">
+            <button type="button" onClick={onNear} className="h-[44px] w-[44px] shrink-0 rounded-[10px] text-[18px]" aria-label="Paradas cerca mío">
                 📍
             </button>
         </div>

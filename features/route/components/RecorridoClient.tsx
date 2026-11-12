@@ -622,7 +622,7 @@ export default function RecorridoClient({ initialLineCode }: { initialLineCode?:
             liveBuses={liveBuses}
             ramalKey={selectedRamal?.key}
             ramalLabel={selectedRamal?.label}
-            telegramUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "cuandollegamdp_bot"}
+            telegramUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME?.trim() || ""}
           />
         )}
       </div>

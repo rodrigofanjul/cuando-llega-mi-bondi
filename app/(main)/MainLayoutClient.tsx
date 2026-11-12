@@ -191,7 +191,7 @@ function MainLayoutContent({ children }: { children: ReactNode }) {
         isStale,
       },
       telegramUsername:
-        process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "cuandollegamdp_bot",
+        process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME?.trim() || null,
     }),
     [
       codLinea,

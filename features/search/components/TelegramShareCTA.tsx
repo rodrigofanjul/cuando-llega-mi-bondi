@@ -4,7 +4,7 @@ import { encodeLiveSharePayload } from "@features/live-sharing/lib/liveSharePayl
 interface TelegramShareCTAProps {
   codLinea: string;
   selectedRamal: string;
-  telegramUsername: string;
+  telegramUsername: string | null;
 }
 
 export function TelegramShareCTA({

@@ -5,7 +5,7 @@ import { encodeLiveSharePayload } from "@features/live-sharing/lib/liveSharePayl
 interface TelegramShareProps {
   codLinea: string;
   selectedRamal: string;
-  telegramUsername: string;
+  telegramUsername: string | null;
 }
 
 export const TelegramShare = memo(function TelegramShare({

@@ -73,5 +73,5 @@ export type ArrivalsDataSession = {
 export type ArrivalsOverlaySession = {
     consult: ArrivalsConsultSession;
     arrivals: ArrivalsDataSession;
-    telegramUsername: string;
+    telegramUsername: string | null;
 };

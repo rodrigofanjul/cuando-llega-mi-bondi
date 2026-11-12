@@ -20,6 +20,7 @@ Relevado del código el 2026-11-11. «Dispositivo» = LocalStorage / SharedPrefe
 | Métricas anónimas (Vercel Analytics) | Sitio | Vercel | No | Analítica | — |
 | Publicidad (Google AdSense) | Sitio (también en la WebView) | Google | Identificadores; puede ser personalizada | Publicidad de terceros | Según Google |
 | Preguntas al asistente | Usuario | No se guardan; si hay clave, se envían a Anthropic con favoritos | No | Funcionalidad | No aplica |
+| Métricas de experiencia propias (`/api/ux`) | App, **apagado por defecto** (`NEXT_PUBLIC_UX_METRICS_ENABLED`) | Contadores en memoria; búsquedas sin resultado normalizadas en logs del servidor | No (sin identificador, sin IP guardada) | Mejora de la experiencia | No aplica |
 | IP | Toda request | Sólo en memoria para límites de frecuencia (no se guarda ni se loguea) | — | Seguridad | No aplica |
 
 Notas:

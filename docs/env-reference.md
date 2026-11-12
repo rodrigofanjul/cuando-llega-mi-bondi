@@ -112,6 +112,7 @@ En producción, definí las `NEXT_PUBLIC_*` en el panel de Vercel. El catálogo 
 | -------- | --- |
 | `METRICS_TOKEN` | Habilita `GET /api/metrics` (Bearer). Sin ella la ruta responde 404. |
 | `NEXT_PUBLIC_MONETIZATION_ENABLED` | `true` activa planes (sin cobros: no hay proveedor de compras). Default: todo habilitado. |
+| `NEXT_PUBLIC_UX_METRICS_ENABLED` | `true` activa métricas de experiencia propias (`POST /api/ux`). Se recolectan sólo contadores agregados (tiempo hasta ver minutos por rango, avisos rápidos, búsquedas sin resultado) y, para las búsquedas sin resultado, el texto normalizado (sin números de 4+ dígitos) en los logs del servidor. Nada se asocia a una persona. Default: apagado (la ruta responde 404 y el cliente no envía nada). |
 
 ## Motor offline
 

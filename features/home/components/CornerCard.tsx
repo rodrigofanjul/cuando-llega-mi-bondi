@@ -1,8 +1,11 @@
 "use client";
 
 import type { Favorito } from "@features/favorites/types";
+import { useEffect } from "react";
+
 import { ArrivalTime } from "@features/arrivals/components/ArrivalTime";
 import { usePairArrivals } from "@features/home/hooks/usePairArrivals";
+import { reportFirstMinutes } from "@features/home/lib/uxMetrics";
 import type { CornerGroup } from "@features/home/lib/corners";
 
 import { LineChip } from "./LineChip";
@@ -12,6 +15,10 @@ function FavoriteRow({ fav, now, live, onOpen }: { readonly fav: Favorito; reado
     const label = fav.lineaLabel ?? fav.descripcionLinea;
     const first = arrivals[0];
     const second = arrivals[1];
+    const hasLive = fetchedAt !== null && !stale && first !== undefined;
+    useEffect(() => {
+        if (hasLive) reportFirstMinutes();
+    }, [hasLive]);
     return (
         <button type="button" onClick={() => onOpen(fav)} className="flex min-h-[56px] w-full items-center gap-3 py-2 text-left">
             <LineChip label={label} />

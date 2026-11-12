@@ -1,14 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
+
 import type { Favorito } from "@features/favorites/types";
 import { ArrivalTime } from "@features/arrivals/components/ArrivalTime";
 import { usePairArrivals } from "@features/home/hooks/usePairArrivals";
+
+import { reportFirstMinutes } from "@features/home/lib/uxMetrics";
 
 import { LineChip } from "./LineChip";
 
 export function NowCard({ fav, reason, now, onOpen }: { readonly fav: Favorito; readonly reason: "habit" | "near"; readonly now: number; readonly onOpen: (f: Favorito) => void }) {
     const { arrivals, fetchedAt, stale } = usePairArrivals(fav.identificadorParada, fav.codigoLineaParada, true);
     const first = arrivals[0];
+    const hasLive = fetchedAt !== null && !stale && first !== undefined;
+    useEffect(() => {
+        if (hasLive) reportFirstMinutes();
+    }, [hasLive]);
     return (
         <button type="button" onClick={() => onOpen(fav)} className="w-full rounded-[20px] border border-border bg-card p-4 text-left shadow-sm">
             <p className="text-[11px] font-semibold uppercase tracking-[1.2px] text-muted-foreground">

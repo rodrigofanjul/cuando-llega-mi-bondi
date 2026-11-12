@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeferredValue, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type { Favorito } from "@features/favorites/types";
@@ -9,6 +9,7 @@ import { groupByCorner } from "@features/home/lib/corners";
 import { pickNowCard } from "@features/home/lib/nowCard";
 import { loadRecents, pushRecent, saveRecents } from "@features/home/lib/recentSearches";
 import { useNow } from "@features/home/hooks/useNow";
+import { sanitizeMissQuery, sendUx } from "@features/home/lib/uxMetrics";
 import { suggest } from "@features/personalization/lib/habits";
 import { useHabitsStore } from "@features/personalization/store/useHabitsStore";
 import { looksLikeQuestion, quickSearch, type SearchItem } from "@features/search/lib/quickSearch";
@@ -48,6 +49,15 @@ export function HomeScreen() {
         [index, deferredQuery, favStopIds],
     );
     const noResults = result !== null && result.items.length === 0;
+    // Búsqueda sin resultado tras 1 s sin tipear (sólo texto normalizado, sin números de puerta).
+    useEffect(() => {
+        if (!noResults || deferredQuery.trim().length < 3) return;
+        const t = setTimeout(() => {
+            const q = sanitizeMissQuery(deferredQuery);
+            if (q) sendUx({ type: "search_miss", q });
+        }, 1000);
+        return () => clearTimeout(t);
+    }, [noResults, deferredQuery]);
     const question = query.trim() && (looksLikeQuestion(query) || noResults) ? query.trim() : null;
 
     // Las primeras 6 filas (la tarjeta Ahora cuenta como una) consultan cada 25 s; el resto una sola vez.

@@ -6,6 +6,7 @@ import { quickAlertRule } from "@features/alerts/lib/quickAlert";
 import { getNotificationPermission, requestNotificationPermission } from "@features/alerts/native/notifier";
 import { useAlertsStore } from "@features/alerts/store/useAlertsStore";
 import { readStoredWalkMin } from "@features/departure/components/DepartureAdvisor";
+import { sendUx } from "@features/home/lib/uxMetrics";
 import { arLocalParts } from "@shared/time/argentina";
 import { toast } from "@shared/ui/store/useToastStore";
 
@@ -53,6 +54,7 @@ export function StopActionBar({ isFavorite, onToggleFavorite, share, target }: P
             toast({ description: "Llegaste al máximo de alertas." });
             return;
         }
+        sendUx({ type: "quick_alert" });
         const minutes = rule.trigger.type === "eta-threshold" ? rule.trigger.minutes : null;
         const text =
             minutes === null

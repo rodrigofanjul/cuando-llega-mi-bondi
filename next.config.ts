@@ -77,6 +77,7 @@ const nextConfig: NextConfig = {
         destination: "/favoritos",
         permanent: false,
       },
+      { source: "/inicio", destination: "/", permanent: true },
       { source: "/about", destination: "/acerca", permanent: true },
       { source: "/contacto", destination: "/acerca", permanent: true },
       { source: "/contact", destination: "/acerca", permanent: true },

@@ -65,3 +65,6 @@ node_modules/
 
 # impeccable design-hook cache (config.json itself is versioned)
 .impeccable/hook.cache.json
+
+# Supabase local en Docker (scripts/supabase-local.mjs)
+.supabase-local/

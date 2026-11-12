@@ -19,6 +19,7 @@ import pandas as pd
 from . import dataset as ds
 from .export import build_artifact, compact_trees, write_json
 from .gate import evaluate_gate
+from .io import read_table
 from .metrics import by_group, coverage, hour_band, point_metrics
 from .models import BaselineModel, BiasTableModel, LightGBMModel, calibrate_interval
 from .synthetic import generate
@@ -112,7 +113,8 @@ def main() -> None:
     if a.synthetic:
         obs, arr = generate(days=a.days)
     else:
-        obs, arr = pd.read_parquet(a.observations), pd.read_parquet(a.arrivals)
+        # CSV o parquet de scripts/export-arrival-history.mjs (datos reales, B1).
+        obs, arr = read_table(a.observations), read_table(a.arrivals)
         obs["data_source"] = "real"
     report = run(obs, arr, Path(a.out), a.model_version)
     print(render_markdown(report))

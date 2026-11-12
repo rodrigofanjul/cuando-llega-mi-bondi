@@ -38,7 +38,7 @@ entrada baja; con Haiku 5.5 ($0,10/$0,50 por M) ≈ $0,0006 — decisión de cal
 | Concepto | 100 | 1.000 | 10.000 | Notas |
 | -------- | --- | ----- | ------ | ----- |
 | Hosting Next (Render/Vercel) | plan actual | plan actual | escalar instancias | Verificar plan vigente. |
-| Supabase (reportes, cuenta, históricos) | Free | Free/Pro | Pro | Históricos: ~860 obs./usuario/mes × muestreo 1/min ⇒ 10.000 MAU ≈ decenas de M filas/90 días: medir antes de activar (B1). Verificar precios. |
+| Supabase (reportes, cuenta, históricos) | Free | Free/Pro | Pro | Históricos: ~860 obs./usuario/mes × muestreo 1/min ⇒ 10.000 MAU ≈ decenas de M filas/90 días; con retención de 1 año (D18) ≈ 4× eso: medir el volumen real en las primeras semanas y evaluar particionado mensual o agregación antes de llegar a ese tamaño. Verificar precios. |
 | Push (FCM/APNs) | US$ 0 | US$ 0 | US$ 0 | Requiere servidor de envío (B3). |
 | Mapas | ver B10 | ver B10 | ver B10 | Proveedor con licencia: costo por carga de mosaicos. Verificar. |
 | Cuentas de tiendas | Apple US$ 99/año · Google US$ 25 único | | | Verificar. |

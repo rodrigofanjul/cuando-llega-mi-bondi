@@ -3,3 +3,5 @@ __pycache__/
 .pytest_cache/
 artifacts/runs/
 *.pyc
+# Exportaciones reales de Supabase (scripts/export-arrival-history.mjs): nunca al repo.
+data/

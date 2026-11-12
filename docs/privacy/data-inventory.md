@@ -14,7 +14,7 @@ Relevado del código el 2026-11-11. «Dispositivo» = LocalStorage / SharedPrefe
 | Reseñas de líneas | Usuario | Supabase | Sí (nombre visible elegido) | Contenido del usuario | Con la cuenta (se anonimizan) |
 | Reportes colaborativos | Usuario | Supabase `community_reports` (hash con sal de id aleatorio, sin IP) | No | Funcionalidad | Caducan solos; purga a 30 días de vencidos |
 | Id aleatorio de dispositivo | App | Dispositivo (servidor sólo guarda el hash) | No | Antispam | Borrado local |
-| Observaciones de arribos (histórico) | Consultas de la app, **apagado** | Supabase, 90 días | No (sin usuario, sin ubicación) | Analítica de servicio / ML | Retención automática |
+| Observaciones de arribos (histórico) | Consultas de la app (sólo pasiva), **apagado** hasta activar en producción | Supabase, 1 año crudo; llegadas inferidas 2 años | No (sin usuario, sin ubicación) | Analítica de servicio / ML | Retención automática |
 | Analítica de uso (Google Analytics) | Sitio (también dentro de la WebView) | Google | Identificadores de dispositivo/cookies | Analítica | Según Google |
 | Grabación de sesión (Microsoft Clarity) | Sitio (también en la WebView) | Microsoft | Identificadores de dispositivo/cookies | Analítica | Según Microsoft |
 | Métricas anónimas (Vercel Analytics) | Sitio | Vercel | No | Analítica | — |

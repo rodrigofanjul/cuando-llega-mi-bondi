@@ -71,9 +71,11 @@ Configuralas en el servicio que las consuma (backend self-hosted), no esperes ef
 | `NEXT_PUBLIC_OBSERVATIONS_ENABLED` | Cliente (build) | sin definir = apagado | `true` envía observaciones muestreadas (1/min por parada+línea) de consultas que la app ya hizo a `/api/observations`. |
 | `OBSERVATIONS_INGEST_ENABLED` | Servidor | sin definir = apagado | `true` guarda en `arrival_observations` (Supabase, service role). Si no, el endpoint valida y responde 202 sin guardar. |
 | `NEXT_PUBLIC_APP_VERSION` | Cliente (build) | — | Versión que acompaña cada lote de observaciones. |
+| `CRON_SECRET` | Servidor | sin definir = la ruta responde 404 | Protege `GET /api/cron/infer-arrivals` (`Authorization: Bearer …`), que convierte observaciones en llegadas inferidas. Llamarla cada 30 min desde un scheduler. |
 
-Activar **sólo** con la autorización escrita de uso de datos (`docs/blockers.md` B1). Requiere aplicar
-`supabase/migrations/20261111120000_arrival_observations.sql` y programar `purge_arrival_history(90)`.
+Autorización escrita confirmada por el responsable (2026-11-11, B1): recolección **sólo pasiva**, retención cruda de
+**1 año**. Para activar en producción seguir `docs/runbooks/historical-data.md` (migraciones, variables, scheduler,
+verificación). Nada se activa en producción sin aprobación explícita.
 
 ## Reportes colaborativos (apagados sin configuración)
 

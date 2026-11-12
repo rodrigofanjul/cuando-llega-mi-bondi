@@ -66,3 +66,24 @@ def test_cli_run_writes_report(tmp_path):
     report = run(generate_arrivals(days=21, seed=4), tmp_path, "t", "synthetic")
     assert (tmp_path / "profiles.json").exists() and report["data_source"] == "synthetic"
     assert set(report["evaluation"]) == {"1h", "6h", "12h", "24h", "72h"}
+
+
+def test_real_export_csv_roundtrip(tmp_path):
+    """Formato de scripts/export-arrival-history.mjs → perfiles con data_source=real."""
+    from bondi_ml.io import read_table
+
+    src = generate_arrivals(days=10).drop(columns=["data_source"])
+    src["method"] = "arriving_status"
+    csv = tmp_path / "arrivals.csv"
+    src.to_csv(csv, index=False)
+    df = read_table(csv)
+    assert df["arrived_at"].dtype == "int64" and (df["data_source"] == "real").all()
+    report = run(df, tmp_path / "out", "t", "real")
+    assert report["data_source"] == "real" and report["pairs"] > 0 and "evaluation" in report
+    profile = json.loads((tmp_path / "out" / "profiles.json").read_text(encoding="utf-8"))
+    assert profile["data_source"] == "real"
+
+
+def test_few_days_publishes_profile_without_evaluation(tmp_path):
+    report = run(generate_arrivals(days=2), tmp_path, "t", "real")
+    assert report["test_days"] == 0 and "evaluation" not in report and "note" in report

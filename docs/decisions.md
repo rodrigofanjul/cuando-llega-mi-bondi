@@ -79,3 +79,13 @@ v1 de configuraciones y snapshots no cambia: un shell nativo viejo ignora la tab
 La estimación sólo se muestra si no hay dato en vivo usable (sin dato, vencido o error sin arribos), con «≈», el texto
 «histórico» y el pie «Sin datos en vivo · estimación histórica». Un dato en vivo reciente, aunque diga «sin arribos»,
 siempre gana. Paridad: `shared/contracts/offline-vectors.json` en vitest, JUnit y XCTest.
+
+## D18 — Históricos con autorización: sólo pasivos, 1 año, inferencia por job (2026-11-11)
+El responsable confirma la autorización escrita de uso de datos (el documento queda fuera del repo). Decisiones suyas:
+recolección **sólo pasiva** (se muestrean, 1/min por parada+línea, las consultas que la app ya hace para sus usuarios;
+no hay colector que consulte a la Municipalidad) y retención cruda de **1 año** (migración nueva, no se editó la
+anterior; llegadas inferidas 2 años; purga diaria con pg_cron si está disponible). Las llegadas se infieren en el
+servidor con un job idempotente (`/api/cron/infer-arrivals`, ventana de 3 h con zona central, UNIQUE descarta repetidas)
+y se exportan con `scripts/export-arrival-history.mjs` al pipeline `ml/` (perfiles offline y ML). Consecuencia
+asumida: la cobertura sigue al uso (buena en horas pico y líneas populares, pobre de noche); los perfiles exigen soporte
+mínimo y, si no lo hay, el modo offline dice «datos insuficientes».

@@ -207,3 +207,14 @@ y paridad de los casos). Web: build OK; sólo la suite preexistente (B7). Androi
 | iOS | `OfflineTable.swift` + 5 XCTest con los mismos vectores; corren en CI (`swift test`, `xcodebuild`). No ejecutado en simulador. |
 | Suite / typecheck | 50/51 archivos, **448/458** (mismos 10 preexistentes, B7); `tsc` OK; eslint de los archivos tocados OK. |
 | No hecho | Batería y tiempo de inferencia en dispositivo físico; widget iOS en simulador; perfiles con datos reales (B1). |
+
+## 2026-11-11 — Ciclo 13 (históricos con autorización: pasivos, 1 año, Supabase local en Docker)
+
+| Chequeo | Resultado |
+| ------- | --------- |
+| Migraciones en Postgres 17 real (Supabase CLI 2.122.1 en Docker) | Aplican las 15 del repo menos `bus_locations_ramal` (tabla no definida en el repo, B13). RLS activo y 0 políticas en `arrival_observations`/`inferred_arrivals`; anónimos reciben `[]`; `purge_arrival_history` con `DEFAULT 365`. |
+| Ingesta de punta a punta (upstream MOCK) | App → muestreo 1/min → `/api/observations` → Supabase: 165 filas de 3 pares, `origin=user_query`. |
+| Job `/api/cron/infer-arrivals` | Sin secreto 401 (sin `CRON_SECRET`, 404). Dos corridas seguidas: `inferred: 16` cada una y 16 filas en la tabla (sin duplicados). Para no esperar 46 min se corrieron 60 min hacia atrás los tiempos de las observaciones MOCK. |
+| Tests | `inferJob` 4, ruta del cron 3, pytest 19/19 (CSV real y perfil con pocos días). Suite: 52/53 archivos, **455/465** (mismos 10 preexistentes, B7). `tsc` y eslint OK. |
+| Datos reales en local | `MGP_UPSTREAM=https://bondi.aeterna.red` (backend self-hosted público de la app, sin tocar el código de conexión): líneas reales OK (28). **Arribos en vivo: 502 en el origen** (`bondi.aeterna.red` 502, `bondimdp.com.ar/api/mgp` 502, `proxy.bondimdp.com.ar` 530) al 2026-11-11 22:10. La recolección empieza sola cuando vuelvan. |
+| Nota de herramienta | El navegador automatizado escribe su log en `.playwright-mcp/` dentro del repo; con `next dev` eso dispara recompilaciones en bucle. No afecta el uso normal. |

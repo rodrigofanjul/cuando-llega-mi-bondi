@@ -7,8 +7,7 @@ import { usePairArrivals } from "@features/home/hooks/usePairArrivals";
 import { LineChip } from "./LineChip";
 
 export function NowCard({ fav, reason, now, onOpen }: { readonly fav: Favorito; readonly reason: "habit" | "near"; readonly now: number; readonly onOpen: (f: Favorito) => void }) {
-    const { arrivals, fetchedAt, loaded, stale } = usePairArrivals(fav.identificadorParada, fav.codigoLineaParada, true);
-    const at = fetchedAt ?? now;
+    const { arrivals, fetchedAt, stale } = usePairArrivals(fav.identificadorParada, fav.codigoLineaParada, true);
     const first = arrivals[0];
     return (
         <button type="button" onClick={() => onOpen(fav)} className="w-full rounded-[20px] border border-border bg-card p-4 text-left shadow-sm">
@@ -20,10 +19,10 @@ export function NowCard({ fav, reason, now, onOpen }: { readonly fav: Favorito; 
                 <span className="truncate text-[15px] font-semibold">{fav.nombre}</span>
             </div>
             <div className="mt-3 flex items-end justify-between">
-                {loaded && !stale && first ? (
-                    <ArrivalTime size="hero" input={{ kind: "live", etaMinutes: first.etaMinutes, arriving: first.status === "arriving", fetchedAt: at, now }} />
+                {fetchedAt !== null && !stale && first ? (
+                    <ArrivalTime size="hero" input={{ kind: "live", etaMinutes: first.etaMinutes, arriving: first.status === "arriving", fetchedAt, now }} />
                 ) : (
-                    <span className="text-[15px] text-muted-foreground">{!loaded ? "Cargando…" : stale ? "Sin datos recientes" : "Sin arribos ahora"}</span>
+                    <span className="text-[15px] text-muted-foreground">{fetchedAt === null ? "Cargando…" : stale ? "Sin datos recientes" : "Sin arribos ahora"}</span>
                 )}
                 {!stale && arrivals[1] ? <span className="text-[17px] tabular-nums text-muted-foreground">luego {arrivals[1].etaMinutes}</span> : null}
             </div>

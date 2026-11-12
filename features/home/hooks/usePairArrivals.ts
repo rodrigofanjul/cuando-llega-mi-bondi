@@ -11,9 +11,9 @@ type Result = MgpResult<{ arribos?: Arribo[] }> & { fetchedAt?: number };
 
 export interface PairArrivals {
     arrivals: NormalizedArrival[];
-    /** Hora de la consulta; null si los datos los trajo otro hook (panel) sin sello: usar `now`. */
+    /** Hora de la consulta propia; null si aún no hay datos con sello (caché de otro hook sin sello cuenta como no cargado). */
     fetchedAt: number | null;
-    /** Ya hay datos (propios o de otro hook con la misma clave). */
+    /** Hay datos con sello de hora (nunca se sustituye por `now`). */
     loaded: boolean;
     /** Los datos vienen de una copia vieja: no mostrarlos como en vivo. */
     stale: boolean;
@@ -34,7 +34,7 @@ export function usePairArrivals(stopId: string, lineCode: string, live = true): 
     const { data, error, isLoading } = useSWR<Result>(
         ["RecuperarProximosArribosW", { identificadorParada: stopId, codigoLineaParada: lineCode }],
         fetcher,
-        { refreshInterval: live ? 25_000 : 0, refreshWhenHidden: false, revalidateOnFocus: live },
+        { refreshInterval: live ? 25_000 : 0, refreshWhenHidden: false, revalidateOnFocus: live, revalidateOnMount: true },
     );
     const raw = data?.data?.arribos ?? [];
     const fetchedAt = data?.fetchedAt ?? null;
@@ -42,5 +42,5 @@ export function usePairArrivals(stopId: string, lineCode: string, live = true): 
         .map((a) => normalizeArribo(a, { stopId, lineCode, fetchedAt: fetchedAt ?? 0 }))
         .filter((a) => a.etaMinutes !== null || a.status === "arriving")
         .sort((a, b) => (a.etaMinutes ?? 0) - (b.etaMinutes ?? 0));
-    return { arrivals, fetchedAt, loaded: data !== undefined, stale: data?.meta?.cache === "STALE", error: Boolean(error), loading: isLoading };
+    return { arrivals, fetchedAt, loaded: fetchedAt !== null, stale: data?.meta?.cache === "STALE", error: Boolean(error), loading: isLoading };
 }

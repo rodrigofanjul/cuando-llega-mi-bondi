@@ -8,8 +8,7 @@ import type { CornerGroup } from "@features/home/lib/corners";
 import { LineChip } from "./LineChip";
 
 function FavoriteRow({ fav, now, live, onOpen }: { readonly fav: Favorito; readonly now: number; readonly live: boolean; readonly onOpen: (f: Favorito) => void }) {
-    const { arrivals, fetchedAt, loaded, stale, loading } = usePairArrivals(fav.identificadorParada, fav.codigoLineaParada, live);
-    const at = fetchedAt ?? now;
+    const { arrivals, fetchedAt, stale, loading } = usePairArrivals(fav.identificadorParada, fav.codigoLineaParada, live);
     const label = fav.lineaLabel ?? fav.descripcionLinea;
     const first = arrivals[0];
     const second = arrivals[1];
@@ -19,13 +18,13 @@ function FavoriteRow({ fav, now, live, onOpen }: { readonly fav: Favorito; reado
             <span className="min-w-0 flex-1 truncate text-[14px] text-foreground">
                 {fav.descripcionBandera && fav.descripcionBandera !== "—" ? `→ ${fav.descripcionBandera}` : fav.nombre}
             </span>
-            {!loaded ? (
+            {fetchedAt === null ? (
                 <span className="text-[13px] text-muted-foreground">{loading ? "…" : "Sin datos"}</span>
             ) : stale ? (
                 <span className="text-[13px] text-muted-foreground">Sin datos recientes</span>
             ) : first ? (
                 <span className="flex items-baseline gap-2">
-                    <ArrivalTime input={{ kind: "live", etaMinutes: first.etaMinutes, arriving: first.status === "arriving", fetchedAt: at, now }} />
+                    <ArrivalTime input={{ kind: "live", etaMinutes: first.etaMinutes, arriving: first.status === "arriving", fetchedAt, now }} />
                     {second ? <span className="text-[13px] tabular-nums text-muted-foreground">· {second.etaMinutes}</span> : null}
                 </span>
             ) : (

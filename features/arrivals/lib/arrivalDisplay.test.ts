@@ -47,4 +47,9 @@ describe("arrivalDisplay", () => {
     it("singular de minuto", () => {
         expect(arrivalDisplay({ kind: "live", etaMinutes: 1, arriving: false, fetchedAt: T, now: T }).spoken).toBe("llega en 1 minuto");
     });
+
+    it("fetchedAt apenas en el futuro no genera antigüedad negativa", () => {
+        const d = arrivalDisplay({ kind: "live", etaMinutes: 5, arriving: false, fetchedAt: T + 30_000, now: T });
+        expect(d.note ?? "").not.toMatch(/-/);
+    });
 });

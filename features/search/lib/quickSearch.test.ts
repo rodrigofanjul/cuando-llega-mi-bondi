@@ -68,4 +68,35 @@ describe("quickSearch", () => {
         expect(looksLikeQuestion("cuando pasa el 511")).toBe(true);
         expect(looksLikeQuestion("511 luro")).toBe(false);
     });
+
+    it("etiquetas reales: letras y varias palabras", () => {
+        const real: SearchIndex = {
+            ...idx,
+            lines: [...idx.lines, ["200", "593C"], ["210", "221 COSTA AZUL"]],
+            stops: [
+                ...idx.stops,
+                { id: "E", street: "LURO", cross: "MITRE", lat: -38.03, lng: -57.58, flag: null, lines: [["200", "593C"]] },
+                { id: "F", street: "COSTA", cross: "PLAYA", lat: -38.04, lng: -57.59, flag: null, lines: [["210", "221 COSTA AZUL"]] },
+            ],
+        };
+        expect(quickSearch(real, "593c", {}).kind).toBe("streets-of-line");
+        expect(quickSearch(real, "593c", {}).items[0].lineCode).toBe("200");
+        const r = quickSearch(real, "593C luro", {});
+        expect(r.items.map((i) => [i.stopId, i.lineCode])).toEqual([["E", "200"]]);
+        const m = quickSearch(real, "221 costa azul", {});
+        expect(m.kind).toBe("streets-of-line");
+        expect(m.items[0].lineCode).toBe("210");
+    });
+
+    it("un número de calle no se confunde con una línea", () => {
+        const withTwelve: SearchIndex = {
+            ...idx,
+            lines: [...idx.lines, ["300", "12"]],
+            stops: [...idx.stops, { id: "G", street: "ALEM", cross: "SAN LUIS", lat: -38.05, lng: -57.6, flag: null, lines: [["300", "12"]] }],
+        };
+        const r = quickSearch(withTwelve, "12 de octubre", {});
+        expect(r.items.map((i) => i.stopId)).toEqual(["D"]);
+        expect(quickSearch(withTwelve, "12", {}).kind).toBe("streets-of-line");
+        expect(quickSearch(withTwelve, "12", {}).items.map((i) => i.title)).toEqual(["Alem"]);
+    });
 });

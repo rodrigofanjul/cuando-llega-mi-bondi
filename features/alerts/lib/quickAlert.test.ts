@@ -26,4 +26,14 @@ describe("quickAlertRule", () => {
     it("acota a 60 min", () => {
         expect(quickAlertRule({ id: "q4", target, walkMin: 90, now: NOW }).trigger).toEqual({ type: "eta-threshold", minutes: 60 });
     });
+
+    it("a las 23:00 vale hasta 23:59", () => {
+        const t = Date.parse("2026-11-13T02:00:00Z"); // 23:00 MDP
+        expect(quickAlertRule({ id: "q5", target, walkMin: 3, now: t }).schedule).toMatchObject({ from: "23:00", to: "23:59" });
+    });
+
+    it("a las 23:59 queda 23:59-23:59 (límite del día)", () => {
+        const t = Date.parse("2026-11-13T02:59:00Z"); // 23:59 MDP
+        expect(quickAlertRule({ id: "q6", target, walkMin: 3, now: t }).schedule).toMatchObject({ from: "23:59", to: "23:59" });
+    });
 });

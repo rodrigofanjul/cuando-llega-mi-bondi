@@ -32,8 +32,6 @@ export function looksLikeQuestion(q: string): boolean {
     return q.trim().endsWith("?") || q.trim().startsWith("¿") || QUESTION_START.test(normalizeText(q));
 }
 
-const titleCase = displayCase;
-
 function wordMatches(word: string, field: string): boolean {
     const parts = normalizeText(field).split(" ");
     return parts.some((p) => p.startsWith(word) || (word.length >= 5 && editDistanceAtMost1(word, p)));
@@ -56,17 +54,33 @@ function rank(stops: IndexStop[], ctx: SearchContext): IndexStop[] {
     });
 }
 
-const cornerTitle = (s: IndexStop) => `${titleCase(s.street)} y ${titleCase(s.cross)}`;
+const cornerTitle = (s: IndexStop) => `${displayCase(s.street)} y ${displayCase(s.cross)}`;
+
+/** Interpretaciones posibles de la consulta como «línea [+ resto]». Las de varias palabras van primero. */
+function lineCandidates(index: SearchIndex, query: string, words: string[]): Array<{ code: string; label: string; rest: string[] }> {
+    const byLabel = new Map(index.lines.map(([code, label]) => [normalizeText(label), { code, label }]));
+    const norm = normalizeText(query);
+    const out: Array<{ code: string; label: string; rest: string[] }> = [];
+    const multi = [...byLabel.entries()].filter(([k]) => k.includes(" ")).sort((a, b) => b[0].length - a[0].length);
+    for (const [k, v] of multi) {
+        if (norm === k || norm.startsWith(`${k} `)) out.push({ ...v, rest: tokens(norm.slice(k.length)) });
+    }
+    const single = words.find((w) => byLabel.has(w));
+    if (single) {
+        const v = byLabel.get(single)!;
+        const i = words.indexOf(single);
+        out.push({ ...v, rest: words.filter((_, j) => j !== i) });
+    }
+    return out;
+}
 
 export function quickSearch(index: SearchIndex, query: string, ctx: SearchContext): SearchResult {
     const words = tokens(query);
     if (words.length === 0) return { kind: "empty", items: [] };
-    const lineByLabel = new Map(index.lines.map(([code, label]) => [label, code]));
-    const lineWord = words.find((w) => lineByLabel.has(w));
-    const rest = words.filter((w) => w !== lineWord);
 
-    if (lineWord) {
-        const code = lineByLabel.get(lineWord)!;
+    // Un token es línea sólo si no queda resto o la búsqueda restringida a la línea da resultados
+    // (si no, «12 de octubre» sería la línea 12 y no la calle).
+    for (const { code, label, rest } of lineCandidates(index, query, words)) {
         const onLine = index.stops.filter((s) => s.lines.some(([c]) => c === code));
         if (rest.length === 0) {
             const streets = [...new Set(onLine.map((s) => s.street))].sort((a, b) => a.localeCompare(b, "es", { numeric: true }));
@@ -75,26 +89,27 @@ export function quickSearch(index: SearchIndex, query: string, ctx: SearchContex
                 items: streets.slice(0, MAX).map((street) => ({
                     key: `street:${code}:${street}`,
                     kind: "street",
-                    title: titleCase(street),
-                    subtitle: `Línea ${lineWord}`,
+                    title: displayCase(street),
+                    subtitle: `Línea ${label}`,
                     stopId: null,
                     lineCode: code,
-                    lineLabel: lineWord,
-                    expandQuery: `${lineWord} ${street.toLowerCase()}`,
+                    lineLabel: label,
+                    expandQuery: `${label} ${street.toLowerCase()}`,
                 })),
             };
         }
         const hits = rank(onLine.filter((s) => matchesCorner(s, rest)), ctx);
+        if (hits.length === 0) continue;
         return {
-            kind: hits.length ? "stops" : "empty",
+            kind: "stops",
             items: hits.slice(0, MAX).map((s) => ({
                 key: `stop:${s.id}:${code}`,
                 kind: "stop",
                 title: cornerTitle(s),
-                subtitle: s.flag ? `→ ${titleCase(s.flag)}` : null,
+                subtitle: s.flag ? `→ ${displayCase(s.flag)}` : null,
                 stopId: s.id,
                 lineCode: code,
-                lineLabel: lineWord,
+                lineLabel: label,
                 expandQuery: null,
             })),
         };
@@ -107,7 +122,7 @@ export function quickSearch(index: SearchIndex, query: string, ctx: SearchContex
         const items: SearchItem[] = [];
         for (const s of hits) {
             for (const [code, label] of [...s.lines].sort((a, b) => a[1].localeCompare(b[1], "es", { numeric: true }))) {
-                items.push({ key: `stop:${s.id}:${code}`, kind: "stop", title: cornerTitle(s), subtitle: s.flag ? `→ ${titleCase(s.flag)}` : null, stopId: s.id, lineCode: code, lineLabel: label, expandQuery: null });
+                items.push({ key: `stop:${s.id}:${code}`, kind: "stop", title: cornerTitle(s), subtitle: s.flag ? `→ ${displayCase(s.flag)}` : null, stopId: s.id, lineCode: code, lineLabel: label, expandQuery: null });
             }
         }
         return { kind: "stops", items: items.slice(0, MAX) };

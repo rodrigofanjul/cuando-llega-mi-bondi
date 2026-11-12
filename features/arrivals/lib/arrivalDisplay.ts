@@ -42,7 +42,7 @@ export function arrivalDisplay(input: ArrivalInput): ArrivalView {
         return { state: "stale", text: `Dato de las ${clock}`, note: null, spoken: `dato vencido de las ${clock}`, pulse: false };
     }
     const eta = projectEtaMinutes(input.etaMinutes, input.fetchedAt, input.now);
-    const ageMin = Math.floor((input.now - input.fetchedAt) / 60_000);
+    const ageMin = Math.max(0, Math.floor((input.now - input.fetchedAt) / 60_000));
     const note = freshness === "aging" ? `hace ${ageMin} min` : null;
     if (input.arriving && (eta === null || eta === 0)) {
         return { state: "arriving", text: "Llegando", note, spoken: "está llegando", pulse: freshness === "fresh" };

@@ -13,7 +13,7 @@ const isLocalDev = /^http:\/\/(localhost|10\.0\.2\.2|127\.0\.0\.1|192\.168\.)/.t
 
 const config: CapacitorConfig = {
     appId: process.env.CAP_APP_ID?.trim() || "com.bondimdp.app.dev",
-    appName: "Bondi MDP",
+    appName: "Cuándo Viene",
     webDir: "mobile/www",
     server: {
         url: serverUrl,

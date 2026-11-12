@@ -84,7 +84,7 @@ struct WidgetConfigEntity: AppEntity {
     let id: String
     let name: String
 
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Widget de Bondi MDP"
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Widget de colectivos"
     static var defaultQuery = WidgetConfigQuery()
     var displayRepresentation: DisplayRepresentation { DisplayRepresentation(title: "\(name)") }
 }
@@ -232,7 +232,7 @@ struct BondiWidgetView: View {
             content(view)
         } else {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Bondi MDP").font(.headline)
+                Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? "").font(.headline)
                 Text("Abrí la app → Widgets para elegir línea y parada").font(.caption).foregroundStyle(.secondary)
             }
         }
@@ -286,7 +286,7 @@ struct BondiWidget: Widget {
         AppIntentConfiguration(kind: "BondiWidget", intent: SelectConfigIntent.self, provider: BondiProvider()) { entry in
             BondiWidgetView(entry: entry).containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("Próximo bondi")
+        .configurationDisplayName("Próximo colectivo")
         .description("Próximos arribos de tus líneas y paradas, con la hora de la última actualización.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }

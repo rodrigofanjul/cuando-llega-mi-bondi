@@ -13,6 +13,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--mdp-success);
@@ -673,3 +674,7 @@ body.como-llego-overlay-open {
     animation-duration: 0.01ms;
   }
 }
+
+@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.live-dot { animation: live-pulse 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }

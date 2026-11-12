@@ -4,6 +4,7 @@ import type { Favorito } from "@features/favorites/types";
 import { useEffect } from "react";
 
 import { ArrivalTime } from "@features/arrivals/components/ArrivalTime";
+import { projectEtaMinutes } from "@features/arrivals/lib/freshness";
 import { usePairArrivals } from "@features/home/hooks/usePairArrivals";
 import { reportFirstMinutes } from "@features/home/lib/uxMetrics";
 import type { CornerGroup } from "@features/home/lib/corners";
@@ -15,6 +16,7 @@ function FavoriteRow({ fav, now, live, onOpen }: { readonly fav: Favorito; reado
     const label = fav.lineaLabel ?? fav.descripcionLinea;
     const first = arrivals[0];
     const second = arrivals[1];
+    const secondEta = fetchedAt !== null && second ? projectEtaMinutes(second.etaMinutes, fetchedAt, now) : null;
     const hasLive = fetchedAt !== null && !stale && first !== undefined;
     useEffect(() => {
         if (hasLive) reportFirstMinutes();
@@ -32,10 +34,10 @@ function FavoriteRow({ fav, now, live, onOpen }: { readonly fav: Favorito; reado
             ) : first ? (
                 <span className="flex items-baseline gap-2">
                     <ArrivalTime input={{ kind: "live", etaMinutes: first.etaMinutes, arriving: first.status === "arriving", fetchedAt, now }} />
-                    {second ? <span className="text-[13px] tabular-nums text-muted-foreground">· {second.etaMinutes}</span> : null}
+                    {secondEta !== null ? <span className="text-[13px] tabular-nums text-muted-foreground">· {secondEta}</span> : null}
                 </span>
             ) : (
-                <ArrivalTime input={{ kind: "none", headwayMin: null }} />
+                <ArrivalTime input={{ kind: "none", headwayMin: null, fetchedAt, now }} />
             )}
         </button>
     );

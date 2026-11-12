@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import type { Favorito } from "@features/favorites/types";
 import { ArrivalTime } from "@features/arrivals/components/ArrivalTime";
+import { projectEtaMinutes } from "@features/arrivals/lib/freshness";
 import { usePairArrivals } from "@features/home/hooks/usePairArrivals";
 
 import { reportFirstMinutes } from "@features/home/lib/uxMetrics";
@@ -13,6 +14,7 @@ import { LineChip } from "./LineChip";
 export function NowCard({ fav, reason, now, onOpen }: { readonly fav: Favorito; readonly reason: "habit" | "near"; readonly now: number; readonly onOpen: (f: Favorito) => void }) {
     const { arrivals, fetchedAt, stale } = usePairArrivals(fav.identificadorParada, fav.codigoLineaParada, true);
     const first = arrivals[0];
+    const secondEta = fetchedAt !== null && arrivals[1] ? projectEtaMinutes(arrivals[1].etaMinutes, fetchedAt, now) : null;
     const hasLive = fetchedAt !== null && !stale && first !== undefined;
     useEffect(() => {
         if (hasLive) reportFirstMinutes();
@@ -32,7 +34,7 @@ export function NowCard({ fav, reason, now, onOpen }: { readonly fav: Favorito; 
                 ) : (
                     <span className="text-[15px] text-muted-foreground">{fetchedAt === null ? "Cargando…" : stale ? "Sin datos recientes" : "Sin arribos ahora"}</span>
                 )}
-                {!stale && arrivals[1] ? <span className="text-[17px] tabular-nums text-muted-foreground">luego {arrivals[1].etaMinutes}</span> : null}
+                {!stale && secondEta !== null ? <span className="text-[17px] tabular-nums text-muted-foreground">luego {secondEta}</span> : null}
             </div>
         </button>
     );

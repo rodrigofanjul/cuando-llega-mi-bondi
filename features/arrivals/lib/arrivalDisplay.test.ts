@@ -52,4 +52,10 @@ describe("arrivalDisplay", () => {
         const d = arrivalDisplay({ kind: "live", etaMinutes: 5, arriving: false, fetchedAt: T + 30_000, now: T });
         expect(d.note ?? "").not.toMatch(/-/);
     });
-});
+
+    it("'sin arribos' de hace rato lleva la edad del dato", () => {
+        expect(arrivalDisplay({ kind: "none", headwayMin: null, fetchedAt: T - 30_000, now: T }).note).toBeNull();
+        expect(arrivalDisplay({ kind: "none", headwayMin: null, fetchedAt: T - 3 * MIN, now: T }).note).toBe("hace 3 min");
+        expect(arrivalDisplay({ kind: "none", headwayMin: 12, fetchedAt: T - 3 * MIN, now: T }).note).toBe("hace 3 min · pasa cada ~12 min");
+        expect(arrivalDisplay({ kind: "none", headwayMin: null, fetchedAt: T - 20 * MIN, now: T }).note).toBe("Dato de las 08:40");
+    });});

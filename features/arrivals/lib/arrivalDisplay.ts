@@ -4,7 +4,7 @@ import { formatArClock } from "@shared/time/argentina";
 export type ArrivalInput =
     | { kind: "live"; etaMinutes: number | null; arriving: boolean; fetchedAt: number; now: number }
     | { kind: "historical"; medianMin: number; highMin: number }
-    | { kind: "none"; headwayMin: number | null };
+    | { kind: "none"; headwayMin: number | null; fetchedAt?: number; now?: number };
 
 export interface ArrivalView {
     state: "live" | "aging" | "stale" | "arriving" | "historical" | "none";
@@ -28,10 +28,18 @@ export function arrivalDisplay(input: ArrivalInput): ArrivalView {
         };
     }
     if (input.kind === "none") {
+        const headway = input.headwayMin !== null ? `pasa cada ~${input.headwayMin} min` : null;
+        // Un "sin arribos" consultado hace rato no debe leerse como actual.
+        let age: string | null = null;
+        if (input.fetchedAt !== undefined && input.now !== undefined) {
+            const f = freshnessOf(input.fetchedAt, input.now);
+            if (f === "stale") age = `Dato de las ${formatArClock(input.fetchedAt)}`;
+            else if (f === "aging") age = `hace ${Math.max(0, Math.floor((input.now - input.fetchedAt) / 60_000))} min`;
+        }
         return {
             state: "none",
             text: "Sin arribos ahora",
-            note: input.headwayMin !== null ? `pasa cada ~${input.headwayMin} min` : null,
+            note: [age, headway].filter(Boolean).join(" · ") || null,
             spoken: "sin arribos informados ahora",
             pulse: false,
         };
